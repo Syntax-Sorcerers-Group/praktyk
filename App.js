@@ -24,6 +24,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
 import store from "./store"; // Import your Redux store
+import firebase from './Firebase/firebase';; // Import firebase
 
 // Import your different page components
 import HomeScreen from "./pages/HomeScreen";
@@ -31,7 +32,14 @@ import AboutScreen from "./pages/AboutScreen";
 
 const Stack = createStackNavigator();
 
+function testFirebase() {
+  // Test Firebase
+  console.log("Testing Firebase");
+  console.log(firebase);
+}
+
 export default function App() {
+  testFirebase(); // Test Firebase
   return (
     <Provider store={store}>
       <NavigationContainer>
