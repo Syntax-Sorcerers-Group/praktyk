@@ -1,35 +1,62 @@
 import React from "react";
-import { View, Button, StyleSheet } from "react-native";
+import { View, Button, StyleSheet,Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const BottomNavBar = ({ navigateToHome, navigateToAbout }) => {
+//Screens
+import HomeScreen from "../pages/HomeScreen";
+import DetailsScreen from "../pages/DetailsScreen";
+import AboutScreen from "../pages/AboutScreen";
+
+//Screen names
+const HomeScreenName = "Home";
+const DetailsScreenName = "Details";
+const AboutScreenName = "About";
+
+const Tab = createBottomTabNavigator();
+
+export default function BottomNavBar() {
   return (
-    <View style={styles.navContainer}>
-      <View style={styles.buttonContainer}>
-        <Button title="Home" onPress={navigateToHome} />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="About" onPress={navigateToAbout} />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName={HomeScreenName}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            let rn = route.name;
+            if (rn === HomeScreenName) {
+              iconName = focused ? 'home' : 'home-outline';//icon for home
+            }
+            else if (rn === DetailsScreenName) {
+              iconName = focused ? 'list' : 'list-outline';//icon for details
+            }
+            else if (rn === AboutScreenName) {
+              iconName = focused ? 'information-circle' : 'information-circle-outline';//icon for about
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;//can change these manually if you want
+          },
+        })}
+        //style for the nav bar
+        tabBarOptions={{
+          activeTintColor: 'blue',
+          inactiveTintColor: 'grey',
+          labelStyle: { fontSize: 10 },
+          style: { height: 80, borderTopWidth: 2, borderTopColor: 'white' },
+          "tabBarStyle": [
+            {
+              "display": "flex"
+            },
+            null
+          ]
+
+        }}>
+
+        <Tab.Screen name={HomeScreenName} component={HomeScreen} />
+        <Tab.Screen name={DetailsScreenName} component={DetailsScreen} />
+        <Tab.Screen name={AboutScreenName} component={AboutScreen} />
+        
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  navContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between", // Space between the buttons
-    alignItems: "center", // Align buttons vertically in the center
-    backgroundColor: "#ccc", // Set your desired background color
-    paddingVertical: 10,
-    paddingHorizontal: 20, // Add horizontal padding for the buttons
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-  },
-  buttonContainer: {
-    flex: 1, // Equal space for each button
-    marginHorizontal: 5, // Add margin between buttons
-  },
-});
-
-export default BottomNavBar;
+}

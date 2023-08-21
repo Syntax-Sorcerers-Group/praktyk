@@ -1,30 +1,14 @@
+
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import BottomNavBar from "../components/BottomNavBar"; // Adjust the relative path
 
-const HomeScreen = ({ navigation }) => {
-  const navigateToAbout = () => {
-    navigation.navigate("About");
-  };
 
+export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
-      <BottomNavBar navigateToHome={() => {}} navigateToAbout={navigateToAbout} />
-    </View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text
+              onPress={() => alert('This is the "Home" screen.')} // when you press the home screen icon, it will alert you with this message
+              style={{ fontSize: 26, fontWeight: 'bold' }}>Home Screen</Text>
+      </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-});
-
-export default HomeScreen;
+}

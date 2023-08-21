@@ -1,37 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import BottomNavBar from "../components/BottomNavBar";
 
-const AboutScreen = ({ navigation }) => {
-  const navigateToHome = () => {
-    navigation.navigate("Home");
-  };
-
+export default function AboutScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>About Screen</Text>
-      <BottomNavBar navigateToHome={navigateToHome} navigateToAbout={() => {}} />
-    </View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text
+              onPress={() => navigation.navigate('Home')}//re directes you to the home screen when you press the details screen text
+              style={{ fontSize: 26, fontWeight: 'bold' }}>About Screen</Text>
+      </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-});
-
-AboutScreen.navigationOptions = {
-  headerLeft: null,
-  headerShown: false, // Hide the back arrow in the header
-};
-
-
-
-export default AboutScreen;
+}
