@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 //Screens
 import HomeScreen from "../pages/HomeScreen";
 import DetailsScreen from "../pages/DetailsScreen";
-import AboutScreen from "../pages/AboutScreen";
+import AboutScreen from "../pages/SettingScreen";
 
 //Screen names
 const HomeScreenName = "Home";
