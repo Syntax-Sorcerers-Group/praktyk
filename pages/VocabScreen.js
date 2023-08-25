@@ -8,7 +8,7 @@ export default function VocabScreen({ navigation }) {
         <Text style={{ fontSize: 26, fontWeight: 'bold' }}>
             VOCAB SCREEN
         </Text>
-        <Button title="Vocab Category" onPress={() => {navigation.navigate('Tabless', { screen: 'VocabCategory' })}} />
+        <Button title="Vocab Learning" onPress={() => {navigation.navigate('Tabless', { screen: 'VocabLearning' })}} />
     </View>
   );
 }

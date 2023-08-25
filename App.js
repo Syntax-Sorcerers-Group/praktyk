@@ -3,17 +3,17 @@ import { NavigationContainer } from "@react-navigation/native"; // Import Naviga
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; // Import stack navigator
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"; // Import bottom tab navigator
 import store from "./store"; // Import your Redux store
-import firebase from './Firebase/firebase';; // Import firebase
+import firebase from "./Firebase/firebase"; // Import firebase
 import {
-    LoginScreen,  
-    HomeScreen, 
-    DetailsScreen, 
-    SettingScreen,
-    VocabScreen, 
-    GrammarScreen,
-    VocabCategory, 
-    GrammarCategory
-   } from "./pages"; // Import your screens
+  LoginScreen,
+  HomeScreen,
+  DetailsScreen,
+  SettingScreen,
+  VocabScreen,
+  GrammarScreen,
+  VocabLearning,
+  GrammarLearning,
+} from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
 const Tab = createMaterialBottomTabNavigator(); // Create a bottom tab navigator
@@ -28,10 +28,10 @@ function testFirebase() {
 function TablessStack() {
   return (
     <Stack.Navigator>
-    {/* MOVE THESE 2 BACK TO HOMESTACK */}
-    <Stack.Screen name="VocabCategory" component={VocabCategory} />
-    <Stack.Screen name="GrammarCategory" component={GrammarCategory} />
-  </Stack.Navigator>
+      {/* MOVE THESE 2 BACK TO HOMESTACK */}
+      <Stack.Screen name="Vocab Learning" component={VocabLearning} />
+      <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
+    </Stack.Navigator>
   );
 }
 
@@ -62,25 +62,29 @@ function GeneralTabs() {
     </Tab.Navigator>
   );
 }
-
+//TODO: Change tabless to NavBarLess
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="General" component={GeneralTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="Tabless" component={TablessStack} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="General"
+          component={GeneralTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Tabless"
+          component={TablessStack}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-

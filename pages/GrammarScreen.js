@@ -5,18 +5,31 @@ import CustomCard from "../components/CustomCards";
 
 export default function GrammarScreen({ navigation }) {
   return (
-    <ScrollView >
-      
+    <ScrollView>
       <Button
         title="Grammar Category"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "GrammarCategory" });
+          navigation.navigate("Tabless", { screen: "GrammarLearning" });
         }}
       />
 
-      <CustomCard title="Custom Card 1" imageUrl="https://picsum.photos/700" />
-      <CustomCard title="Custom Card 2" imageUrl="https://picsum.photos/800" />
-      <CustomCard title="Custom Card 3" imageUrl="https://picsum.photos/900" />
+      <CustomCard
+        title="Custom Card 1"
+        imageUrl="https://picsum.photos/700"
+        onPress={() => {
+          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+        }}
+      />
+      <CustomCard
+        title="Custom Card 2"
+        imageUrl="https://picsum.photos/800"
+        onPress={() => navigation.navigate("GrammarCategory")}
+      />
+      <CustomCard
+        title="Custom Card 3"
+        imageUrl="https://picsum.photos/900"
+        onPress={() => navigation.navigate("GrammarCategory")}
+      />
     </ScrollView>
   );
 }
