@@ -7,6 +7,7 @@ import firebase from "./Firebase/firebase"; // Import firebase
 import {
   // Main Screens
   LoginScreen,
+  RegisterScreen,
   HomeScreen,
   DetailsScreen,
   SettingScreen,
@@ -69,14 +70,23 @@ function GeneralTabs() {
     </Tab.Navigator>
   );
 }
+
+function LoginTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Login" component={LoginScreen} />
+      <Tab.Screen name="Register" component={RegisterScreen} />
+    </Tab.Navigator>
+  );
+}
 //TODO: Change tabless to NavBarLess
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Login"
-          component={LoginScreen}
+          name="LoginTabs"
+          component={LoginTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
