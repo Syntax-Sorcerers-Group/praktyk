@@ -5,14 +5,19 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import store from "./store"; // Import your Redux store
 import firebase from "./Firebase/firebase"; // Import firebase
 import {
+  // Main Screens
   LoginScreen,
   HomeScreen,
   DetailsScreen,
   SettingScreen,
-  VocabScreen,
-  GrammarScreen,
+  // Catergories
+  VocabCategories,
+  GrammarCategories,
+  LiteratureCategories,
+  // Learning
   VocabLearning,
   GrammarLearning,
+  LiteratureLearning,
 } from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
@@ -23,26 +28,28 @@ function testFirebase() {
   console.log("Testing Firebase");
   console.log(firebase);
 }
-
-// All tabs without a navigation bar
+// NAV LESS TABS
+// All tabs without a navigation bar (Vocab, Grammar, Literature Learning)
 function TablessStack() {
   return (
     <Stack.Navigator>
       {/* MOVE THESE 2 BACK TO HOMESTACK */}
       <Stack.Screen name="Vocab Learning" component={VocabLearning} />
       <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
+      <Stack.Screen name="Literature Learning" component={LiteratureLearning} />
     </Stack.Navigator>
   );
 }
 
-// Home tab Stack
+// Home tab Stack -  contains all pages that are accessible from the home tab such as Vocab, Grammar, Literature Categories
 function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Vocab" component={VocabScreen} />
+      <Stack.Screen name="Vocab Categories" component={VocabCategories} />
       {/* <Stack.Screen name="VocabCategory" component={VocabCategory} /> */}
-      <Stack.Screen name="Grammar" component={GrammarScreen} />
+      <Stack.Screen name="Grammar Categories" component={GrammarCategories} />
+      <Stack.Screen name="Literature Categories" component={LiteratureCategories} />
     </Stack.Navigator>
   );
 }

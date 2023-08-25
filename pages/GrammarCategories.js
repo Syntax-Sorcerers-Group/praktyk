@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomCard from "../components/CustomCards";
 
-export default function GrammarScreen({ navigation }) {
+export default function GrammarCategories({ navigation }) {
   return (
     <ScrollView>
       <Button
@@ -23,12 +23,16 @@ export default function GrammarScreen({ navigation }) {
       <CustomCard
         title="Custom Card 2"
         imageUrl="https://picsum.photos/800"
-        onPress={() => navigation.navigate("GrammarCategory")}
+        onPress={() => {
+          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+        }}
       />
       <CustomCard
         title="Custom Card 3"
         imageUrl="https://picsum.photos/900"
-        onPress={() => navigation.navigate("GrammarCategory")}
+        onPress={() => {
+          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+        }}
       />
     </ScrollView>
   );

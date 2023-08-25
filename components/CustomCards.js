@@ -30,8 +30,7 @@ const CustomCard = ({ title, imageUrl, onPress }) => (
         />
         <Card.Cover source={{ uri: imageUrl }} />
         <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
+          <Button>Translate</Button>
         </Card.Actions>
       </Card>
     </View>
