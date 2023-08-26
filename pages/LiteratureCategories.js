@@ -11,7 +11,7 @@ export default function LiteratureCategories({ navigation }) {
       <Button
         title="Vocab Learning"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "VocabLearning" });
+          navigation.navigate("NavLessStack", { screen: "VocabLearning" });
         }}
       />
     </View>

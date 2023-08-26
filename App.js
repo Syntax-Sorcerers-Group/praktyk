@@ -31,7 +31,7 @@ function testFirebase() {
 }
 // NAV LESS TABS
 // All tabs without a navigation bar (Vocab, Grammar, Literature Learning)
-function TablessStack() {
+function NavLessStack() {
   return (
     <Stack.Navigator>
       {/* MOVE THESE 2 BACK TO HOMESTACK */}
@@ -95,8 +95,8 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Tabless"
-          component={TablessStack}
+          name="NavLessStack"
+          component={NavLessStack}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

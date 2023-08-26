@@ -3,23 +3,20 @@ import { View, StyleSheet } from 'react-native';
 import { PaperProvider, Snackbar, Portal } from 'react-native-paper';
 
 const Popup = (props) => {
-    const { visible, displayText } = props;
-  const [visibility, setVisibility] = React.useState(visible);
-
-//   const onToggleSnackBar = () => setVisible(!visible);
+  const { state, setState, labelText, displayText, timeout } = props;
 
   return (
     <PaperProvider>
         <View style={styles.container}>
             <Portal>
                 <Snackbar
-                  visible={visible}
-                  duration={100}
-                //   onDismiss={() => {setVisibility(false)}}
-                //   action={{
-                //     label: 'Ok',
-                //     onPress: () => {setVisibility(false)}
-                //   }}
+                  visible={state}
+                  duration={timeout}
+                  onDismiss={() => {setState(false)}}
+                  action={{
+                    label: labelText,
+                    onPress: () => {setState(false)}
+                  }}
                 >
                   {displayText}
                 </Snackbar>

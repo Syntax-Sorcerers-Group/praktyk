@@ -9,7 +9,7 @@ export default function GrammarCategories({ navigation }) {
       <Button
         title="Grammar Category"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
         }}
       />
 
@@ -17,21 +17,21 @@ export default function GrammarCategories({ navigation }) {
         title="Custom Card 1"
         imageUrl="https://picsum.photos/700"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
         }}
       />
       <CustomCard
         title="Custom Card 2"
         imageUrl="https://picsum.photos/800"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
         }}
       />
       <CustomCard
         title="Custom Card 3"
         imageUrl="https://picsum.photos/900"
         onPress={() => {
-          navigation.navigate("Tabless", { screen: "GrammarLearning" });
+          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
         }}
       />
     </ScrollView>
