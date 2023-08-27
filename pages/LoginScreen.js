@@ -1,28 +1,30 @@
 import React from "react";
-import { View, StyleSheet, ScrollView} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
-import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from '@env';
+import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
+import axios from "axios";
 
 const signIn = async (userData) => {
   try {
-    const response = await fetch(`${APP_ENV_PRAKTYK_API_LINK}/api/post/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': APP_ENV_PRAKTYK_API_KEY,
-      },
-      body: JSON.stringify(userData),
-    });
+    const response = await axios.post(
+      `${APP_ENV_PRAKTYK_API_LINK}/api/post/signin`,
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+        },
+      }
+    );
 
-    const responseData = await response.json();
-    return responseData;
+    return response.data;
   } catch (error) {
-    console.error('Error signing up:', error);
-    throw error;
+    console.error("Error signing in:", error.response.data);
+    throw error; // Re-throw the error to propagate it
   }
 };
 
@@ -41,46 +43,64 @@ export default function LoginScreen(props) {
 
   // Usage example
   const userData = {
-      "email": email,
-      "password": password
+    email: email,
+    password: password,
   };
 
+  // Inside your handleLogin function
   function handleLogin() {
     setLoading(true);
 
+    if (!email || !password) {
+      // Check if email or password is missing
+      setLoading(false);
+      console.error("Email and/or password is missing.");
+      return;
+    }
+
+    const userData = {
+      email: email,
+      password: password,
+    };
+
     signIn(userData)
-      .then(responseData => {
+      .then((responseData) => {
         setLoading(false);
-        
+
         const responseType = Object.keys(responseData)[0];
-        
+
         if (responseType === "error") {
           setPopupState(true);
           setPopupText(Object.values(responseData)[2]);
         } else {
           navigation.reset({
-            index: 0, // Reset the stack index to 0
-            routes: [{ name: 'General' }], // Navigate to the Home screen
+            index: 0,
+            routes: [{ name: "General" }],
           });
         }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("An error occurred during login:", error);
+        // Handle the error, show an error message, or take appropriate action
       });
   }
 
-  
   return (
-    <ScrollView contentContainerStyle={styles.page} 
+    <ScrollView
+      contentContainerStyle={styles.page}
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="interactive"
     >
       <View style={styles.image}>
-        <Imagebox 
-          imgSource={require('../assets/splash-screen.jpg')}
+        <Imagebox
+          imgSource={require("../assets/splash-screen.jpg")}
           imgSize={200}
         />
       </View>
       <View style={styles.components}>
-        <InputBox 
-          autoComplete="email" 
+        <InputBox
+          autoComplete="email"
           placeHolder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -97,31 +117,32 @@ export default function LoginScreen(props) {
           onPress={() => handleLogin()}
           loadingState={loading}
         />
-        <Popup 
-          state={popupState} 
-          displayText={popupText} 
+        <Popup
+          state={popupState}
+          displayText={popupText}
           labelText="Ok"
-          setState={() => {setPopupState(false)}}
+          setState={() => {
+            setPopupState(false);
+          }}
           timeout={3000}
         />
       </View>
     </ScrollView>
   );
 }
-  
+
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 150, 
-    alignSelf: 'center',
-    justifyContent: 'center',  
-    
+    paddingTop: 150,
+    alignSelf: "center",
+    justifyContent: "center",
   },
   image: {
-    alignSelf: 'center',
-    justifyContent: 'center',     
+    alignSelf: "center",
+    justifyContent: "center",
   },
   components: {
     paddingTop: 50,
     gap: 20,
-  }
+  },
 });
