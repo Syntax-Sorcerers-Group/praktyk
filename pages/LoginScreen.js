@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
@@ -47,6 +47,13 @@ export default function LoginScreen(props) {
     password: password,
   };
 
+  // Effect to run when email or password changes
+  React.useEffect(() => {
+    console.log("Email and/or password changed:", email, password);
+    // You can add any additional logic here that needs to run
+    // when the email or password changes.
+  }, [email, password]);
+
   // Inside your handleLogin function
   function handleLogin() {
     setLoading(true);
@@ -57,11 +64,6 @@ export default function LoginScreen(props) {
       console.error("Email and/or password is missing.");
       return;
     }
-
-    const userData = {
-      email: email,
-      password: password,
-    };
 
     signIn(userData)
       .then((responseData) => {
@@ -99,16 +101,18 @@ export default function LoginScreen(props) {
         />
       </View>
       <View style={styles.components}>
-        <InputBox
-          autoComplete="email"
-          placeHolder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          style={styles.input}
         />
-        <InputBox
-          autoComplete="password"
-          placeHolder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-          icon="eye"
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry={true}
+          style={styles.input}
         />
         <Button
           displayText="Login"
@@ -144,5 +148,11 @@ const styles = StyleSheet.create({
   components: {
     paddingTop: 50,
     gap: 20,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
