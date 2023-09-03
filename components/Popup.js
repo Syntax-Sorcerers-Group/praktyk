@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PaperProvider, Snackbar, Portal } from 'react-native-paper';
 
@@ -7,21 +7,22 @@ const Popup = (props) => {
 
   return (
     <PaperProvider>
-        <View style={styles.container}>
-            <Portal>
-                <Snackbar
-                  visible={state}
-                  duration={timeout}
-                  onDismiss={() => {setState(false)}}
-                  action={{
-                    label: labelText,
-                    onPress: () => {setState(false)}
-                  }}
-                >
-                  {displayText}
-                </Snackbar>
-            </Portal>
-        </View>
+      <View style={styles.container}>
+        <Portal>
+          <Snackbar
+            visible={state}
+            duration={timeout}
+            onDismiss={() => setState(false)}
+            action={{
+              label: labelText,
+              onPress: () => setState(false),
+            }}
+            style={{ bottom: 100 }} // Adjust the bottom value as needed
+          >
+            {displayText}
+          </Snackbar>
+        </Portal>
+      </View>
     </PaperProvider>
   );
 };

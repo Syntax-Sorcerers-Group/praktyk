@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, TextInput } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
@@ -39,19 +39,26 @@ export default function LoginScreen(props) {
         }
       );
 
-      return response;
+      if (response && response.data) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "General" }],
+        });
+      } else {
+        setPopupState(true);
+        setPopupText("Email and/or password is incorrect.");
+      }
     } catch (error) {
-      // Access the error message directly from the 'error' object
       setLoading(false);
-      setPopupState(true);
-      setPopupText(error.response.data.errorMessage);
+      if (error.response && error.response.data) {
+        setPopupState(true);
+        setPopupText(error.response.data.errorMessage);
+      } else {
+        setPopupState(true);
+        setPopupText("An error occurred while signing in.");
+      }
     }
   };
-
-  // Effect to run when email or password changes
-  React.useEffect(() => {
-    signIn;
-  }, [email, password, popupState, popupText]);
 
   // Inside your handleLogin function
   function handleLogin() {
@@ -62,33 +69,11 @@ export default function LoginScreen(props) {
       setLoading(false);
       setPopupState(true);
       setPopupText("Email and/or password is missing.");
-      // console.error("Email and/or password is missing.");
       return;
     }
 
-    // Improve this code below to work with uncaught promise errors
-
-    signIn(userData)
-      .then((response) => {
-        setLoading(false);
-
-        if (response && response.data) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "General" }],
-          });
-        } else {
-          setLoading(false);
-          setPopupState(true);
-          setPopupText("Email and/or password is incorrect.");
-          // console.error("Email and/or password is incorrect.");
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setPopupState(true);
-        setPopupText(error.response.data.errorMessage);
-      });
+    // Trigger the sign-in process
+    signIn(userData);
   }
 
   return (
