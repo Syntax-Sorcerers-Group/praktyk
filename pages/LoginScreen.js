@@ -8,26 +8,6 @@ import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 
-const signIn = async (userData) => {
-  try {
-    const response = await axios.post(
-      `${APP_ENV_PRAKTYK_API_LINK}/api/post/signin`,
-      userData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("Error signing in:", error.response.data);
-    throw error; // Re-throw the error to propagate it
-  }
-};
-
 export default function LoginScreen(props) {
   // General variables
   const navigation = useNavigation();
@@ -41,19 +21,38 @@ export default function LoginScreen(props) {
   const [popupState, setPopupState] = React.useState(false);
   const [popupText, setPopupText] = React.useState("");
 
-  // Usage example
   const userData = {
     email: email,
     password: password,
   };
 
+  const signIn = async (userData) => {
+    try {
+      const response = await axios.post(
+        `${APP_ENV_PRAKTYK_API_LINK}/api/post/signin`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+          },
+        }
+      );
+  
+      return response;
+    } catch (error) {
+      // console.error("Login error:", response.response.data.errorMessage);
+      setLoading(false);
+      setPopupState(true);
+      setPopupText(error.response.data.errorMessage);
+    }
+  };
+
   // Effect to run when email or password changes
   React.useEffect(() => {
-    console.log("Email and/or password changed:", email, password);
-    // You can add any additional logic here that needs to run
-    // when the email or password changes.
-  }, [email, password]);
-
+    signIn;
+  }, [email, password, popupState, popupText]);
+  
   // Inside your handleLogin function
   function handleLogin() {
     setLoading(true);
@@ -61,30 +60,32 @@ export default function LoginScreen(props) {
     if (!email || !password) {
       // Check if email or password is missing
       setLoading(false);
-      console.error("Email and/or password is missing.");
+      setPopupState(true);
+      setPopupText("Email and/or password is missing.");
+      // console.error("Email and/or password is missing.");
       return;
     }
 
+    // Improve this code below to work with uncaught promise errors
+    
     signIn(userData)
-      .then((responseData) => {
+      .then((response) => {
         setLoading(false);
 
-        const responseType = Object.keys(responseData)[0];
-
-        if (responseType === "error") {
-          setPopupState(true);
-          setPopupText(Object.values(responseData)[2]);
-        } else {
+        if (response && response.data) {
           navigation.reset({
             index: 0,
             routes: [{ name: "General" }],
           });
+        } else {
+          setLoading(false);
+          console.error("Error signing in.", response);
         }
       })
       .catch((error) => {
         setLoading(false);
-        console.error("An error occurred during login:", error);
-        // Handle the error, show an error message, or take appropriate action
+        setPopupState(true);
+        setPopupText(error.response.data.errorMessage);
       });
   }
 
@@ -101,18 +102,16 @@ export default function LoginScreen(props) {
         />
       </View>
       <View style={styles.components}>
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          placeholder="Email"
-          style={styles.input}
+        <InputBox
+          autoComplete="email"
+          onSubmit={(value) => setEmail(value.nativeEvent.text)}
+          placeHolder="Email"
         />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          secureTextEntry={true}
-          style={styles.input}
+        <InputBox
+          autoComplete="password"
+          onSubmit={(value) => setPassword(value.nativeEvent.text)}
+          placeHolder="Password"
+          icon="eye"
         />
         <Button
           displayText="Login"
