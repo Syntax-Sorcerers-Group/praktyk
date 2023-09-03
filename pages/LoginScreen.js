@@ -104,53 +104,57 @@ export default function LoginScreen(props) {
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="interactive"
     >
-      <View style={styles.image}>
-        <Imagebox
-          imgSource={require("../assets/splash-screen.jpg")}
-          imgSize={200}
-        />
-      </View>
-      <View style={styles.components}>
-        <InputBox
-          autoComplete="email"
-          onSubmit={(value) => setEmail(value.nativeEvent.text)}
-          placeHolder="Email"
-        />
-        <InputBox
-          autoComplete="password"
-          onSubmit={(value) => setPassword(value.nativeEvent.text)}
-          placeHolder="Password"
-          icon="eye"
-        />
-        <Button
-          displayText="Login"
-          icon="login"
-          mode="elevated"
-          onPress={() => handleLogin()}
-          loadingState={loading}
-        />
-        {/* Modal for displaying errors */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.modalView}>
-            <Text>{popupText}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-              style={styles.okButton}
-            >
-              <Text style={styles.okButtonText}>OK</Text>
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.image}>
+          <Imagebox
+            imgSource={require("../assets/splash-screen.jpg")}
+            imgSize={200}
+          />
+        </View>
+        <View style={styles.form}>
+          <InputBox
+            autoComplete="email"
+            onSubmit={(value) => setEmail(value.nativeEvent.text)}
+            placeHolder="Email"
+          />
+          <InputBox
+            autoComplete="password"
+            onSubmit={(value) => setPassword(value.nativeEvent.text)}
+            placeHolder="Password"
+            icon="eye"
+          />
+          <View style={{ padding: 20 }}>
+            <Button
+              displayText="Login"
+              icon="login"
+              mode="elevated"
+              onPress={() => handleLogin()}
+              loadingState={loading}
+            />
           </View>
-        </Modal>
+        </View>
       </View>
+      {/* Modal for displaying errors */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modalView}>
+          <Text>{popupText}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+            style={styles.okButton}
+          >
+            <Text style={styles.okButtonText}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -169,6 +173,12 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     gap: 20,
   },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   modalView: {
     margin: 20,
     backgroundColor: "white",
