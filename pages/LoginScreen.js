@@ -38,10 +38,10 @@ export default function LoginScreen(props) {
           },
         }
       );
-  
+
       return response;
     } catch (error) {
-      // console.error("Login error:", response.response.data.errorMessage);
+      // Access the error message directly from the 'error' object
       setLoading(false);
       setPopupState(true);
       setPopupText(error.response.data.errorMessage);
@@ -52,7 +52,7 @@ export default function LoginScreen(props) {
   React.useEffect(() => {
     signIn;
   }, [email, password, popupState, popupText]);
-  
+
   // Inside your handleLogin function
   function handleLogin() {
     setLoading(true);
@@ -67,7 +67,7 @@ export default function LoginScreen(props) {
     }
 
     // Improve this code below to work with uncaught promise errors
-    
+
     signIn(userData)
       .then((response) => {
         setLoading(false);
@@ -79,7 +79,9 @@ export default function LoginScreen(props) {
           });
         } else {
           setLoading(false);
-          console.error("Error signing in.", response);
+          setPopupState(true);
+          setPopupText("Email and/or password is incorrect.");
+          // console.error("Email and/or password is incorrect.");
         }
       })
       .catch((error) => {

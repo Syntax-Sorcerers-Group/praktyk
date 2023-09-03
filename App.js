@@ -50,7 +50,10 @@ function HomeStack() {
       <Stack.Screen name="Vocab Categories" component={VocabCategories} />
       {/* <Stack.Screen name="VocabCategory" component={VocabCategory} /> */}
       <Stack.Screen name="Grammar Categories" component={GrammarCategories} />
-      <Stack.Screen name="Literature Categories" component={LiteratureCategories} />
+      <Stack.Screen
+        name="Literature Categories"
+        component={LiteratureCategories}
+      />
     </Stack.Navigator>
   );
 }
@@ -84,11 +87,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="General"
           component={GeneralTabs}
