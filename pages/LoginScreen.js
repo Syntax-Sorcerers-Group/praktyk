@@ -1,9 +1,15 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, TextInput } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
-import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
@@ -17,8 +23,10 @@ export default function LoginScreen(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  // Popup visibility variable
-  const [popupState, setPopupState] = React.useState(false);
+  // Modal visibility variable
+  const [modalVisible, setModalVisible] = React.useState(false);
+
+  // Error message variable
   const [popupText, setPopupText] = React.useState("");
 
   const userData = {
@@ -43,15 +51,14 @@ export default function LoginScreen(props) {
     } catch (error) {
       // Access the error message directly from the 'error' object
       setLoading(false);
-      setPopupState(true);
-      setPopupText(error.response.data.errorMessage);
+      setModalVisible(true);
+      setPopupText(
+        error.response
+          ? error.response.data.errorMessage
+          : "An error occurred while signing in."
+      );
     }
   };
-
-  // Effect to run when email or password changes
-  React.useEffect(() => {
-    signIn;
-  }, [email, password, popupState, popupText]);
 
   // Inside your handleLogin function
   function handleLogin() {
@@ -60,13 +67,10 @@ export default function LoginScreen(props) {
     if (!email || !password) {
       // Check if email or password is missing
       setLoading(false);
-      setPopupState(true);
+      setModalVisible(true);
       setPopupText("Email and/or password is missing.");
-      // console.error("Email and/or password is missing.");
       return;
     }
-
-    // Improve this code below to work with uncaught promise errors
 
     signIn(userData)
       .then((response) => {
@@ -79,15 +83,18 @@ export default function LoginScreen(props) {
           });
         } else {
           setLoading(false);
-          setPopupState(true);
+          setModalVisible(true);
           setPopupText("Email and/or password is incorrect.");
-          // console.error("Email and/or password is incorrect.");
         }
       })
       .catch((error) => {
         setLoading(false);
-        setPopupState(true);
-        setPopupText(error.response.data.errorMessage);
+        setModalVisible(true);
+        setPopupText(
+          error.response
+            ? error.response.data.errorMessage
+            : "An error occurred while signing in."
+        );
       });
   }
 
@@ -122,15 +129,27 @@ export default function LoginScreen(props) {
           onPress={() => handleLogin()}
           loadingState={loading}
         />
-        <Popup
-          state={popupState}
-          displayText={popupText}
-          labelText="Ok"
-          setState={() => {
-            setPopupState(false);
+        {/* Modal for displaying errors */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
           }}
-          timeout={3000}
-        />
+        >
+          <View style={styles.modalView}>
+            <Text>{popupText}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              style={styles.okButton}
+            >
+              <Text style={styles.okButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -150,10 +169,34 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     gap: 20,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginTop: "70%",
+  },
+
+  okButton: {
+    backgroundColor: "#007AFF", // Change to your desired button color
+    marginTop: 10, // Adjust spacing as needed
+    padding: 10, // Adjust padding as needed
+    borderRadius: 5, // Adjust border radius as needed
+    minWidth: 100, // Set a minimum width for the button
+    alignItems: "center",
+  },
+
+  okButtonText: {
+    color: "white", // Change to your desired text color
+    fontWeight: "bold", // Apply desired text styling
   },
 });
