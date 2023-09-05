@@ -2,8 +2,6 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native"; // Import Navigation Container
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; // Import stack navigator
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"; // Import bottom tab navigator
-import store from "./store"; // Import your Redux store
-import firebase from "./Firebase/firebase"; // Import firebase
 import {
   // Main Screens
   LoginScreen,
@@ -18,29 +16,12 @@ import {
   // Learning
   VocabLearning,
   GrammarLearning,
+  GrammarSTOMPI,
   LiteratureLearning,
 } from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
 const Tab = createMaterialBottomTabNavigator(); // Create a bottom tab navigator
-
-function testFirebase() {
-  // Test Firebase
-  console.log("Testing Firebase");
-  console.log(firebase);
-}
-// NAV LESS TABS
-// All tabs without a navigation bar (Vocab, Grammar, Literature Learning)
-function NavLessStack() {
-  return (
-    <Stack.Navigator>
-      {/* MOVE THESE 2 BACK TO HOMESTACK */}
-      <Stack.Screen name="Vocab Learning" component={VocabLearning} />
-      <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
-      <Stack.Screen name="Literature Learning" component={LiteratureLearning} />
-    </Stack.Navigator>
-  );
-}
 
 // Home tab Stack -  contains all pages that are accessible from the home tab such as Vocab, Grammar, Literature Categories
 function HomeStack() {
@@ -87,20 +68,28 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="General"
           component={GeneralTabs}
           options={{ headerShown: false }}
         />
+
+        {/* Vocab Things */}
+        <Stack.Screen name="Vocab Learning" component={VocabLearning} />
+
+        {/* Grammar Things */}
+        <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
+        <Stack.Screen name="STOMPI" component={GrammarSTOMPI} />
+
+        {/* Literature Things */}
         <Stack.Screen
-          name="NavLessStack"
-          component={NavLessStack}
-          options={{ headerShown: false }}
+          name="Literature Learning"
+          component={LiteratureLearning}
         />
       </Stack.Navigator>
     </NavigationContainer>

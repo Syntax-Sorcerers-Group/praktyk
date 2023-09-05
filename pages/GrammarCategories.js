@@ -6,32 +6,25 @@ import CustomCard from "../components/CustomCards";
 export default function GrammarCategories({ navigation }) {
   return (
     <ScrollView>
-      <Button
-        title="Grammar Category"
-        onPress={() => {
-          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
-        }}
-      />
-
       <CustomCard
-        title="Custom Card 1"
+        title="STOMPI"
         imageUrl="https://picsum.photos/700"
         onPress={() => {
-          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
+          navigation.navigate("STOMPI");
         }}
       />
       <CustomCard
         title="Custom Card 2"
         imageUrl="https://picsum.photos/800"
         onPress={() => {
-          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
+          navigation.navigate("Grammar Learning");
         }}
       />
       <CustomCard
         title="Custom Card 3"
         imageUrl="https://picsum.photos/900"
         onPress={() => {
-          navigation.navigate("NavLessStack", { screen: "GrammarLearning" });
+          navigation.navigate("Grammar Learning");
         }}
       />
     </ScrollView>

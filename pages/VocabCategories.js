@@ -9,7 +9,7 @@ export default function VocabCategories({ navigation }) {
       <Button
         title="Vocab Learning"
         onPress={() => {
-          navigation.navigate("NavLessStack", { screen: "VocabLearning" });
+          navigation.navigate("Vocab Learning");
         }}
       />
     </View>
