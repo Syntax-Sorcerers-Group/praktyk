@@ -1,16 +1,28 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import DuoDragDrop from "@jamsch/react-native-duo-drag-drop";
 
 export default function GrammarSTOMPI(props) {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 26, fontWeight: "bold" }}>
-        GRAMMAR STOMPI WORKS
-      </Text>
-      <Button title="Go Back" onPress={() => navigation.goBack()} />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ margin: 20 }}>
+        <DuoDragDrop
+          words={[
+            "Daggy",
+            "and",
+            "Sayf",
+            "suffered",
+            "for",
+            "this",
+            "to",
+            "work",
+          ]}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }
