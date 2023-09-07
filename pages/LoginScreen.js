@@ -52,7 +52,15 @@ export default function LoginScreen(props) {
       setLoading(false);
       if (error.response && error.response.data) {
         setPopupState(true);
-        setPopupText(error.response.data.errorMessage);
+        let errorMessage = error.response.data.errorMessage;
+
+        // Remove "Firebase." from the beginning of the errorMessage
+        errorMessage = errorMessage.replace(/^Firebase:\s*/, '');
+    
+        // Remove any text inside brackets and the brackets themselves
+        errorMessage = errorMessage.replace(/\(.*?\)\./g, '');
+    
+        setPopupText(errorMessage);
       } else {
         setPopupState(true);
         setPopupText("An error occurred while signing in.");
@@ -91,12 +99,12 @@ export default function LoginScreen(props) {
       <View style={styles.components}>
         <InputBox
           autoComplete="email"
-          onSubmit={(value) => setEmail(value.nativeEvent.text)}
+          onChange={(value) => setEmail(value.nativeEvent.text)}
           placeHolder="Email"
         />
         <InputBox
           autoComplete="password"
-          onSubmit={(value) => setPassword(value.nativeEvent.text)}
+          onChange={(value) => setPassword(value.nativeEvent.text)}
           placeHolder="Password"
           icon="eye"
         />

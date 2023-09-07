@@ -53,11 +53,11 @@ export default function HomeScreen({ navigation }) {
       </View>
       </View>
       <ScrollView>
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <View style={styles.textContainer}>
             <Text>Hello, this is a Text {isvalue}!</Text>
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.cardContainer}>
           <CustomCard

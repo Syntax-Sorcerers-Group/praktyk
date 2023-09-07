@@ -5,25 +5,7 @@ import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from '@env';
-
-const signUp = async (userData) => {
-  try {
-    const response = await fetch(`${APP_ENV_PRAKTYK_API_LINK}/api/post/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': APP_ENV_PRAKTYK_API_KEY,
-      },
-      body: JSON.stringify(userData),
-    });
-
-    const responseData = await response.json();
-    return responseData;
-  } catch (error) {
-    console.error('Error signing up:', error);
-    throw error;
-  }
-};
+import axios from "axios";
 
 export default function RegisterScreen({ navigation }) {
     // General variables
@@ -46,27 +28,60 @@ export default function RegisterScreen({ navigation }) {
       "password": password
     };
 
+    const signUp = async (userData) => {
+      try {
+        const response = await axios.post(
+          `${APP_ENV_PRAKTYK_API_LINK}/api/post/signup`,
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+            },
+          }
+        );
+
+        if (response && response.data) {
+          setLoading(false);
+          navigation.navigate("Login");
+        } else {
+          setPopupState(true);
+          setPopupText("An unknown error occurred. Please try again.");
+        }
+      } catch (error) {
+        setLoading(false);
+        if (error.response && error.response.data) {
+          setPopupState(true);
+          let errorMessage = error.response.data.errorMessage;
+
+          // Remove "Firebase." from the beginning of the errorMessage
+          errorMessage = errorMessage.replace(/^Firebase:\s*/, '');
+      
+          // Remove any text inside brackets and the brackets themselves
+          errorMessage = errorMessage.replace(/\(.*?\)\./g, '');
+      
+          setPopupText(errorMessage);
+        } else {
+          setPopupState(true);
+          setPopupText("An error occurred while registering.");
+        }
+      }
+    };
+
     function handleRegister() {
       setLoading(true);
-      if ((password === "" || confirmPassword === "") || (password !== confirmPassword)) {
+      if ((password !== confirmPassword)) {
+        setLoading(false);
         setPopupState(true);
-        setPopupText("Passwords do not match");
-      } else {
-        signUp(userData)
-        .then(responseData => {
-          setLoading(false);
-          const responseType = Object.keys(responseData)[0];
-        
-          if (responseType === "error") {
-            setPopupState(true);
-            setPopupText(Object.values(responseData)[2]);
-          } else {
-            navigation.navigate("Login");
-          }
-        }).catch(error => {
-          console.error(error);
-        });
+        setPopupText("Passwords do not match.");
+        return;
+      } else if (!email || !username|| !password || !confirmPassword) {
+        setLoading(false);
+        setPopupState(true);
+        setPopupText("Please fill in all fields.");
+        return;
       }
+        signUp(userData);
     }
 
     return (
@@ -84,22 +99,22 @@ export default function RegisterScreen({ navigation }) {
           <InputBox 
             autoComplete="email" 
             placeHolder="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(value) => setEmail(value.nativeEvent.text)}
           />
           <InputBox
             placeHolder="Username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(value) => setUsername(value.nativeEvent.text)}
           />
           <InputBox
             autoComplete="password"
             placeHolder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(value) => setPassword(value.nativeEvent.text)}
             icon="eye"
           />
           <InputBox
             autoComplete="password"
             placeHolder="Confirm Password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(value) => setConfirmPassword(value.nativeEvent.text)}
             icon="eye"
           />
           <Button
@@ -109,13 +124,17 @@ export default function RegisterScreen({ navigation }) {
             onPress={() => handleRegister()}
             loadingState={loading}
           />
-          <Popup 
-          state={popupState} 
+          <View style={styles.popupContainer}>
+          <Popup
+          state={popupState}
           displayText={popupText}
           labelText="Ok"
-          setState={() => {setPopupState(false)}}
+          setState={() => {
+            setPopupState(false);
+          }}
           timeout={3000}
           />
+          </View>
         </View>
     </ScrollView>
   );
@@ -123,17 +142,25 @@ export default function RegisterScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 150, 
-    alignSelf: 'center',
-    justifyContent: 'center',  
-    
+    paddingTop: 332,
+    alignSelf: "center",
+    justifyContent: "center",
   },
   image: {
-    alignSelf: 'center',
-    justifyContent: 'center',     
+    alignSelf: "center",
+    justifyContent: "center",
   },
   components: {
     paddingTop: 50,
     gap: 20,
-  }
+  },
+  popupContainer: {
+    marginTop: 140, // Adjust this value as needed to position the Popup higher
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
 });
