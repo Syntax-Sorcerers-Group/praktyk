@@ -3,20 +3,52 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   Image,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
+import axios from "axios";
+
+const getVocabWords = async () => {
+  const data = {
+    grade: "grade8",
+    field: "common_words", 
+  };
+
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/api/get/gradeVocabField`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+        },
+      }
+    );
+
+    if (response && response.data) {
+      console.log(response.data);
+      return response.data; // Update the wordList state
+    } else {
+      console.error("Error: No response data from the server.");
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+};
 
 export default function VocabLearning(props) {
   const navigation = useNavigation();
   const [vocab, setVocab] = useState("Initial Vocabulary");
-  const [imageSource, setImageSource] = useState("https://picsum.photos/700"); // Initial URL
+  const [imageSource, setImageSource] = useState("https://picsum.photos/700");
+  const [wordList, setWordList] = useState([]);
 
   const handleTranslateClick = () => {
     setVocab("Translated Vocabulary");
-    setImageSource("https://picsum.photos/700"); // Update the URL as needed
+    setImageSource("https://picsum.photos/700");
+    getVocabWords(); // Call the function to fetch words
   };
 
   const handlePrevClick = () => {
@@ -30,7 +62,7 @@ export default function VocabLearning(props) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: imageSource }} // Use the `uri` property for the image URL
+        source={{ uri: imageSource }}
         style={styles.image}
       />
 
@@ -56,11 +88,20 @@ export default function VocabLearning(props) {
       >
         <Text style={styles.arrowTextNext}>{"--->"}</Text>
       </TouchableOpacity>
+
+      {/* <View style={styles.wordListContainer}>
+        {wordList.map((word, index) => (
+          <Text key={index} style={styles.wordItem}>
+            {word}
+          </Text>
+        ))}
+      </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // ... your existing styles
   container: {
     flex: 1,
     alignItems: "center",
@@ -114,5 +155,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
+  },
+
+  wordListContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  wordItem: {
+    fontSize: 16,
+    marginVertical: 5,
   },
 });
