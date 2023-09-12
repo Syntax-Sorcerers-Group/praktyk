@@ -18,7 +18,7 @@ const getVocabWords = async () => {
 
   try {
     const response = await axios.post(
-      `http://localhost:8080/api/get/gradeVocabField`,
+      `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeVocabField`,
       data,
       {
         headers: {
