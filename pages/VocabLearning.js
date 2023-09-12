@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,135 +10,169 @@ import { useNavigation } from "@react-navigation/native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 
-const getVocabWords = async () => {
-  const data = {
-    grade: "grade8",
-    field: "common_words", 
-  };
-
-  try {
-    const response = await axios.post(
-      `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeVocabField`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
-        },
-      }
-    );
-
-    if (response && response.data) {
-      console.log(response.data);
-      return response.data; // Update the wordList state
-    } else {
-      console.error("Error: No response data from the server.");
-    }
-  } catch (error) {
-    console.error("Error:", error.message);
-  }
-};
-
 export default function VocabLearning(props) {
   const navigation = useNavigation();
-  const [vocab, setVocab] = useState("Initial Vocabulary");
+  const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
+  const [englishWord, setEnglishWord] = useState("English Word");
   const [imageSource, setImageSource] = useState("https://picsum.photos/700");
   const [wordList, setWordList] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showEnglish, setShowEnglish] = useState(false);
+
+  useEffect(() => {
+    async function fetchVocabWords() {
+      const data = {
+        grade: "grade8",
+        field: "common_words",
+      };
+
+      try {
+        const response = await axios.post(
+          `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeVocabField`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+            },
+          }
+        );
+
+        if (response && response.data && response.data.common_words) {
+          const commonWords = response.data.common_words;
+          const wordPairs = [];
+
+          for (const englishWord in commonWords) {
+            if (commonWords.hasOwnProperty(englishWord)) {
+              const afrikaansWord = commonWords[englishWord];
+              wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
+            }
+          }
+
+          setWordList(wordPairs);
+        } else {
+          console.error("Error: No common_words data in the response.");
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    }
+
+    fetchVocabWords();
+  }, []);
 
   const handleTranslateClick = () => {
-    setVocab("Translated Vocabulary");
-    setImageSource("https://picsum.photos/700");
-    getVocabWords(); // Call the function to fetch words
+    if (showEnglish) {
+      setShowEnglish(false);
+    } else {
+      setShowEnglish(true);
+      setEnglishWord(wordList[currentIndex].english);
+    }
   };
 
   const handlePrevClick = () => {
-    // Handle previous logic here
+    setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
+    setShowEnglish(false);
   };
 
   const handleNextClick = () => {
-    // Handle next logic here
+    setCurrentIndex((prevIndex) =>
+      prevIndex + 1 < wordList.length ? prevIndex + 1 : 0
+    );
+    setShowEnglish(false);
+    setAfrikaansWord(wordList[currentIndex].afrikaans);
   };
+
+  useEffect(() => {
+    if (wordList.length > 0) {
+      const currentAfrikaansWord = wordList[currentIndex].afrikaans;
+      setAfrikaansWord(currentAfrikaansWord);
+    }
+  }, [currentIndex, wordList]);
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: imageSource }}
-        style={styles.image}
-      />
+      <Image source={{ uri: imageSource }} style={styles.image} />
 
-      <Text style={styles.vocabText}>{vocab}</Text>
+      
 
-      <TouchableOpacity
-        style={styles.translateButton}
-        onPress={handleTranslateClick}
-      >
-        <Text style={styles.translateButtonText}>Translate</Text>
+      <View style={styles.wordContainer}>
+      <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
+      {showEnglish && (
+        <Text style={styles.space}> : </Text> // Add a space character
+      )}
+      {showEnglish && (
+        <Text style={styles.englishText}>{englishWord}</Text>
+      )}
+    </View>
+
+
+
+
+      <TouchableOpacity style={styles.translateButton} onPress={handleTranslateClick}>
+        <Text style={styles.translateButtonText}>
+          {showEnglish ? "Hide English" : "Translate"}
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.arrowButtonPrev}
-        onPress={handlePrevClick}
-      >
-        <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.arrowButtonPrev} onPress={handlePrevClick}>
+          <Text style={styles.arrowTextPrev}>{"<---"}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.arrowButtonNext}
-        onPress={handleNextClick}
-      >
-        <Text style={styles.arrowTextNext}>{"--->"}</Text>
-      </TouchableOpacity>
-
-      {/* <View style={styles.wordListContainer}>
-        {wordList.map((word, index) => (
-          <Text key={index} style={styles.wordItem}>
-            {word}
-          </Text>
-        ))}
-      </View> */}
+        <TouchableOpacity style={styles.arrowButtonNext} onPress={handleNextClick}>
+          <Text style={styles.arrowTextNext}>{"--->"}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  // ... your existing styles
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  button: {
+  wordContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     margin: 10,
-    padding: 10,
   },
-  translateButton: {
-    margin: 10,
-    padding: 10,
-    backgroundColor: "blue", // Customize the background color for the Translate button
-    borderRadius: 5, // Add some border radius to the button
-  },
-  vocabText: {
+  space: {
     fontSize: 20,
     fontWeight: "bold",
-    margin: 10,
+  },
+
+  afrikaansText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  englishText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   image: {
     width: 200,
     height: 200,
     resizeMode: "contain",
   },
+  translateButton: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: "blue",
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+  },
   arrowButtonPrev: {
-    position: "absolute",
-    bottom: 10, // Adjust as needed
-    left: 10, // Adjust as needed
     backgroundColor: "lightgray",
     padding: 10,
     borderRadius: 5,
   },
   arrowButtonNext: {
-    position: "absolute",
-    bottom: 10, // Adjust as needed
-    right: 10, // Adjust as needed
     backgroundColor: "lightgray",
     padding: 10,
     borderRadius: 5,
@@ -155,14 +189,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
-  },
-
-  wordListContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
-  wordItem: {
-    fontSize: 16,
-    marginVertical: 5,
   },
 });
