@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DuoDragDrop, {
   DuoDragDropRef,
@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import Button from "../components/ButtonComponent";
 
 async function getGrammarWords(userGrade) {
   const data = {
@@ -42,6 +43,12 @@ async function getGrammarWords(userGrade) {
         words.push(presentWords[i].split(" "));
       }
 
+      // Shuffle the index of the words using Fisher-Yates shuffle
+      for (var i = words.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [words[i], words[j]] = [words[j], words[i]];
+      }
+
       return words;
     } else {
       console.log("Error: No response data from the server.");
@@ -64,7 +71,7 @@ export default function GrammarSTOMPI(props) {
   const [originalWords, setOriginalWords] = useState([]);
   const [shuffledWords, setShuffledWords] = useState([]);
   const [gradeWords, setGradeWords] = useState([]);
-  const words = [...originalWords]; // Copy of the original words to track the final positions.
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const userGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
 
@@ -81,8 +88,8 @@ export default function GrammarSTOMPI(props) {
   // Get the words from the server
   const fetchWords = async () => {
     try {
-      const words = await getGrammarWords(userGrade);
-      setServerWords(words);
+      const swords = await getGrammarWords(userGrade);
+      setServerWords(swords);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching words:", error);
@@ -98,9 +105,9 @@ export default function GrammarSTOMPI(props) {
   useEffect(() => {
     // Orginal words
     if (serverWords.length > 0) {
-      setOriginalWords(serverWords[0]);
-      setShuffledWords(shuffleArray(serverWords[0])); // Shuffle the words
-      setGradeWords(Array(serverWords[0].length).fill(true));
+      setOriginalWords(serverWords[currentIndex]);
+      setShuffledWords(shuffleArray(serverWords[currentIndex])); // Shuffle the words
+      setGradeWords(Array(serverWords[currentIndex].length).fill(true));
     }
   }, [serverWords]);
 
@@ -119,6 +126,7 @@ export default function GrammarSTOMPI(props) {
     const grade = [];
     for (let i = 0; i < originalWords.length; i++) {
       grade.push(originalWords[i] === answered[i]);
+      //console.log(originalWords[i], answered[i]);
     }
 
     // Check if all words are answered
@@ -128,8 +136,31 @@ export default function GrammarSTOMPI(props) {
       return;
     }
 
-    setIsGraded(true);
+    setShuffledWords(answered);
+
     setGradeWords(grade);
+    setIsGraded(true);
+    //console.log(grade);
+  };
+
+  const calculateWordStyles = (index) => {
+    const backgroundColor = isGraded
+      ? gradeWords[index]
+        ? "green"
+        : "red"
+      : "transparent";
+
+    const borderColor = isGraded
+      ? gradeWords[index]
+        ? "green"
+        : "red"
+      : "#CCC";
+
+    const color = isGraded ? (gradeWords[index] ? "white" : "black") : "black";
+
+    // console.log(`Word ${index} Styles - Background: ${backgroundColor}`);
+
+    return { backgroundColor, borderColor, color };
   };
 
   return (
@@ -145,6 +176,16 @@ export default function GrammarSTOMPI(props) {
       ) : (
         // Render component content once data is available
         <View style={{ margin: 20, minHeight: 300 }}>
+          <Text
+            style={{
+              margin: 20,
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Drag and drop the words to form a sentence using STOMPI rules
+          </Text>
           <View style={{ margin: 20, minHeight: 300 }}>
             <DuoDragDrop
               ref={DuoDragDropRef}
@@ -159,32 +200,15 @@ export default function GrammarSTOMPI(props) {
               extraData={gradeWords}
               onDrop={(ev) => {
                 const { destination, index, position } = ev;
-                setLog((l) => [
-                  ...l,
-                  `[onDrop] Dropped word '${words[index]}' on '${destination}' at position ${position}`,
-                ]);
+                // setLog((l) => [
+                //   ...l,
+                //   `[onDrop] Dropped word '${words[index]}' on '${destination}' at position ${position}`,
+                // ]);
               }}
               renderWord={(_word, index) => (
                 <Word
-                  containerStyle={{
-                    backgroundColor: isGraded
-                      ? gradeWords[index]
-                        ? "green"
-                        : "red"
-                      : "transparent",
-                    borderColor: isGraded
-                      ? gradeWords[index]
-                        ? "green"
-                        : "red"
-                      : "#CCC",
-                  }}
-                  textStyle={{
-                    color: isGraded
-                      ? gradeWords[index]
-                        ? "white"
-                        : "black"
-                      : "black",
-                  }}
+                  containerStyle={calculateWordStyles(index)}
+                  textStyle={calculateWordStyles(index)}
                 />
               )}
               renderPlaceholder={({ style }) => (
@@ -199,19 +223,62 @@ export default function GrammarSTOMPI(props) {
               )}
             />
           </View>
-          <Button
-            title="Get words"
-            onPress={() => {
-              const answered = DuoDragDropRef.current?.getAnsweredWords() || [];
-              setAnsweredWords(answered);
-              calculateGrade();
-            }}
-          />
-          <Button
+          <View style={styles.buttonContainer}>
+            <Button
+              displayText="Check Answer"
+              mode="elevated"
+              onPress={() => {
+                const answered =
+                  DuoDragDropRef.current?.getAnsweredWords() || [];
+                setAnsweredWords(answered);
+                calculateGrade();
+                // Set a timeout to update isGraded after a certain delay (e.g., 1000 milliseconds or 1 second)
+                // setTimeout(() => {
+                //   setIsGraded(true);
+                // }, 500); // Adjust the delay as needed
+                // console.log(gradeWords);
+                // console.log(answeredWords);
+              }}
+              style={styles.button} // Apply padding style to the button
+            />
+
+            <Button
+              displayText="Next"
+              mode="elevated"
+              onPress={() => {
+                // Increment the index
+                setCurrentIndex(
+                  (prevIndex) => (prevIndex + 1) % serverWords.length
+                );
+
+                // Reset the answered words
+                setAnsweredWords([]);
+
+                // Reset the grade
+                setIsGraded(false);
+
+                setOriginalWords(
+                  serverWords[(currentIndex + 1) % serverWords.length]
+                );
+                setShuffledWords(
+                  shuffleArray(
+                    serverWords[(currentIndex + 1) % serverWords.length]
+                  )
+                ); // Shuffle the words
+                setGradeWords(
+                  Array(
+                    serverWords[(currentIndex + 1) % serverWords.length].length
+                  ).fill(true)
+                );
+              }}
+              style={styles.button} // Apply padding style to the button
+            />
+          </View>
+          {/* <Button
             title={`Gestures disabled: ${gesturesDisabled}`}
             onPress={() => setGesturesDisabled((s) => !s)}
-          />
-          <View style={styles.logContainer}>
+          /> */}
+          {/* <View style={styles.logContainer}>
             <Text style={styles.debugLogText}>EVENT LOG</Text>
             <Text>Original Words: {originalWords.join(", ")}</Text>
             <Text>
@@ -231,7 +298,7 @@ export default function GrammarSTOMPI(props) {
               ))}
               {log.length === 0 && <Text>No events</Text>}
             </ScrollView>
-          </View>
+          </View> */}
         </View>
       )}
     </GestureHandlerRootView>
@@ -239,6 +306,15 @@ export default function GrammarSTOMPI(props) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    padding: 10, // Adjust the padding as needed
+  },
+  buttonContainer: {
+    flexDirection: "column", // To display buttons in a row
+    justifyContent: "space-between", // To distribute the space evenly
+    maxWidth: "80%", // Limit the width of the container
+    alignSelf: "center", // Center the container horizontally'
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
