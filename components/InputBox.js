@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { TextInput } from 'react-native-paper';
-import { View, StyleSheet } from 'react-native';
+import * as React from "react";
+import { TextInput } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
 
 const InputBox = (props) => {
   const { autoComplete, placeHolder, onChange, icon } = props;
-  const [text, setText] = React.useState('');
+  const [text, setText] = React.useState("");
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
   const handleIconPress = () => {
@@ -18,16 +18,15 @@ const InputBox = (props) => {
         label={placeHolder}
         value={text}
         onChange={onChange}
-        onChangeText={text => setText(text)}
+        onChangeText={(text) => setText(text)}
         autoComplete={autoComplete}
-        secureTextEntry={secureTextEntry && autoComplete === "password" ? true : false}
-        right={icon ? 
-          <TextInput.Icon 
-            icon={icon} 
-            onPress={handleIconPress}
-          /> 
-          : null
+        secureTextEntry={
+          secureTextEntry && autoComplete === "password" ? true : false
         }
+        right={
+          icon ? <TextInput.Icon icon={icon} onPress={handleIconPress} /> : null
+        }
+        returnKeyType="done" // Add this line to set the returnKeyType
       />
     </View>
   );

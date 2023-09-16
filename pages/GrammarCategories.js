@@ -14,10 +14,10 @@ export default function GrammarCategories({ navigation }) {
         }}
       />
       <CustomCard
-        title="Custom Card 2"
+        title="Tenses"
         imageUrl="https://picsum.photos/800"
         onPress={() => {
-          navigation.navigate("Grammar Learning");
+          navigation.navigate("Tenses");
         }}
       />
       <CustomCard

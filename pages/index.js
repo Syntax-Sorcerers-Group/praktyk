@@ -13,6 +13,7 @@ export { default as LiteratureCategories } from "./LiteratureCategories";
 export { default as VocabLearning } from "./VocabLearning";
 export { default as GrammarLearning } from "./GrammarLearning";
 export { default as GrammarSTOMPI } from "./GrammarSTOMPI";
+export { default as GrammarTenses } from "./GrammarTenses";
 export { default as LiteratureLearning } from "./LiteratureLearning";
 
 // export { default as AnotherScreen } from './AnotherScreen';

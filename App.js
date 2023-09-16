@@ -17,6 +17,7 @@ import {
   VocabLearning,
   GrammarLearning,
   GrammarSTOMPI,
+  GrammarTenses,
   LiteratureLearning,
 } from "./pages"; // Import your screens
 
@@ -85,6 +86,7 @@ function App() {
         {/* Grammar Things */}
         <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
         <Stack.Screen name="STOMPI" component={GrammarSTOMPI} />
+        <Stack.Screen name="Tenses" component={GrammarTenses} />
 
         {/* Literature Things */}
         <Stack.Screen
