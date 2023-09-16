@@ -1,66 +1,147 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity ,Animated} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
+//For Loading Screen
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+
+//Async Function that fetches all the words and returns them
+async function fetchVocabWords() {
+  const data = {
+    grade: "grade8",
+    field: "common_words",
+  };
+
+  try {
+    const response = await axios.post(
+      `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeVocabField`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+        },
+      }
+    );
+
+    if (response && response.data && response.data.common_words) {
+      const commonWords = response.data.common_words;
+      const wordPairs = [];
+
+      for (const englishWord in commonWords) {
+        if (commonWords.hasOwnProperty(englishWord)) {
+          const afrikaansWord = commonWords[englishWord];
+          wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
+        }
+      }
+      return wordPairs;
+    } else {
+      console.error("Error: No common_words data in the response.");
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+}
+
+//Async Function that fetches image and returns url
+async function fetchImage(englishWord) {
+  const data = {
+    imageName: englishWord,
+  };
+
+  try {
+    const response = await axios.post(
+      `${APP_ENV_PRAKTYK_API_LINK}/api/get/image`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+        },
+      }
+    );
+
+    if (response && response.data) {
+      const json = response.data;
+      const imageurl = json.url;
+
+      // setImageSource(imageurl);
+      // setIsLoading(false); // Mark loading as complete
+      return imageurl;
+    } else {
+      console.log("Error: No response data from the server.");
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+    // You can log more error details if needed: error.response, error.request, etc.
+  }
+}
 
 export default function VocabLearning(props) {
   const navigation = useNavigation();
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
-  const [englishWord, setEnglishWord] = useState("English Word");
-  const [imageSource, setImageSource] = useState("https://picsum.photos/700");
+  const [englishWord, setEnglishWord] = useState("Loading");
   const [wordList, setWordList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEnglish, setShowEnglish] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
+  const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
+  const [imgurl, setImgurl] = useState("https://picsum.photos/700");
 
-  useEffect(() => {
-    async function fetchVocabWords() {
-      const data = {
-        grade: "grade8",
-        field: "common_words",
-      };
-
-      try {
-        const response = await axios.post(
-          `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeVocabField`,
-          data,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
-            },
-          }
-        );
-
-        if (response && response.data && response.data.common_words) {
-          const commonWords = response.data.common_words;
-          const wordPairs = [];
-
-          for (const englishWord in commonWords) {
-            if (commonWords.hasOwnProperty(englishWord)) {
-              const afrikaansWord = commonWords[englishWord];
-              wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
-            }
-          }
-
-          setWordList(wordPairs);
-        } else {
-          console.error("Error: No common_words data in the response.");
-        }
-      } catch (error) {
-        console.error("Error:", error.message);
-      }
+/* function that calls async fetch words function
+*It sets the wordlist with the words returned
+*/
+  const getwords = async () => {
+    try {
+      const swords = await fetchVocabWords();
+      setWordList(swords);
+    } catch (error) {
+      console.error("Error fetching words:", error);
     }
+  };
 
-    fetchVocabWords();
+/* function that calls  async fetch image function
+*Sets The image url to the one returned
+*Sets the Loading stage to false
+*/  
+  const getimage = async () => {
+    try {
+      setIsLoadingImage(true);
+      const iurl = await fetchImage(englishWord);
+      setImgurl(iurl);
+      setIsLoading(false); // Mark loading as complete
+      setIsLoadingImage(false);
+    } catch (error) {
+      console.error("Error fetching words:", error);
+      setIsLoading(false); // Mark loading as complete even on error
+    }
+  };
+
+//useEffect that calls getwords function
+  useEffect(() => {
+    getwords();
   }, []);
 
+//useEffect to update Afrikaans and English word first time when wordList changes
+  useEffect(() => {
+    if (wordList.length > 0) {
+      // const currentAfrikaansWord = wordList[currentIndex].afrikaans;
+      setAfrikaansWord(wordList[0].afrikaans);
+      setEnglishWord(wordList[0].english);
+    }
+  }, [wordList]);
+
+//Use effect to call getImage
+  useEffect(() => {
+    getimage()
+  }, [englishWord]);
+
+
+/*Handles Translate Button  
+*shows english text
+*/
   const handleTranslateClick = () => {
     if (showEnglish) {
       setShowEnglish(false);
@@ -70,61 +151,93 @@ export default function VocabLearning(props) {
     }
   };
 
+/*Handles Previous Button  
+*Set current Index value
+*Sets  Afrikaans and  English words according to current index
+*/
   const handlePrevClick = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
+    const nextIndex = currentIndex -1 >= 0 ?  currentIndex -1 : 0;
+    // setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
+    setCurrentIndex(nextIndex);
     setShowEnglish(false);
+    setAfrikaansWord(wordList[nextIndex].afrikaans);
+    setEnglishWord(wordList[nextIndex].english);
   };
 
+/*Handles Previous Button 
+*Set current Index value
+*We use nextindex variable instead of directly using current index because setstate is async 
+*Sets  Afrikaans and  English words according to current index
+*Hides the English text
+*/
   const handleNextClick = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 1 < wordList.length ? prevIndex + 1 : 0
-    );
+    const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
+    setCurrentIndex(nextIndex);
     setShowEnglish(false);
-    setAfrikaansWord(wordList[currentIndex].afrikaans);
+    setAfrikaansWord(wordList[nextIndex].afrikaans);
+    setEnglishWord(wordList[nextIndex].english);
   };
 
-  useEffect(() => {
-    if (wordList.length > 0) {
-      const currentAfrikaansWord = wordList[currentIndex].afrikaans;
-      setAfrikaansWord(currentAfrikaansWord);
-    }
-  }, [currentIndex, wordList]);
+
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {isLoading ? ( // Conditionally render loading indicator
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.purple700}
+            size={"large"}
+          />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <Animated.Image
+            source={{
+              uri: imgurl,
+            }}
+            style={[
+              styles.imageStyle ,
+              ]}
+            // style={[rotateYAnimatedStyle, styles.imageStyle]}
+          />
+          <View style={styles.wordContainer}>
+            <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
+            {showEnglish && (
+              <Text style={styles.space}> : </Text> // Add a space character
+            )}
+            {showEnglish && (
+              <Text style={styles.englishText}>{englishWord}</Text>
+            )}
+          </View>
 
-      
+          <TouchableOpacity
+            style={styles.translateButton}
+            onPress={handleTranslateClick}
+          >
+            <Text style={styles.translateButtonText}>
+              {showEnglish ? "Hide English" : "Translate"}
+            </Text>
+          </TouchableOpacity>
 
-      <View style={styles.wordContainer}>
-      <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
-      {showEnglish && (
-        <Text style={styles.space}> : </Text> // Add a space character
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.arrowButtonPrev}
+              onPress={handlePrevClick}
+            >
+              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.arrowButtonNext}
+              onPress={handleNextClick}
+            >
+              <Text style={styles.arrowTextNext}>{"--->"}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
-      {showEnglish && (
-        <Text style={styles.englishText}>{englishWord}</Text>
-      )}
-    </View>
-
-
-
-
-      <TouchableOpacity style={styles.translateButton} onPress={handleTranslateClick}>
-        <Text style={styles.translateButtonText}>
-          {showEnglish ? "Hide English" : "Translate"}
-        </Text>
-      </TouchableOpacity>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.arrowButtonPrev} onPress={handlePrevClick}>
-          <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.arrowButtonNext} onPress={handleNextClick}>
-          <Text style={styles.arrowTextNext}>{"--->"}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -139,6 +252,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 10,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   space: {
     fontSize: 20,
     fontWeight: "bold",
@@ -151,6 +269,13 @@ const styles = StyleSheet.create({
   englishText: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  imageStyle: {
+    width: 150,
+
+    height: 150,
+
+    borderRadius: 6,
   },
   image: {
     width: 200,
