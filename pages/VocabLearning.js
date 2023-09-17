@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 //For Loading Screen
@@ -88,6 +88,7 @@ async function fetchImage(englishWord) {
 
 export default function VocabLearning(props) {
   const navigation = useNavigation();
+
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
   const [englishWord, setEnglishWord] = useState("Loading");
   const [wordList, setWordList] = useState([]);
@@ -97,12 +98,19 @@ export default function VocabLearning(props) {
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
   const [imgurl, setImgurl] = useState("https://picsum.photos/700");
 
+  // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
+  const route = useRoute();
+
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = route.params?.selectedGrade || "Not Selected";
+  const catergoryField = route.params?.catergoryField || "Not Selected";
+
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
    */
   const getwords = async () => {
     try {
-      const swords = await fetchVocabWords(8, "common_words");
+      const swords = await fetchVocabWords(selectedGrade, catergoryField);
       setWordList(swords);
     } catch (error) {
       console.error("Error fetching words:", error);
@@ -196,6 +204,10 @@ export default function VocabLearning(props) {
         </View>
       ) : (
         <View style={styles.container}>
+          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
+          <Text style={styles.selectedCategoryText}>
+            Category: {catergoryField}
+          </Text>
           <Animated.Image
             source={{
               uri: imgurl,
@@ -316,5 +328,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
+  },
+  selectedGradeText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom: 10,
+  },
+  selectedCategoryText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom: 10,
   },
 });

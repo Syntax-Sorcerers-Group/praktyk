@@ -105,6 +105,7 @@ export default function HomeScreen({ navigation }) {
     { label: "Grade 11", value: "11" },
     { label: "Grade 12", value: "12" },
   ]);
+  //const navigation = useNavigation();
 
   // State to track whether a grade is selected
   const [gradeSelected, setGradeSelected] = useState(false);
@@ -163,7 +164,8 @@ export default function HomeScreen({ navigation }) {
               title="Vocabulary"
               imageUrl="https://www.cael.ca/wp-content/uploads/2021/02/1_oq1GpaD4Eo-hoOt5LNRUOA.png"
               onPress={() => {
-                navigation.navigate("Vocab Categories");
+                // navigation.navigate("Vocab Categories");
+                navigation.navigate("Vocab Categories", { selectedGrade: isvalue });
               }}
             />
 
