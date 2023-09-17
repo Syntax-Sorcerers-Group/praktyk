@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity ,Animated} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
@@ -8,10 +15,10 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 //Async Function that fetches all the words and returns them
-async function fetchVocabWords() {
+async function fetchVocabWords(gradeNo, categoryField) {
   const data = {
-    grade: "grade8",
-    field: "common_words",
+    grade: "grade" + gradeNo,
+    field: categoryField,
   };
 
   try {
@@ -90,22 +97,22 @@ export default function VocabLearning(props) {
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
   const [imgurl, setImgurl] = useState("https://picsum.photos/700");
 
-/* function that calls async fetch words function
-*It sets the wordlist with the words returned
-*/
+  /* function that calls async fetch words function
+   *It sets the wordlist with the words returned
+   */
   const getwords = async () => {
     try {
-      const swords = await fetchVocabWords();
+      const swords = await fetchVocabWords(8, "common_words");
       setWordList(swords);
     } catch (error) {
       console.error("Error fetching words:", error);
     }
   };
 
-/* function that calls  async fetch image function
-*Sets The image url to the one returned
-*Sets the Loading stage to false
-*/  
+  /* function that calls  async fetch image function
+   *Sets The image url to the one returned
+   *Sets the Loading stage to false
+   */
   const getimage = async () => {
     try {
       setIsLoadingImage(true);
@@ -119,12 +126,12 @@ export default function VocabLearning(props) {
     }
   };
 
-//useEffect that calls getwords function
+  //useEffect that calls getwords function
   useEffect(() => {
     getwords();
   }, []);
 
-//useEffect to update Afrikaans and English word first time when wordList changes
+  //useEffect to update Afrikaans and English word first time when wordList changes
   useEffect(() => {
     if (wordList.length > 0) {
       // const currentAfrikaansWord = wordList[currentIndex].afrikaans;
@@ -133,15 +140,14 @@ export default function VocabLearning(props) {
     }
   }, [wordList]);
 
-//Use effect to call getImage
+  //Use effect to call getImage
   useEffect(() => {
-    getimage()
+    getimage();
   }, [englishWord]);
 
-
-/*Handles Translate Button  
-*shows english text
-*/
+  /*Handles Translate Button
+   *shows english text
+   */
   const handleTranslateClick = () => {
     if (showEnglish) {
       setShowEnglish(false);
@@ -151,12 +157,12 @@ export default function VocabLearning(props) {
     }
   };
 
-/*Handles Previous Button  
-*Set current Index value
-*Sets  Afrikaans and  English words according to current index
-*/
+  /*Handles Previous Button
+   *Set current Index value
+   *Sets  Afrikaans and  English words according to current index
+   */
   const handlePrevClick = () => {
-    const nextIndex = currentIndex -1 >= 0 ?  currentIndex -1 : 0;
+    const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : 0;
     // setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
     setCurrentIndex(nextIndex);
     setShowEnglish(false);
@@ -164,12 +170,12 @@ export default function VocabLearning(props) {
     setEnglishWord(wordList[nextIndex].english);
   };
 
-/*Handles Previous Button 
-*Set current Index value
-*We use nextindex variable instead of directly using current index because setstate is async 
-*Sets  Afrikaans and  English words according to current index
-*Hides the English text
-*/
+  /*Handles Previous Button
+   *Set current Index value
+   *We use nextindex variable instead of directly using current index because setstate is async
+   *Sets  Afrikaans and  English words according to current index
+   *Hides the English text
+   */
   const handleNextClick = () => {
     const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
     setCurrentIndex(nextIndex);
@@ -177,8 +183,6 @@ export default function VocabLearning(props) {
     setAfrikaansWord(wordList[nextIndex].afrikaans);
     setEnglishWord(wordList[nextIndex].english);
   };
-
-
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -196,9 +200,7 @@ export default function VocabLearning(props) {
             source={{
               uri: imgurl,
             }}
-            style={[
-              styles.imageStyle ,
-              ]}
+            style={[styles.imageStyle]}
             // style={[rotateYAnimatedStyle, styles.imageStyle]}
           />
           <View style={styles.wordContainer}>

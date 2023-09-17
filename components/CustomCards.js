@@ -29,9 +29,9 @@ const CustomCard = ({ title, imageUrl, onPress }) => (
           titleStyle={styles.title} // Ensure the title style is applied
         />
         <Card.Cover source={{ uri: imageUrl }} />
-        <Card.Actions>
+        {/* <Card.Actions>
           <Button>Translate</Button>
-        </Card.Actions>
+        </Card.Actions> */}
       </Card>
     </View>
   </TouchableOpacity>
