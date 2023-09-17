@@ -1,14 +1,11 @@
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DuoDragDrop, {
-  DuoDragDropRef,
   Word,
   Placeholder,
   Lines,
 } from "@jamsch/react-native-duo-drag-drop";
-import { withSpring, withTiming } from "react-native-reanimated";
-import { ScrollView } from "react-native-gesture-handler";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
