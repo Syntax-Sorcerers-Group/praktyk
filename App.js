@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native"; // Import Navigation Container
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; // Import stack navigator
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"; // Import bottom tab navigator
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   // Main Screens
   LoginScreen,
@@ -51,9 +52,44 @@ function HomeStack() {
 function GeneralTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="HomeStack" component={HomeStack} />
-      <Tab.Screen name="Wild" component={DetailsScreen} />
-      <Tab.Screen name="Settings" component={SettingScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Wild"
+        component={DetailsScreen}
+        options={{
+          tabBarLabel: "Wild",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="comment-question"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-settings"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -61,8 +97,34 @@ function GeneralTabs() {
 function LoginTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Login" component={LoginScreen} />
-      <Tab.Screen name="Register" component={RegisterScreen} />
+      <Tab.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          tabBarLabel: "Login",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-key"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{
+          tabBarLabel: "Register",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-plus"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -71,11 +133,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="General"
           component={GeneralTabs}
@@ -84,7 +146,10 @@ function App() {
 
         {/* Vocab Things */}
         <Stack.Screen name="Vocab Learning" component={VocabLearning} />
-        <Stack.Screen name="Vocab Question Words" component={VocabQuestionWords} />
+        <Stack.Screen
+          name="Vocab Question Words"
+          component={VocabQuestionWords}
+        />
         <Stack.Screen name="Vocab Synonyms" component={VocabSynonyms} />
 
         {/* Grammar Things */}
