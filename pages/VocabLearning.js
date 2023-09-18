@@ -90,13 +90,13 @@ export default function VocabLearning(props) {
   const navigation = useNavigation();
 
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
-  const [englishWord, setEnglishWord] = useState("Loading");
+  const [englishWord, setEnglishWord] = useState("English word");
   const [wordList, setWordList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEnglish, setShowEnglish] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
-  const [imgurl, setImgurl] = useState("https://picsum.photos/700");
+  const [imgurl, setImgurl] = useState("");
 
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
@@ -150,7 +150,10 @@ export default function VocabLearning(props) {
 
   //Use effect to call getImage
   useEffect(() => {
-    getimage();
+    if(englishWord != "English word"){
+      getimage();
+      
+    }
   }, [englishWord]);
 
   /*Handles Translate Button
@@ -194,7 +197,7 @@ export default function VocabLearning(props) {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {isLoading ? ( // Conditionally render loading indicator
+      {isLoading   ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -208,7 +211,7 @@ export default function VocabLearning(props) {
           <Text style={styles.selectedCategoryText}>
             Category: {catergoryField}
           </Text>
-          {isLoadingImage ? (
+          {isLoadingImage  ? (
             <ActivityIndicator
             animating={true}
             color={MD2Colors.purple700}
@@ -293,9 +296,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   imageStyle: {
-    width: 150,
+    width: 250,
 
-    height: 150,
+    height: 250,
 
     borderRadius: 6,
   },
