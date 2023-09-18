@@ -11,6 +11,8 @@ export { default as LiteratureCategories } from "./LiteratureCategories";
 
 //Learning
 export { default as VocabLearning } from "./VocabLearning";
+export { default as VocabQuestionWords } from "./VocabQuestionWords";
+export { default as VocabSynonyms } from "./VocabSynonyms";
 export { default as GrammarLearning } from "./GrammarLearning";
 export { default as GrammarSTOMPI } from "./GrammarSTOMPI";
 export { default as GrammarTenses } from "./GrammarTenses";

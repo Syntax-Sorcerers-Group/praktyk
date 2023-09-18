@@ -15,6 +15,8 @@ import {
   LiteratureCategories,
   // Learning
   VocabLearning,
+  VocabQuestionWords,
+  VocabSynonyms,
   GrammarLearning,
   GrammarSTOMPI,
   GrammarTenses,
@@ -82,6 +84,8 @@ function App() {
 
         {/* Vocab Things */}
         <Stack.Screen name="Vocab Learning" component={VocabLearning} />
+        <Stack.Screen name="Vocab Question Words" component={VocabQuestionWords} />
+        <Stack.Screen name="Vocab Synonyms" component={VocabSynonyms} />
 
         {/* Grammar Things */}
         <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
