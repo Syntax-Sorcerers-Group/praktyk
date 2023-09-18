@@ -208,13 +208,21 @@ export default function VocabLearning(props) {
           <Text style={styles.selectedCategoryText}>
             Category: {catergoryField}
           </Text>
-          <Animated.Image
-            source={{
-              uri: imgurl,
-            }}
-            style={[styles.imageStyle]}
-            // style={[rotateYAnimatedStyle, styles.imageStyle]}
+          {isLoadingImage ? (
+            <ActivityIndicator
+            animating={true}
+            color={MD2Colors.purple700}
+            size={"large"}
           />
+          ) : (
+            <Animated.Image
+              source={{
+                uri: imgurl,
+              }}
+              style={[styles.imageStyle]}
+              // style={[rotateYAnimatedStyle, styles.imageStyle]}
+            />
+          )}
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
             {showEnglish && (
