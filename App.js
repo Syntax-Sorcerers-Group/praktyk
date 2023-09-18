@@ -53,7 +53,7 @@ function GeneralTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
         options={{
           tabBarLabel: "Home",
