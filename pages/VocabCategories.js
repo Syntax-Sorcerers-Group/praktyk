@@ -17,8 +17,9 @@
 // }
 
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import CustomCard from "../components/CustomCards";
 
 export default function VocabCategories() {
   const navigation = useNavigation();
@@ -33,10 +34,20 @@ export default function VocabCategories() {
   const synonyms = "synonyms";
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 26, fontWeight: "bold" }}>VOCAB Categories</Text>
+    <ScrollView>
+      {/* <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}> */}
+      {/* <Text
+        style={{
+          fontSize: 26,
+          fontWeight: "bold",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        VOCAB Categories
+      </Text> */}
       <Text>Selected Grade: {selectedGrade}</Text>
-      <View style={{ marginVertical: 10 }}>
+      {/* <View style={{ marginVertical: 10 }}>
         <Button
           title="Vocab Learning"
           onPress={() => {
@@ -68,7 +79,39 @@ export default function VocabCategories() {
             }); // Pass selectedGrade as a parameter
           }}
         />
-      </View>
-    </View>
-  );  
+      </View> */}
+
+      <CustomCard
+        title="Common Words"
+        imageUrl="https://picsum.photos/700"
+        onPress={() => {
+          navigation.navigate("Vocab Learning", {
+            selectedGrade,
+            catergoryField,
+          }); // Pass selectedGrade as a parameter
+        }}
+      />
+      <CustomCard
+        title="Question Words"
+        imageUrl="https://picsum.photos/800"
+        onPress={() => {
+          navigation.navigate("Vocab Question Words", {
+            selectedGrade,
+            question_words,
+          }); // Pass selectedGrade as a parameter
+        }}
+      />
+      <CustomCard
+        title="Synonyms"
+        imageUrl="https://picsum.photos/900"
+        onPress={() => {
+          navigation.navigate("Vocab Synonyms", {
+            selectedGrade,
+            synonyms,
+          }); // Pass selectedGrade as a parameter
+        }}
+      />
+      {/* </View> */}
+    </ScrollView>
+  );
 }
