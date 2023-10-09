@@ -64,17 +64,20 @@ async function getSentences(userGrade) {
     if (response && response.data) {
       const json = response.data;
 
-      // Get the "present" sentences from the JSON response
-      const present = json.present;
+      // The sentences are stored in the negative_sentences map
+      // And inside the negative sentences, there are maps, the key being the positive sentence, and the value being the negative sentence
+      const negative_data = json.negative_form;
 
-      // Get the "past" sentences from the JSON response
-      const past = json.past;
+      const negative = [];
+      const positive = [];
 
-      // Get the "future" sentences from the JSON response
-      const future = json.future;
+      for (const [key, value] of Object.entries(negative_data)) {
+        negative.push(value);
+        positive.push(key);
+      }
 
       // Return the sentences
-      return { present, past, future };
+      return { negative, positive };
     } else {
       console.log("Error: No response data from the server.");
     }
@@ -83,74 +86,26 @@ async function getSentences(userGrade) {
   }
 }
 
-function chooseQuestion(present, past, future) {
-  // Get the length of the sentences
-  const arrayLength = present.length;
+function chooseQuestion(negativeSentences, positiveSentences) {
+  // Choose a random index
+  const arrayLength = negativeSentences.length;
 
   // Generate a random number between 0 and arrayLength - 1
   const randomIndex = Math.floor(Math.random() * arrayLength);
 
-  // Randomly choose between 0, 1, and 2
-  const questionTense = Math.floor(Math.random() * 3);
+  // Get the question and answer
+  const question = positiveSentences[randomIndex];
+  const answer = negativeSentences[randomIndex];
 
-  let answerTense = null;
-
-  // Randomly choose between 0, 1 and 2 while not equal to randomTense
-  while (true) {
-    answerTense = Math.floor(Math.random() * 3);
-    if (answerTense !== questionTense) {
-      break;
-    }
-  }
-
-  // Get the question and answer based on the case
-  let question = null;
-  let answer = null;
-  let tense = null;
-
-  switch (questionTense) {
-    case 0:
-      question = present[randomIndex];
-      break;
-    case 1:
-      question = past[randomIndex];
-      break;
-    case 2:
-      question = future[randomIndex];
-      break;
-    default:
-      break;
-  }
-
-  switch (answerTense) {
-    case 0:
-      answer = present[randomIndex];
-      tense = "present";
-      break;
-    case 1:
-      answer = past[randomIndex];
-      tense = "past";
-      break;
-    case 2:
-      answer = future[randomIndex];
-      tense = "future";
-      break;
-    default:
-      break;
-  }
-
-  // Return the question and answer
-  return { question, answer, tense };
+  return { question, answer };
 }
 
-export default function GrammarTenses(props) {
+export default function GrammarNegative(props) {
   const [inputText, setInputText] = useState(""); // State to store the input text
   const [similarityResult, setSimilarityResult] = useState(0); // State to store the similarity result
   const [message, setMessage] = useState(""); // State to store the message
-  const [presentSentences, setPresentSentences] = useState([]); // State to store the present sentences
-  const [pastSentences, setPastSentences] = useState([]); // State to store the past sentences
-  const [futureSentences, setFutureSentences] = useState([]); // State to store the future sentences
-  const [UITense, setUITense] = useState("");
+  const [negativeSentences, setNegativeSentences] = useState([]); // State to store the present sentences
+  const [positiveSentences, setPositiveSentences] = useState([]); // State to store the past sentences
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
@@ -167,10 +122,9 @@ export default function GrammarTenses(props) {
   };
 
   const getSentencesFromServer = async () => {
-    const { present, past, future } = await getSentences("8"); // Get the sentences from the server
-    setPresentSentences(present); // Update the presentSentences state
-    setPastSentences(past); // Update the pastSentences state
-    setFutureSentences(future); // Update the futureSentences state
+    const { negative, positive } = await getSentences("8"); // Get the sentences from the server
+    setNegativeSentences(negative); // Set the present sentences
+    setPositiveSentences(positive); // Set the past sentences
     setSentencesFetched(true); // Set the flag to indicate that sentences have been fetched
   };
 
@@ -182,16 +136,14 @@ export default function GrammarTenses(props) {
   React.useEffect(() => {
     if (sentencesFetched) {
       // Choose a question only after sentences have been fetched
-      const { question, answer, tense } = chooseQuestion(
-        presentSentences,
-        pastSentences,
-        futureSentences
+      const { question, answer } = chooseQuestion(
+        negativeSentences,
+        positiveSentences
       );
 
       // Set the current question and answer
       setCurrentQuestion(question);
       setCurrentAnswer(answer);
-      setUITense(tense);
     }
   }, [sentencesFetched]);
 
@@ -220,7 +172,7 @@ export default function GrammarTenses(props) {
               textDecorationLine: "underline", // Add this line
             }}
           >
-            Convert the following to {UITense} tense
+            Convert the following to Negative Form
           </Text>
 
           <Text
@@ -251,16 +203,14 @@ export default function GrammarTenses(props) {
               displayText="Next"
               mode="elevated"
               onPress={() => {
-                const { question, answer, tense } = chooseQuestion(
-                  presentSentences,
-                  pastSentences,
-                  futureSentences
+                const { question, answer } = chooseQuestion(
+                  negativeSentences,
+                  positiveSentences
                 );
 
                 // Set the current question and answer
                 setCurrentQuestion(question);
                 setCurrentAnswer(answer);
-                setUITense(tense);
 
                 setSimilarityResult(0);
                 setMessage("");

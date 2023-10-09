@@ -21,10 +21,10 @@ export default function GrammarCategories({ navigation }) {
         }}
       />
       <CustomCard
-        title="Custom Card 3"
+        title="Negative Form"
         imageUrl="https://picsum.photos/900"
         onPress={() => {
-          navigation.navigate("Grammar Learning");
+          navigation.navigate("Negative Form");
         }}
       />
     </ScrollView>

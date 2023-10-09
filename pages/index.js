@@ -16,6 +16,7 @@ export { default as VocabSynonyms } from "./VocabSynonyms";
 export { default as GrammarLearning } from "./GrammarLearning";
 export { default as GrammarSTOMPI } from "./GrammarSTOMPI";
 export { default as GrammarTenses } from "./GrammarTenses";
+export { default as GrammarNegative } from "./GrammarNegative";
 export { default as LiteratureLearning } from "./LiteratureLearning";
 
 // export { default as AnotherScreen } from './AnotherScreen';
