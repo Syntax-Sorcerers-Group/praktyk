@@ -164,6 +164,7 @@ export default function GrammarTenses(props) {
 
   const handleClearInput = () => {
     setInputText(""); // Clear the inputText state
+    
   };
 
   const getSentencesFromServer = async () => {

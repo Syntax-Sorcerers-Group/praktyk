@@ -19,4 +19,8 @@ export { default as GrammarTenses } from "./GrammarTenses";
 export { default as GrammarNegative } from "./GrammarNegative";
 export { default as LiteratureLearning } from "./LiteratureLearning";
 
+//Leaderboard
+export { default as LeaderboardScreen } from "./LeaderboardScreen";
+export { default as VocabCompetition } from "./VocabCompetition";
+
 // export { default as AnotherScreen } from './AnotherScreen';

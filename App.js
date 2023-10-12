@@ -23,6 +23,9 @@ import {
   GrammarTenses,
   GrammarNegative,
   LiteratureLearning,
+  //Leaderboard
+  LeaderboardScreen,
+  VocabCompetition,
 } from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
@@ -164,6 +167,10 @@ function App() {
           name="Literature Learning"
           component={LiteratureLearning}
         />
+
+        {/* Leaderboard */}
+        <Stack.Screen name="Leaderboard Screen" component={LeaderboardScreen} />
+        <Stack.Screen name="Vocab Competition" component={VocabCompetition} />
       </Stack.Navigator>
     </NavigationContainer>
   );
