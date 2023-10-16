@@ -43,7 +43,7 @@ export default function DetailsScreen({ navigation }) {
   //   }
   // }, [isopen]);
 
-  const common_words = "common_words";
+  const catergoryField = "common_words";
   return (
     <View>
       <View style={styles.dropdownViewContainer}>
@@ -88,7 +88,7 @@ export default function DetailsScreen({ navigation }) {
                 // navigation.navigate("Vocab Categories");
                 navigation.navigate("Vocab Competition", {
                   selectedGrade: isvalue,
-                  common_words,
+                  catergoryField,
                 });
               }}
             />
