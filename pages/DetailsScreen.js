@@ -29,7 +29,7 @@ export default function DetailsScreen({ navigation }) {
   };
 
   //Random page generator
-  const grammarPages = ["Tenses", "STOMPI", "Negative Form"];
+  const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
 
   const getRandomPage = () => {
     const randomIndex = Math.floor(Math.random() * grammarPages.length);

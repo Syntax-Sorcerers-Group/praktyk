@@ -23,4 +23,9 @@ export { default as LiteratureLearning } from "./LiteratureLearning";
 export { default as LeaderboardScreen } from "./LeaderboardScreen";
 export { default as VocabCompetition } from "./VocabCompetition";
 
+// Competitive
+export { default as GrammarSTOMPIComp } from "./Competitive/Grammar/GrammarSTOMPIComp";
+export { default as GrammarTensesComp } from "./Competitive/Grammar/GrammarTensesComp";
+export { default as GrammarNegativeComp } from "./Competitive/Grammar/GrammarNegativeComp";
+
 // export { default as AnotherScreen } from './AnotherScreen';
