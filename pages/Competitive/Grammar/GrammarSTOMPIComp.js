@@ -292,7 +292,7 @@ export default function GrammarSTOMPIComp({ navigation }) {
                 // );
 
                 const randomPage = getRandomPage();
-                navigation.navigate(randomPage, {
+                navigation.replace(randomPage, {
                   prevScore: prevScore,
                 });
               }}

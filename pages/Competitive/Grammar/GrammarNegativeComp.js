@@ -240,7 +240,7 @@ export default function GrammarNegativeComp({ navigation }) {
                 // handleClearInput();
 
                 const randomPage = getRandomPage();
-                navigation.navigate(randomPage, {
+                navigation.replace(randomPage, {
                   prevScore: prevScore,
                 });
               }}

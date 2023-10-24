@@ -290,7 +290,7 @@ export default function GrammarTensesComp({ navigation }) {
                 // handleClearInput();
 
                 const randomPage = getRandomPage();
-                navigation.navigate(randomPage, {
+                navigation.replace(randomPage, {
                   prevScore: prevScore,
                 });
               }}
