@@ -10,6 +10,8 @@ import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import Button from "../../../components/ButtonComponent";
+import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 async function getGrammarWords(userGrade) {
   const data = {
@@ -56,7 +58,7 @@ async function getGrammarWords(userGrade) {
   }
 }
 
-export default function GrammarSTOMPIComp(props) {
+export default function GrammarSTOMPIComp({ navigation }) {
   const DuoDragDropRef = useRef();
   const [gesturesDisabled, setGesturesDisabled] = useState(false);
   const [answeredWords, setAnsweredWords] = useState([]);
@@ -70,7 +72,18 @@ export default function GrammarSTOMPIComp(props) {
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Get the score from the route params
+  const route = useRoute();
+
   const userGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
+
+  //Random page generator
+  const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
+
+  const getRandomPage = () => {
+    const randomIndex = Math.floor(Math.random() * grammarPages.length);
+    return grammarPages[randomIndex];
+  };
 
   // Function to shuffle an array using Fisher-Yates shuffle
   const shuffleArray = (array) => {
@@ -107,6 +120,16 @@ export default function GrammarSTOMPIComp(props) {
       setGradeWords(Array(serverWords[currentIndex].length).fill(true));
     }
   }, [serverWords]);
+
+  let prevScore = 0;
+
+  // Use effect to set the score when the component loads
+  React.useEffect(() => {
+    prevScore = route.params?.prevScore + 1 || 0;
+
+    // Print the score
+    console.log("Score STOMPI:", prevScore);
+  }, []);
 
   const calculateGrade = () => {
     // Ensure that originalWords is defined before using it here
@@ -243,30 +266,35 @@ export default function GrammarSTOMPIComp(props) {
               displayText="Next"
               mode="elevated"
               onPress={() => {
-                // Increment the index
-                setCurrentIndex(
-                  (prevIndex) => (prevIndex + 1) % serverWords.length
-                );
+                // // Increment the index
+                // setCurrentIndex(
+                //   (prevIndex) => (prevIndex + 1) % serverWords.length
+                // );
 
-                // Reset the answered words
-                setAnsweredWords([]);
+                // // Reset the answered words
+                // setAnsweredWords([]);
 
-                // Reset the grade
-                setIsGraded(false);
+                // // Reset the grade
+                // setIsGraded(false);
 
-                setOriginalWords(
-                  serverWords[(currentIndex + 1) % serverWords.length]
-                );
-                setShuffledWords(
-                  shuffleArray(
-                    serverWords[(currentIndex + 1) % serverWords.length]
-                  )
-                ); // Shuffle the words
-                setGradeWords(
-                  Array(
-                    serverWords[(currentIndex + 1) % serverWords.length].length
-                  ).fill(true)
-                );
+                // setOriginalWords(
+                //   serverWords[(currentIndex + 1) % serverWords.length]
+                // );
+                // setShuffledWords(
+                //   shuffleArray(
+                //     serverWords[(currentIndex + 1) % serverWords.length]
+                //   )
+                // ); // Shuffle the words
+                // setGradeWords(
+                //   Array(
+                //     serverWords[(currentIndex + 1) % serverWords.length].length
+                //   ).fill(true)
+                // );
+
+                const randomPage = getRandomPage();
+                navigation.navigate(randomPage, {
+                  prevScore: prevScore,
+                });
               }}
               style={styles.button} // Apply padding style to the button
             />

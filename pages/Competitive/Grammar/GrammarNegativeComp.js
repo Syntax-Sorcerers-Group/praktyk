@@ -14,6 +14,8 @@ import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import Button from "../../../components/ButtonComponent";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 // Function to calculate similarity and update the state
 function calculateSimilarity(text, setSimilarityResult, setMessage, answer) {
@@ -100,7 +102,7 @@ function chooseQuestion(negativeSentences, positiveSentences) {
   return { question, answer };
 }
 
-export default function GrammarNegativeComp(props) {
+export default function GrammarNegativeComp({ navigation }) {
   const [inputText, setInputText] = useState(""); // State to store the input text
   const [similarityResult, setSimilarityResult] = useState(0); // State to store the similarity result
   const [message, setMessage] = useState(""); // State to store the message
@@ -109,6 +111,17 @@ export default function GrammarNegativeComp(props) {
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
+
+  // Get the score from the route params
+  const route = useRoute();
+
+  //Random page generator
+  const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
+
+  const getRandomPage = () => {
+    const randomIndex = Math.floor(Math.random() * grammarPages.length);
+    return grammarPages[randomIndex];
+  };
 
   // Function to handle text input changes
   const handleInputChange = (event) => {
@@ -146,6 +159,16 @@ export default function GrammarNegativeComp(props) {
       setCurrentAnswer(answer);
     }
   }, [sentencesFetched]);
+
+  let prevScore = 0;
+
+  // Use effect to set the score when the component loads
+  React.useEffect(() => {
+    prevScore = route.params?.prevScore + 1 || 0;
+
+    // Print the score
+    console.log("Score Negative:", prevScore);
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -203,18 +226,23 @@ export default function GrammarNegativeComp(props) {
               displayText="Next"
               mode="elevated"
               onPress={() => {
-                const { question, answer } = chooseQuestion(
-                  negativeSentences,
-                  positiveSentences
-                );
+                // const { question, answer } = chooseQuestion(
+                //   negativeSentences,
+                //   positiveSentences
+                // );
 
-                // Set the current question and answer
-                setCurrentQuestion(question);
-                setCurrentAnswer(answer);
+                // // Set the current question and answer
+                // setCurrentQuestion(question);
+                // setCurrentAnswer(answer);
 
-                setSimilarityResult(0);
-                setMessage("");
-                handleClearInput();
+                // setSimilarityResult(0);
+                // setMessage("");
+                // handleClearInput();
+
+                const randomPage = getRandomPage();
+                navigation.navigate(randomPage, {
+                  prevScore: prevScore,
+                });
               }}
             />
           </View>
