@@ -23,9 +23,13 @@ import {
   GrammarTenses,
   GrammarNegative,
   LiteratureLearning,
-  //Leaderboard
+  // Leaderboard
   LeaderboardScreen,
   VocabCompetition,
+  // Competitive
+  GrammarNegativeComp,
+  GrammarSTOMPIComp,
+  GrammarTensesComp,
 } from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
@@ -137,11 +141,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="General"
           component={GeneralTabs}
@@ -161,6 +165,13 @@ function App() {
         <Stack.Screen name="STOMPI" component={GrammarSTOMPI} />
         <Stack.Screen name="Tenses" component={GrammarTenses} />
         <Stack.Screen name="Negative Form" component={GrammarNegative} />
+
+        <Stack.Screen name="STOMPI Comp" component={GrammarSTOMPIComp} />
+        <Stack.Screen name="Tenses Comp" component={GrammarTensesComp} />
+        <Stack.Screen
+          name="Negative Form Comp"
+          component={GrammarNegativeComp}
+        />
 
         {/* Literature Things */}
         <Stack.Screen
