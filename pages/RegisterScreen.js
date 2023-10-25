@@ -5,7 +5,7 @@ import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from '@env';
-import axios from "axios";
+import axios, { all } from "axios";
 
 export default function RegisterScreen({ navigation }) {
     // General variables
@@ -68,8 +68,56 @@ export default function RegisterScreen({ navigation }) {
       }
     };
 
-    function handleRegister() {
+    const getAllUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${APP_ENV_PRAKTYK_API_LINK}/api/get/allUsers`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+            },
+          }
+        );
+
+        if (response && response.data) {
+          return response.data;
+        } else {
+          setPopupState(true);
+          setPopupText("An unknown error occurred. Please try again.");
+        }
+      } catch (error) {
+        setLoading(false);
+        if (error.response && error.response.data) {
+          setPopupState(true);
+          let errorMessage = error.response.data.errorMessage;
+
+          // Remove "Firebase." from the beginning of the errorMessage
+          errorMessage = errorMessage.replace(/^Firebase:\s*/, '');
+      
+          // Remove any text inside brackets and the brackets themselves
+          errorMessage = errorMessage.replace(/\(.*?\)\./g, '');
+      
+          setPopupText(errorMessage);
+        } else {
+          setPopupState(true);
+          setPopupText("An error occurred while registering.");
+        }
+      }
+    };
+
+    const checkIfUserExists = (allUsers, userData) => {
+      for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].username.trim() === userData.username.trim()) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    async function handleRegister() {
       setLoading(true);
+      let users = await getAllUsers();
       if ((password !== confirmPassword)) {
         setLoading(false);
         setPopupState(true);
@@ -79,6 +127,11 @@ export default function RegisterScreen({ navigation }) {
         setLoading(false);
         setPopupState(true);
         setPopupText("Please fill in all fields.");
+        return;
+      } else if (checkIfUserExists(users, userData)) {
+        setLoading(false);
+        setPopupState(true);
+        setPopupText("Username already exists.");
         return;
       }
         signUp(userData);
