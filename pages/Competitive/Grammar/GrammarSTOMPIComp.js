@@ -58,7 +58,7 @@ async function getGrammarWords(userGrade) {
   }
 }
 
-export default function GrammarSTOMPIComp({ navigation }) {
+export default function GrammarSTOMPIComp(props) {
   const DuoDragDropRef = useRef();
   const [gesturesDisabled, setGesturesDisabled] = useState(false);
   const [answeredWords, setAnsweredWords] = useState([]);
@@ -71,9 +71,11 @@ export default function GrammarSTOMPIComp({ navigation }) {
   const [shuffledWords, setShuffledWords] = useState([]);
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [score, setScore] = useState(0); // Track the score
 
   // Get the score from the route params
   const route = useRoute();
+  const navigation = useNavigation();
 
   const userGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
 
@@ -121,14 +123,13 @@ export default function GrammarSTOMPIComp({ navigation }) {
     }
   }, [serverWords]);
 
-  let prevScore = 0;
-
   // Use effect to set the score when the component loads
   React.useEffect(() => {
-    prevScore = route.params?.prevScore + 1 || 0;
-
+    let prevScore = route.params?.prevScore || 0;
     // Print the score
     console.log("Score STOMPI:", prevScore);
+
+    setScore(prevScore + 1);
   }, []);
 
   const calculateGrade = () => {
@@ -293,7 +294,7 @@ export default function GrammarSTOMPIComp({ navigation }) {
 
                 const randomPage = getRandomPage();
                 navigation.replace(randomPage, {
-                  prevScore: prevScore,
+                  prevScore: score,
                 });
               }}
               style={styles.button} // Apply padding style to the button

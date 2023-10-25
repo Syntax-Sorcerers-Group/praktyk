@@ -102,7 +102,7 @@ function chooseQuestion(negativeSentences, positiveSentences) {
   return { question, answer };
 }
 
-export default function GrammarNegativeComp({ navigation }) {
+export default function GrammarNegativeComp(props) {
   const [inputText, setInputText] = useState(""); // State to store the input text
   const [similarityResult, setSimilarityResult] = useState(0); // State to store the similarity result
   const [message, setMessage] = useState(""); // State to store the message
@@ -111,9 +111,11 @@ export default function GrammarNegativeComp({ navigation }) {
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
+  const [score, setScore] = useState(0); // Track the score
 
   // Get the score from the route params
   const route = useRoute();
+  const navigation = useNavigation();
 
   //Random page generator
   const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
@@ -160,14 +162,14 @@ export default function GrammarNegativeComp({ navigation }) {
     }
   }, [sentencesFetched]);
 
-  let prevScore = 0;
-
   // Use effect to set the score when the component loads
   React.useEffect(() => {
-    prevScore = route.params?.prevScore + 1 || 0;
+    let prevScore = route.params?.prevScore || 0;
 
     // Print the score
     console.log("Score Negative:", prevScore);
+
+    setScore(prevScore + 1);
   }, []);
 
   return (
@@ -241,7 +243,7 @@ export default function GrammarNegativeComp({ navigation }) {
 
                 const randomPage = getRandomPage();
                 navigation.replace(randomPage, {
-                  prevScore: prevScore,
+                  prevScore: score,
                 });
               }}
             />
