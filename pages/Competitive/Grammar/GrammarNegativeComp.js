@@ -102,6 +102,30 @@ function chooseQuestion(negativeSentences, positiveSentences) {
   return { question, answer };
 }
 
+function updateScore(username, userGrade, score) {
+  const data = {
+    username: username,
+    grade: "grade" + userGrade,
+    vocabChange: 0,
+    grammarChange: score,
+  };
+
+  // Now just post the data to api/post/updateUserScores
+  axios
+    .post(`${APP_ENV_PRAKTYK_API_LINK}/api/post/updateUserScores`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 export default function GrammarNegativeComp(props) {
   const [inputText, setInputText] = useState(""); // State to store the input text
   const [similarityResult, setSimilarityResult] = useState(0); // State to store the similarity result
@@ -245,6 +269,18 @@ export default function GrammarNegativeComp(props) {
                 navigation.replace(randomPage, {
                   prevScore: score,
                 });
+              }}
+            />
+
+            <Button
+              displayText="Exit"
+              mode="elevated"
+              onPress={() => {
+                // Update the score in the database
+                updateScore("test", "8", score);
+
+                // Navigate to the leaderboard screen
+                navigation.replace("Leaderboard Screen");
               }}
             />
           </View>
