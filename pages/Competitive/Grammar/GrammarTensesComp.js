@@ -181,6 +181,7 @@ export default function GrammarTensesComp(props) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
   const [score, setScore] = useState(0); // Track the score
+  const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
 
   // Get the score from the route params
   const route = useRoute();
@@ -236,6 +237,8 @@ export default function GrammarTensesComp(props) {
 
   // Use effect to set the score when the component loads
   React.useEffect(() => {
+    setIsDisabled(true); // Disable the button
+
     let prevScore = route.params?.prevScore || 0;
 
     // Print the score
@@ -286,18 +289,32 @@ export default function GrammarTensesComp(props) {
           <InputBox
             onChange={handleInputChange}
             placeholder="Type here"
+            isDisabled={!isDisabled}
             value={inputText} // Bind the input value to the state
           />
 
-          <Text style={{ fontSize: 20, fontWeight: "bold", padding: 20 }}>
-            {message}
-          </Text>
-
-          <Progress.Bar progress={similarityResult} width={200} />
+          {!isDisabled ? (
+            <>
+              <Text style={{ fontSize: 20, fontWeight: "bold", padding: 20 }}>
+                {message === "" ? "no answer entered" : message}
+              </Text>
+              <Progress.Bar progress={similarityResult} width={200} />
+            </>
+          ) : null}
 
           <View style={styles.buttonContainer}>
             <Button
+              displayText="Submit"
+              mode="elevated"
+              isDisabled={!isDisabled}
+              onPress={() => {
+                setIsDisabled(false); // Disable the button
+              }}
+            />
+
+            <Button
               displayText="Next"
+              isDisabled={isDisabled}
               mode="elevated"
               onPress={() => {
                 // const { question, answer, tense } = chooseQuestion(
@@ -321,7 +338,6 @@ export default function GrammarTensesComp(props) {
                 });
               }}
             />
-
             <Button
               displayText="Exit"
               mode="elevated"

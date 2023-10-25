@@ -136,6 +136,7 @@ export default function GrammarNegativeComp(props) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
   const [score, setScore] = useState(0); // Track the score
+  const [isDisabled, setIsDisabled] = useState(false); // Track the disabled state of the button
 
   // Get the score from the route params
   const route = useRoute();
@@ -188,6 +189,8 @@ export default function GrammarNegativeComp(props) {
 
   // Use effect to set the score when the component loads
   React.useEffect(() => {
+    setIsDisabled(true); // Disable the button
+
     let prevScore = route.params?.prevScore || 0;
 
     // Print the score
@@ -238,19 +241,34 @@ export default function GrammarNegativeComp(props) {
           <InputBox
             onChange={handleInputChange}
             placeholder="Type here"
+            isDisabled={!isDisabled}
             value={inputText} // Bind the input value to the state
           />
 
-          <Text style={{ fontSize: 20, fontWeight: "bold", padding: 20 }}>
-            {message}
-          </Text>
+          {!isDisabled ? (
+            <>
+              <Text style={{ fontSize: 20, fontWeight: "bold", padding: 20 }}>
+                {message === "" ? "no answer entered" : message}
+              </Text>
 
-          <Progress.Bar progress={similarityResult} width={200} />
+              <Progress.Bar progress={similarityResult} width={200} />
+            </>
+          ) : null}
 
           <View style={styles.buttonContainer}>
             <Button
+              displayText="Submit"
+              mode="elevated"
+              isDisabled={!isDisabled}
+              onPress={() => {
+                setIsDisabled(false); // Disable the button
+              }}
+            />
+
+            <Button
               displayText="Next"
               mode="elevated"
+              isDisabled={isDisabled}
               onPress={() => {
                 // const { question, answer } = chooseQuestion(
                 //   negativeSentences,

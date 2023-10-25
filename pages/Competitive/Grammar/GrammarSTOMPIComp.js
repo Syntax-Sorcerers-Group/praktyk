@@ -96,6 +96,7 @@ export default function GrammarSTOMPIComp(props) {
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0); // Track the score
+  const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
 
   // Get the score from the route params
   const route = useRoute();
@@ -149,6 +150,8 @@ export default function GrammarSTOMPIComp(props) {
 
   // Use effect to set the score when the component loads
   React.useEffect(() => {
+    setIsDisabled(true); // Disable the button
+
     let prevScore = route.params?.prevScore || 0;
     // Print the score
     console.log("Score STOMPI:", prevScore);
@@ -177,7 +180,7 @@ export default function GrammarSTOMPIComp(props) {
     // Check if all words are answered
     if (answered.length !== originalWords.length) {
       // Display a warning to place all words
-      alert("Please place all the words before grading.");
+      // alert("Please place all the words before grading.");
       return;
     }
 
@@ -238,7 +241,7 @@ export default function GrammarSTOMPIComp(props) {
               wordHeight={40}
               lineHeight={49}
               wordGap={4}
-              gesturesDisabled={gesturesDisabled}
+              gesturesDisabled={!isDisabled}
               rtl={rtl}
               wordBankOffsetY={10}
               wordBankAlignment="center"
@@ -270,13 +273,15 @@ export default function GrammarSTOMPIComp(props) {
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              displayText="Check Answer"
+              displayText="Submit"
+              isDisabled={!isDisabled}
               mode="elevated"
               onPress={() => {
                 const answered =
                   DuoDragDropRef.current?.getAnsweredWords() || [];
                 setAnsweredWords(answered);
                 calculateGrade();
+                setIsDisabled(false);
                 // Set a timeout to update isGraded after a certain delay (e.g., 1000 milliseconds or 1 second)
                 // setTimeout(() => {
                 //   setIsGraded(true);
@@ -289,6 +294,7 @@ export default function GrammarSTOMPIComp(props) {
 
             <Button
               displayText="Next"
+              isDisabled={isDisabled}
               mode="elevated"
               onPress={() => {
                 // // Increment the index
