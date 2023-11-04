@@ -2,7 +2,9 @@ import React, { useState ,useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
-
+//For Loading Screen
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 //Async Function that fetches leaderboard data based on gradeNo
 async function fetchLeaderboardData(gradeNo) {
   try {
@@ -20,7 +22,6 @@ async function fetchLeaderboardData(gradeNo) {
     );
 
     if (response && response.data) {
-      console.log(response.data)
       return response.data; // Assuming the API response is in the expected format
     } else {
       console.log("Error: No response data from the server.");
@@ -39,6 +40,7 @@ const LeaderboardScreen = () => {
   const [sortOrder, setSortOrder] = useState("desc");
   const [sortGrammar, setSortGrammar] = useState("desc");
   const [sortVocab, setSortVocab] = useState("desc");
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
 
   const toggleSortOrder = () => {
     const newOrder = sortOrder === "asc" ? "desc" : "asc";
@@ -91,6 +93,7 @@ CURRENTTLY HARDCODED FOR GRADE 8!!!
 */
   const fetchData = async () => {
     try {
+
       const data = await fetchLeaderboardData(8); // Replace with the desired grade
       const formattedData = data.map((item, index) => ({
         id: index + 1,
@@ -100,6 +103,7 @@ CURRENTTLY HARDCODED FOR GRADE 8!!!
         vocabScore: item.vocabScore,
       }));
       setLeaderboardData(formattedData);
+      setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -110,6 +114,16 @@ CURRENTTLY HARDCODED FOR GRADE 8!!!
   }, []); 
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+       {isLoading   ? ( // Conditionally render loading indicator
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.purple700}
+            size={"large"}
+          />
+        </View>
+      ) : (
     <View style={styles.container}>
       <Text style={styles.title}>Leaderboard</Text>
 
@@ -119,12 +133,6 @@ CURRENTTLY HARDCODED FOR GRADE 8!!!
           Total Score
         </Text>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity style={styles.toggleButton} onPress={toggleSortOrder}>
-        <Text>
-          Toggle Sort ({sortOrder === "asc" ? "Ascending" : "Descending"}) by Total Score
-        </Text>
-      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.toggleButton} onPress={toggleSortGrammar}>
         <Text>
@@ -159,6 +167,8 @@ CURRENTTLY HARDCODED FOR GRADE 8!!!
     ))}
 
     </View>
+    )}
+    </GestureHandlerRootView>
   );
 };
 
@@ -167,6 +177,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
