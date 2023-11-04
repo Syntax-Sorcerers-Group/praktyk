@@ -301,7 +301,26 @@ export default function VocabCompetition(props) {
               //   //   prevScore: score,
               //   // });
               // }}
+            />
+              <Button
+              displayText="Exit"
+              mode="elevated"
+              onPress={() => {
+                // NB STILL HAVE TO DO SCORES 
+                // updateScore(
+                //   "test",
+                //   selectedGrade,
+                //   score,
+                //   setScore,
+                //   localScore,
+                //   prevScore
+                // );
 
+                // Navigate to the leaderboard screen and pass selected grade
+                navigation.replace("Leaderboard Screen", {
+                  selectedGrade: selectedGrade,
+                });
+              }}
             />
 
           </View>

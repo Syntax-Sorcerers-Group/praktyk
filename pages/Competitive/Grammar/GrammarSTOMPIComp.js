@@ -351,6 +351,7 @@ export default function GrammarSTOMPIComp(props) {
                 const randomPage = getRandomPage();
                 navigation.replace(randomPage, {
                   prevScore: score + localScore + prevScore,
+                  selectedGrade: selectedGrade,
                 });
               }}
               style={styles.button} // Apply padding style to the button
@@ -363,7 +364,7 @@ export default function GrammarSTOMPIComp(props) {
                 // Update the score in the database
                 updateScore(
                   "test",
-                  "8",
+                  selectedGrade,
                   score,
                   setScore,
                   localScore,
@@ -371,7 +372,7 @@ export default function GrammarSTOMPIComp(props) {
                 );
 
                 // Navigate to the leaderboard screen and pass selected grade
-                navigation.navigate("Leaderboard Screen", {
+                navigation.replace("Leaderboard Screen", {
                   selectedGrade: selectedGrade,
                 });
               }}
