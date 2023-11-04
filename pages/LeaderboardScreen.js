@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
+import axios from "axios";
+
+//Async Function that fetches leaderboard data based on gradeNo
+async function fetchLeaderboardData(gradeNo) {
+  try {
+    const response = await axios.post(
+      `${APP_ENV_PRAKTYK_API_LINK}/api/get/gradeLeaderboard`,
+      {
+        grade: "grade" + gradeNo, // Pass the grade as a parameter
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+        },
+      }
+    );
+
+    if (response && response.data) {
+      console.log(response.data)
+      return response.data; // Assuming the API response is in the expected format
+    } else {
+      console.log("Error: No response data from the server.");
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+    // You can log more error details if needed: error.response, error.request, etc.
+  }
+}
 
 const LeaderboardScreen = () => {
+  //Use state for leaderboard data , empty at start
   const [leaderboardData, setLeaderboardData] = useState([
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      score: 1000,
-      grammarScore: 90,
-      vocabScore: 85,
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      score: 900,
-      grammarScore: 85,
-      vocabScore: 88,
-    },
-    {
-      id: 3,
-      firstName: "Bob",
-      lastName: "Johnson",
-      score: 800,
-      grammarScore: 88,
-      vocabScore: 80,
-    },
-    // Add more entries as needed
   ]);
 
   const [sortOrder, setSortOrder] = useState("desc");
@@ -79,6 +85,30 @@ const LeaderboardScreen = () => {
     setLeaderboardData(sortedData);
   };
 
+ /* function that calls async fetch leaderboard data function
+*It formats and sets the data to the leaderboard.
+CURRENTTLY HARDCODED FOR GRADE 8!!!
+*/
+  const fetchData = async () => {
+    try {
+      const data = await fetchLeaderboardData(8); // Replace with the desired grade
+      const formattedData = data.map((item, index) => ({
+        id: index + 1,
+        firstName: item.username, // Assuming `username` contains the first name
+        score: item.vocabScore + item.grammarScore,
+        grammarScore: item.grammarScore,
+        vocabScore: item.vocabScore,
+      }));
+      setLeaderboardData(formattedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+//Use effect that calls fetch data
+  useEffect(() => {
+    fetchData();
+  }, []); 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Leaderboard</Text>
@@ -111,24 +141,23 @@ const LeaderboardScreen = () => {
       <View style={styles.headerRow}>
         <Text style={[styles.header, styles.column]}>Position</Text>
         <Text style={[styles.header, styles.column]}>First Name</Text>
-        <Text style={[styles.header, styles.column]}>Last Name</Text>
         <Text style={[styles.header, styles.column]}>Grammer Score</Text>
         <Text style={[styles.header, styles.column]}>Vocab Score</Text>
         <Text style={[styles.header, styles.column]}>Score</Text>
       </View>
 
-      {leaderboardData.map((entry, index) => (
-        <View key={entry.id} style={styles.row}>
-          <Text style={[styles.position, styles.column]}>{index + 1}</Text>
-          <Text style={[styles.name, styles.column]}>{entry.firstName}</Text>
-          <Text style={[styles.name, styles.column]}>{entry.lastName}</Text>
-          <Text style={[styles.score, styles.column]}>
-            {entry.grammarScore}
-          </Text>
-          <Text style={[styles.score, styles.column]}>{entry.vocabScore}</Text>
-          <Text style={[styles.score, styles.column]}>{entry.score}</Text>
-        </View>
-      ))}
+      {leaderboardData.map((entry) => (
+      <View key={entry.id} style={styles.row}>
+        <Text style={[styles.position, styles.column]}>{entry.id}</Text>
+        <Text style={[styles.name, styles.column]}>{entry.firstName}</Text>
+        <Text style={[styles.score, styles.column]}>
+          {entry.grammarScore}
+        </Text>
+        <Text style={[styles.score, styles.column]}>{entry.vocabScore}</Text>
+        <Text style={[styles.score, styles.column]}>{entry.score}</Text>
+      </View>
+    ))}
+
     </View>
   );
 };
