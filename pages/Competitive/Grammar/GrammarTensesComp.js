@@ -221,6 +221,8 @@ export default function GrammarTensesComp(props) {
 
   // Get the score from the route params
   const route = useRoute();
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = route.params?.selectedGrade || "Not Selected";
   const navigation = useNavigation();
 
   //Random page generator
@@ -249,7 +251,7 @@ export default function GrammarTensesComp(props) {
   };
 
   const getSentencesFromServer = async () => {
-    const { present, past, future } = await getSentences("8"); // Get the sentences from the server
+    const { present, past, future } = await getSentences(selectedGrade); // Get the sentences from the server
     setPresentSentences(present); // Update the presentSentences state
     setPastSentences(past); // Update the pastSentences state
     setFutureSentences(future); // Update the futureSentences state
@@ -394,8 +396,10 @@ export default function GrammarTensesComp(props) {
                   prevScore
                 );
 
-                // Navigate to the leaderboard screen
-                navigation.replace("Leaderboard Screen");
+                // Navigate to the leaderboard screen and pass selected grade
+                navigation.navigate("Leaderboard Screen", {
+                  selectedGrade: selectedGrade,
+                });
               }}
             />
           </View>

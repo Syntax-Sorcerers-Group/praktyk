@@ -13,9 +13,9 @@ import Button from "../../../components/ButtonComponent";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 
-async function getGrammarWords(userGrade) {
+async function getGrammarWords(selectedGrade) {
   const data = {
-    grade: "grade" + userGrade,
+    grade: "grade" + selectedGrade,
   };
 
   try {
@@ -60,7 +60,7 @@ async function getGrammarWords(userGrade) {
 
 function updateScore(
   username,
-  userGrade,
+  selectedGrade,
   score,
   setScore,
   localScore,
@@ -74,7 +74,7 @@ function updateScore(
 
   const data = {
     username: username,
-    grade: "grade" + userGrade,
+    grade: "grade" + selectedGrade,
     vocabChange: 0,
     grammarChange: scoreF,
   };
@@ -115,9 +115,11 @@ export default function GrammarSTOMPIComp(props) {
 
   // Get the score from the route params
   const route = useRoute();
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = route.params?.selectedGrade || "Not Selected";
   const navigation = useNavigation();
 
-  const userGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
+  // const selectedGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
 
   //Random page generator
   const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
@@ -140,7 +142,7 @@ export default function GrammarSTOMPIComp(props) {
   // Get the words from the server
   const fetchWords = async () => {
     try {
-      const swords = await getGrammarWords(userGrade);
+      const swords = await getGrammarWords(selectedGrade);
       setServerWords(swords);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
@@ -152,7 +154,7 @@ export default function GrammarSTOMPIComp(props) {
   // Use useEffect without any conditionals
   useEffect(() => {
     fetchWords();
-  }, [userGrade]);
+  }, [selectedGrade]);
 
   useEffect(() => {
     // Orginal words
@@ -368,8 +370,10 @@ export default function GrammarSTOMPIComp(props) {
                   prevScore
                 );
 
-                // Navigate to the leaderboard screen
-                navigation.replace("Leaderboard Screen");
+                // Navigate to the leaderboard screen and pass selected grade
+                navigation.navigate("Leaderboard Screen", {
+                  selectedGrade: selectedGrade,
+                });
               }}
             />
           </View>

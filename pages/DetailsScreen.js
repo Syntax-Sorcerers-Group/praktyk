@@ -99,7 +99,10 @@ export default function DetailsScreen({ navigation }) {
               onPress={() => {
                 // navigation.navigate("Grammar Categories");
                 const randomPage = getRandomPage();
-                navigation.navigate(randomPage);
+                // navigation.navigate(randomPage);
+                navigation.navigate(randomPage, {
+                  selectedGrade: isvalue,
+                });
               }}
             />
 
