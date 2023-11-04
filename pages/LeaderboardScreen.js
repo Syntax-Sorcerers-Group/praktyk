@@ -5,6 +5,7 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { useNavigation, useRoute } from "@react-navigation/native";
 //Async Function that fetches leaderboard data based on gradeNo
 async function fetchLeaderboardData(gradeNo) {
   try {
@@ -41,6 +42,11 @@ const LeaderboardScreen = () => {
   const [sortGrammar, setSortGrammar] = useState("desc");
   const [sortVocab, setSortVocab] = useState("desc");
   const [isLoading, setIsLoading] = useState(true); // Track loading state
+    // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
+    const route = useRoute();
+
+    // Retrieve the selectedGrade parameter from the route
+    const selectedGrade = route.params?.selectedGrade || "Not Selected";
 
   const toggleSortOrder = () => {
     const newOrder = sortOrder === "asc" ? "desc" : "asc";
@@ -89,12 +95,12 @@ const LeaderboardScreen = () => {
 
  /* function that calls async fetch leaderboard data function
 *It formats and sets the data to the leaderboard.
-CURRENTTLY HARDCODED FOR GRADE 8!!!
+
 */
   const fetchData = async () => {
     try {
 
-      const data = await fetchLeaderboardData(8); // Replace with the desired grade
+      const data = await fetchLeaderboardData(selectedGrade); // Replace with the desired grade
       const formattedData = data.map((item, index) => ({
         id: index + 1,
         firstName: item.username, // Assuming `username` contains the first name

@@ -115,7 +115,10 @@ export default function DetailsScreen({ navigation }) {
               title="Leaderboard"
               imageUrl="https://img.freepik.com/free-vector/watercolor-literature-illustration_52683-81536.jpg"
               onPress={() => {
-                navigation.navigate("Leaderboard Screen");
+                // navigation.navigate("Leaderboard Screen");
+                navigation.navigate("Leaderboard Screen", {
+                  selectedGrade: isvalue,
+                });
               }}
             />
           </View>
