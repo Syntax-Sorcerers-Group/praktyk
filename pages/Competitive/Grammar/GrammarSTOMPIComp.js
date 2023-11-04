@@ -58,12 +58,25 @@ async function getGrammarWords(userGrade) {
   }
 }
 
-function updateScore(username, userGrade, score) {
+function updateScore(
+  username,
+  userGrade,
+  score,
+  setScore,
+  localScore,
+  prevScore
+) {
+  // Update the score
+  let scoreF = score + localScore + prevScore;
+
+  // Update the score in the state
+  setScore(scoreF);
+
   const data = {
     username: username,
     grade: "grade" + userGrade,
     vocabChange: 0,
-    grammarChange: score,
+    grammarChange: scoreF,
   };
 
   // Now just post the data to api/post/updateUserScores
@@ -96,6 +109,8 @@ export default function GrammarSTOMPIComp(props) {
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0); // Track the score
+  const [localScore, setLocalScore] = useState(-5); // Track the score
+  const [prevScore, setPrevScore] = useState(0); // Track the score
   const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
 
   // Get the score from the route params
@@ -152,11 +167,12 @@ export default function GrammarSTOMPIComp(props) {
   React.useEffect(() => {
     setIsDisabled(true); // Disable the button
 
-    let prevScore = route.params?.prevScore || 0;
-    // Print the score
-    console.log("Score STOMPI:", prevScore);
+    let prevScoreL = route.params?.prevScore || 0;
 
-    setScore(prevScore + 1);
+    // Print the score
+    console.log("Score STOMPI:", prevScoreL);
+
+    setPrevScore(prevScoreL);
   }, []);
 
   const calculateGrade = () => {
@@ -176,6 +192,14 @@ export default function GrammarSTOMPIComp(props) {
       grade.push(originalWords[i] === answered[i]);
       //console.log(originalWords[i], answered[i]);
     }
+
+    // Print the number of correctly answered words
+    // console.log(
+    //   "Correctly answered words:",
+    //   grade.filter((word) => word).length
+    // );
+
+    setLocalScore(grade.filter((word) => word).length);
 
     // Check if all words are answered
     if (answered.length !== originalWords.length) {
@@ -324,7 +348,7 @@ export default function GrammarSTOMPIComp(props) {
 
                 const randomPage = getRandomPage();
                 navigation.replace(randomPage, {
-                  prevScore: score,
+                  prevScore: score + localScore + prevScore,
                 });
               }}
               style={styles.button} // Apply padding style to the button
@@ -335,7 +359,14 @@ export default function GrammarSTOMPIComp(props) {
               mode="elevated"
               onPress={() => {
                 // Update the score in the database
-                updateScore("test", "8", score);
+                updateScore(
+                  "test",
+                  "8",
+                  score,
+                  setScore,
+                  localScore,
+                  prevScore
+                );
 
                 // Navigate to the leaderboard screen
                 navigation.replace("Leaderboard Screen");

@@ -18,11 +18,32 @@ import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 
 // Function to calculate similarity and update the state
-function calculateSimilarity(text, setSimilarityResult, setMessage, answer) {
+function calculateSimilarity(
+  text,
+  setSimilarityResult,
+  setMessage,
+  answer,
+  setLocalScore
+) {
   if (typeof text === "string") {
     const similarity = dsc.twoStrings(text, answer);
     setSimilarityResult(similarity);
     setMessage(getMessage(similarity * 100));
+
+    // Update the score based on the similarity
+    let result = similarity * 100;
+
+    if (result >= 0 && result < 30) {
+      setLocalScore(-4);
+    } else if (result >= 30 && result < 60) {
+      setLocalScore(-3);
+    } else if (result >= 60 && result < 80) {
+      setLocalScore(-2);
+    } else if (result >= 80 && result < 100) {
+      setLocalScore(-1);
+    } else if (result === 100) {
+      setLocalScore(4);
+    }
   } else {
     // Handle the case when text is not a string (e.g., it's undefined or not a string)
     setSimilarityResult(0); // You can set a default value or handle it as per your requirements
@@ -102,12 +123,25 @@ function chooseQuestion(negativeSentences, positiveSentences) {
   return { question, answer };
 }
 
-function updateScore(username, userGrade, score) {
+function updateScore(
+  username,
+  userGrade,
+  score,
+  setScore,
+  localScore,
+  prevScore
+) {
+  // Update the score
+  let scoreF = score + localScore + prevScore;
+
+  // Update the score in the state
+  setScore(scoreF);
+
   const data = {
     username: username,
     grade: "grade" + userGrade,
     vocabChange: 0,
-    grammarChange: score,
+    grammarChange: scoreF,
   };
 
   // Now just post the data to api/post/updateUserScores
@@ -136,6 +170,8 @@ export default function GrammarNegativeComp(props) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
   const [score, setScore] = useState(0); // Track the score
+  const [localScore, setLocalScore] = useState(-5); // Track the score
+  const [prevScore, setPrevScore] = useState(0); // Track the score
   const [isDisabled, setIsDisabled] = useState(false); // Track the disabled state of the button
 
   // Get the score from the route params
@@ -154,7 +190,13 @@ export default function GrammarNegativeComp(props) {
   const handleInputChange = (event) => {
     const text = event.nativeEvent.text; // Extract the entered text from the event
     setInputText(text); // Update the inputText state
-    calculateSimilarity(text, setSimilarityResult, setMessage, currentAnswer); // Calculate similarity as the user types
+    calculateSimilarity(
+      text,
+      setSimilarityResult,
+      setMessage,
+      currentAnswer,
+      setLocalScore
+    ); // Calculate similarity as the user types
   };
 
   const handleClearInput = () => {
@@ -191,12 +233,12 @@ export default function GrammarNegativeComp(props) {
   React.useEffect(() => {
     setIsDisabled(true); // Disable the button
 
-    let prevScore = route.params?.prevScore || 0;
+    let prevScoreL = route.params?.prevScore || 0;
 
     // Print the score
-    console.log("Score Negative:", prevScore);
+    console.log("Score Negative:", prevScoreL);
 
-    setScore(prevScore + 1);
+    setPrevScore(prevScoreL);
   }, []);
 
   return (
@@ -285,7 +327,7 @@ export default function GrammarNegativeComp(props) {
 
                 const randomPage = getRandomPage();
                 navigation.replace(randomPage, {
-                  prevScore: score,
+                  prevScore: score + localScore + prevScore,
                 });
               }}
             />
@@ -295,7 +337,14 @@ export default function GrammarNegativeComp(props) {
               mode="elevated"
               onPress={() => {
                 // Update the score in the database
-                updateScore("test", "8", score);
+                updateScore(
+                  "test",
+                  "8",
+                  score,
+                  setScore,
+                  localScore,
+                  prevScore
+                );
 
                 // Navigate to the leaderboard screen
                 navigation.replace("Leaderboard Screen");
