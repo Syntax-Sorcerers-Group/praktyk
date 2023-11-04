@@ -14,6 +14,7 @@ import axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import InputBox from "../components/InputBox";
+import Button from "../components/ButtonComponent";
 
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
@@ -89,7 +90,9 @@ async function fetchImage(englishWord) {
 
 export default function VocabCompetition(props) {
   const navigation = useNavigation();
-
+  const [message, setMessage] = useState(""); // State to store the message
+  const [inputText, setInputText] = useState(""); // State to store the input text
+  const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
   const [englishWord, setEnglishWord] = useState("English word");
   const [wordList, setWordList] = useState([]);
@@ -160,12 +163,21 @@ export default function VocabCompetition(props) {
    *shows english text
    */
   const handleTranslateClick = () => {
-    if (showEnglish) {
-      setShowEnglish(false);
-    } else {
-      setShowEnglish(true);
-      setEnglishWord(wordList[currentIndex].english);
+    // if (showEnglish) {
+    //   setShowEnglish(false);
+    // } else {
+    //   setShowEnglish(true);
+    //   setEnglishWord(wordList[currentIndex].english);
+    // }
+    setShowEnglish(true);
+    setEnglishWord(wordList[currentIndex].english);
+    if(inputText != englishWord){
+      setMessage("Your answer is incorrect!")
     }
+    else{
+      setMessage("Your answer is correct!")
+    }
+    
   };
 
   /*Handles Previous Button
@@ -195,6 +207,16 @@ export default function VocabCompetition(props) {
     setEnglishWord(wordList[nextIndex].english);
   };
 
+
+
+/*Handles input change for input box
+*/
+  const handleInputChange = (event) => {
+    const text = event.nativeEvent.text; // Extract the entered text from the event
+    setInputText(text); // Update the inputText state
+  };
+
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {isLoading   ? ( // Conditionally render loading indicator
@@ -211,7 +233,7 @@ export default function VocabCompetition(props) {
           <Text style={styles.selectedCategoryText}>
             Category: {catergoryField}
           </Text>
-          {isLoadingImage  ? (
+          {/* {isLoadingImage  ? (
             <ActivityIndicator
             animating={true}
             color={MD2Colors.purple700}
@@ -225,41 +247,63 @@ export default function VocabCompetition(props) {
               style={[styles.imageStyle]}
               // style={[rotateYAnimatedStyle, styles.imageStyle]}
             />
-          )}
+          )} */}
           <View style={styles.wordContainer}>
+          <View style={styles.englishContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
+
+         
             {showEnglish && (
               <Text style={styles.space}> : </Text> // Add a space character
+ 
             )}
             {showEnglish && (
               <Text style={styles.englishText}>{englishWord}</Text>
+ 
             )}
+                      
+            {showEnglish && (
+              <View style={styles.englishContainer}>
+              <Text style={styles.englishText}>{message}</Text>
+            </View>
+            )}
+           </View>  
           </View>
              
-
-          <TouchableOpacity
-            style={styles.translateButton}
-            onPress={handleTranslateClick}
-          >
-            <Text style={styles.translateButtonText}>
-              {showEnglish ? "Hide English" : "Translate"}
-            </Text>
-          </TouchableOpacity>
-
+            
+            {/* InputBox */}
+            <InputBox
+            onChange={handleInputChange}
+            placeholder="Type here"
+            isDisabled={!isDisabled}
+            value={inputText} // Bind the input value to the state
+          />
+                
+          {/* SubmitButton : Disbale input box and show english word*/}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.arrowButtonPrev}
-              onPress={handlePrevClick}
-            >
-              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.arrowButtonNext}
+            <Button
+                displayText="Submit"
+                mode="elevated"
+                isDisabled={!isDisabled}
+                onPress={() => {
+                setIsDisabled(false);
+                handleTranslateClick(); // Disable the button
+                }}
+              />
+             <Button
+              displayText="Next"
+              isDisabled={isDisabled}
+              mode="elevated"
               onPress={handleNextClick}
-            >
-              <Text style={styles.arrowTextNext}>{"--->"}</Text>
-            </TouchableOpacity>
+              // onPress={() => {
+              //   // const randomPage = getRandomPage();
+              //   // navigation.replace(randomPage, {
+              //   //   prevScore: score,
+              //   // });
+              // }}
+
+            />
+
           </View>
         </View>
       )}
@@ -276,6 +320,7 @@ const styles = StyleSheet.create({
   wordContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
   },
   loadingContainer: {
@@ -295,6 +340,10 @@ const styles = StyleSheet.create({
   englishText: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  englishContainer: {
+    alignItems: "center",
+    marginTop: 10, // Add some space between the English word and the message
   },
   imageStyle: {
     width: 250,
