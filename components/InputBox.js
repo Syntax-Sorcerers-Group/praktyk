@@ -14,6 +14,7 @@ const InputBox = (props) => {
   return (
     <View style={styles.container}>
       <TextInput
+        testID="input-box"
         mode="outlined"
         label={placeHolder}
         value={text}
@@ -25,7 +26,7 @@ const InputBox = (props) => {
           secureTextEntry && autoComplete === "password" ? true : false
         }
         right={
-          icon ? <TextInput.Icon icon={icon} onPress={handleIconPress} /> : null
+          icon ? <TextInput.Icon testID="icon" icon={icon} onPress={handleIconPress} /> : null
         }
         returnKeyType="done" // Add this line to set the returnKeyType
       />

@@ -5,7 +5,8 @@ const ImageDisplay = (props) => {
     const { imgSource, imgSize } = props;
 
     return (
-        <Avatar.Image 
+        <Avatar.Image
+        testID='image-display' 
           size={imgSize} 
           source={imgSource} 
         />
