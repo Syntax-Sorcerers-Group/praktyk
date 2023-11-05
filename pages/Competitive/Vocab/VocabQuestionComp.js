@@ -13,8 +13,6 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import InputBox from "../components/InputBox";
-import Button from "../components/ButtonComponent";
 
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
@@ -35,13 +33,13 @@ async function fetchVocabWords(gradeNo, categoryField) {
       }
     );
 
-    if (response && response.data && response.data.common_words) {
-      const commonWords = response.data.common_words;
+    if (response && response.data && response.data.question_words) {
+      const questionwords = response.data.question_words;
       const wordPairs = [];
 
-      for (const englishWord in commonWords) {
-        if (commonWords.hasOwnProperty(englishWord)) {
-          const afrikaansWord = commonWords[englishWord];
+      for (const englishWord in questionwords) {
+        if (questionwords.hasOwnProperty(englishWord)) {
+          const afrikaansWord = questionwords[englishWord];
           wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
         }
       }
@@ -88,34 +86,33 @@ async function fetchImage(englishWord) {
   }
 }
 
-export default function VocabCompetition(props) {
+export default function VocabQuestionComp(props) {
   const navigation = useNavigation();
-  const [message, setMessage] = useState(""); // State to store the message
-  const [inputText, setInputText] = useState(""); // State to store the input text
-  const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
+
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
-  const [englishWord, setEnglishWord] = useState("English word");
+  const [englishWord, setEnglishWord] = useState("Loading");
   const [wordList, setWordList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEnglish, setShowEnglish] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
-  const [imgurl, setImgurl] = useState("");
+  const [imgurl, setImgurl] = useState("https://picsum.photos/700");
 
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
 
   // Retrieve the selectedGrade parameter from the route
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
-  const catergoryField = route.params?.catergoryField || "Not Selected";
-
+  // const question_words = route.params?.question_words|| "Not Selected";
+  const question_words = "question_words";
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
    */
   const getwords = async () => {
     try {
-      const swords = await fetchVocabWords(selectedGrade, catergoryField);
+      const swords = await fetchVocabWords(selectedGrade, question_words);
       setWordList(swords);
+      setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching words:", error);
     }
@@ -125,18 +122,6 @@ export default function VocabCompetition(props) {
    *Sets The image url to the one returned
    *Sets the Loading stage to false
    */
-  const getimage = async () => {
-    try {
-      setIsLoadingImage(true);
-      const iurl = await fetchImage(englishWord);
-      setImgurl(iurl);
-      setIsLoading(false); // Mark loading as complete
-      setIsLoadingImage(false);
-    } catch (error) {
-      console.error("Error fetching words:", error);
-      setIsLoading(false); // Mark loading as complete even on error
-    }
-  };
 
   //useEffect that calls getwords function
   useEffect(() => {
@@ -152,32 +137,16 @@ export default function VocabCompetition(props) {
     }
   }, [wordList]);
 
-  //Use effect to call getImage
-  useEffect(() => {
-    if (englishWord != "English word") {
-      getimage();
-    }
-  }, [englishWord]);
-
   /*Handles Translate Button
    *shows english text
    */
   const handleTranslateClick = () => {
-    // if (showEnglish) {
-    //   setShowEnglish(false);
-    // } else {
-    //   setShowEnglish(true);
-    //   setEnglishWord(wordList[currentIndex].english);
-    // }
-    setShowEnglish(true);
-    setEnglishWord(wordList[currentIndex].english);
-    if(inputText != englishWord){
-      setMessage("Your answer is incorrect!")
+    if (showEnglish) {
+      setShowEnglish(false);
+    } else {
+      setShowEnglish(true);
+      setEnglishWord(wordList[currentIndex].english);
     }
-    else{
-      setMessage("Your answer is correct!")
-    }
-    
   };
 
   /*Handles Previous Button
@@ -207,19 +176,9 @@ export default function VocabCompetition(props) {
     setEnglishWord(wordList[nextIndex].english);
   };
 
-
-
-/*Handles input change for input box
-*/
-  const handleInputChange = (event) => {
-    const text = event.nativeEvent.text; // Extract the entered text from the event
-    setInputText(text); // Update the inputText state
-  };
-
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {isLoading   ? ( // Conditionally render loading indicator
+      {isLoading ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -231,98 +190,41 @@ export default function VocabCompetition(props) {
         <View style={styles.container}>
           <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
           <Text style={styles.selectedCategoryText}>
-            Category: {catergoryField}
+            Category: {question_words}
           </Text>
-          {/* {isLoadingImage  ? (
-            <ActivityIndicator
-            animating={true}
-            color={MD2Colors.purple700}
-            size={"large"}
-          />
-          ) : (
-            <Animated.Image
-              source={{
-                uri: imgurl,
-              }}
-              style={[styles.imageStyle]}
-              // style={[rotateYAnimatedStyle, styles.imageStyle]}
-            />
-          )} */}
           <View style={styles.wordContainer}>
-          <View style={styles.englishContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
-
-         
             {showEnglish && (
               <Text style={styles.space}> : </Text> // Add a space character
- 
             )}
             {showEnglish && (
               <Text style={styles.englishText}>{englishWord}</Text>
- 
             )}
-                      
-            {showEnglish && (
-              <View style={styles.englishContainer}>
-              <Text style={styles.englishText}>{message}</Text>
-            </View>
-            )}
-           </View>  
           </View>
-             
-            
-            {/* InputBox */}
-            <InputBox
-            onChange={handleInputChange}
-            placeholder="Type here"
-            isDisabled={!isDisabled}
-            value={inputText} // Bind the input value to the state
-          />
-                
-          {/* SubmitButton : Disbale input box and show english word*/}
+
+          <TouchableOpacity
+            style={styles.translateButton}
+            onPress={handleTranslateClick}
+          >
+            <Text style={styles.translateButtonText}>
+              {showEnglish ? "Hide English" : "Translate"}
+            </Text>
+          </TouchableOpacity>
+
           <View style={styles.buttonContainer}>
-            <Button
-                displayText="Submit"
-                mode="elevated"
-                isDisabled={!isDisabled}
-                onPress={() => {
-                setIsDisabled(false);
-                handleTranslateClick(); // Disable the button
-                }}
-              />
-             <Button
-              displayText="Next"
-              isDisabled={isDisabled}
-              mode="elevated"
+            <TouchableOpacity
+              style={styles.arrowButtonPrev}
+              onPress={handlePrevClick}
+            >
+              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.arrowButtonNext}
               onPress={handleNextClick}
-              // onPress={() => {
-              //   // const randomPage = getRandomPage();
-              //   // navigation.replace(randomPage, {
-              //   //   prevScore: score,
-              //   // });
-              // }}
-            />
-              <Button
-              displayText="Exit"
-              mode="elevated"
-              onPress={() => {
-                // NB STILL HAVE TO DO SCORES 
-                // updateScore(
-                //   "test",
-                //   selectedGrade,
-                //   score,
-                //   setScore,
-                //   localScore,
-                //   prevScore
-                // );
-
-                // Navigate to the leaderboard screen and pass selected grade
-                navigation.replace("Leaderboard Screen", {
-                  selectedGrade: selectedGrade,
-                });
-              }}
-            />
-
+            >
+              <Text style={styles.arrowTextNext}>{"--->"}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -339,7 +241,6 @@ const styles = StyleSheet.create({
   wordContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
     margin: 10,
   },
   loadingContainer: {
@@ -360,14 +261,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  englishContainer: {
-    alignItems: "center",
-    marginTop: 10, // Add some space between the English word and the message
-  },
   imageStyle: {
-    width: 250,
+    width: 150,
 
-    height: 250,
+    height: 150,
 
     borderRadius: 6,
   },
@@ -420,4 +317,3 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
-

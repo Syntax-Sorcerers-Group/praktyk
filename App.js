@@ -25,7 +25,9 @@ import {
   LiteratureLearning,
   // Leaderboard
   LeaderboardScreen,
-  VocabCompetition,
+  VocabCommonComp,
+  VocabQuestionComp,
+  VocabSynonymsComp,
   // Competitive
   GrammarNegativeComp,
   GrammarSTOMPIComp,
@@ -160,6 +162,10 @@ function App() {
         />
         <Stack.Screen name="Vocab Synonyms" component={VocabSynonyms} />
 
+        <Stack.Screen name="Common Comp" component={VocabCommonComp} />
+        <Stack.Screen name="Synonyms Comp" component={VocabSynonymsComp} />
+        <Stack.Screen name="Question Comp" component={VocabQuestionComp} />
+
         {/* Grammar Things */}
         <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
         <Stack.Screen name="STOMPI" component={GrammarSTOMPI} />
@@ -181,7 +187,7 @@ function App() {
 
         {/* Leaderboard */}
         <Stack.Screen name="Leaderboard Screen" component={LeaderboardScreen} />
-        <Stack.Screen name="Vocab Competition" component={VocabCompetition} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -30,10 +30,16 @@ export default function DetailsScreen({ navigation }) {
 
   //Random page generator
   const grammarPages = ["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];
+  const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
 
   const getRandomPage = () => {
     const randomIndex = Math.floor(Math.random() * grammarPages.length);
     return grammarPages[randomIndex];
+  };
+
+  const getRandomPageVocab = () => {
+    const randomIndex = Math.floor(Math.random() * VocabPages.length);
+    return VocabPages[randomIndex];
   };
 
   // // Effect to reset gradeSelected when the dropdown is closed
@@ -86,9 +92,9 @@ export default function DetailsScreen({ navigation }) {
               imageUrl="https://www.cael.ca/wp-content/uploads/2021/02/1_oq1GpaD4Eo-hoOt5LNRUOA.png"
               onPress={() => {
                 // navigation.navigate("Vocab Categories");
-                navigation.navigate("Vocab Competition", {
+                const randomPage = getRandomPageVocab();
+                navigation.navigate(randomPage, {
                   selectedGrade: isvalue,
-                  catergoryField,
                 });
               }}
             />
