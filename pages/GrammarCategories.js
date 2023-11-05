@@ -5,13 +5,14 @@ import CustomCard from "../components/CustomCards";
 
 export default function GrammarCategories({ navigation }) {
   return (
-    <ScrollView>
+    <ScrollView testID="grammar-categories-scrollview">
       <CustomCard
         title="STOMPI"
         imageUrl="https://picsum.photos/700"
         onPress={() => {
           navigation.navigate("STOMPI");
         }}
+        testID="stomp-custom-card" // Add testID here
       />
       <CustomCard
         title="Tenses"
@@ -19,6 +20,7 @@ export default function GrammarCategories({ navigation }) {
         onPress={() => {
           navigation.navigate("Tenses");
         }}
+        testID="tenses-custom-card" // Add testID here
       />
       <CustomCard
         title="Negative Form"
@@ -26,6 +28,7 @@ export default function GrammarCategories({ navigation }) {
         onPress={() => {
           navigation.navigate("Negative Form");
         }}
+        testID="negative-form-custom-card" // Add testID here
       />
     </ScrollView>
   );

@@ -100,8 +100,8 @@ export default function LoginScreen(props) {
         <InputBox
           autoComplete="email"
           onChange={(value) => setEmail(value.nativeEvent.text)}
-          placeHolder="Email"
-        />
+          placeHolder="Email"  
+          />
         <InputBox
           autoComplete="password"
           onChange={(value) => setPassword(value.nativeEvent.text)}
