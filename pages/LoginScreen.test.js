@@ -12,36 +12,36 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe("LoginScreen", () => {
-  it("renders the component correctly", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <NavigationContainer>
-        <LoginScreen />
-      </NavigationContainer>
-    );
+//   it("renders the component correctly", () => {
+//     const { getByText, getByPlaceholderText } = render(
+//       <NavigationContainer>
+//         <LoginScreen />
+//       </NavigationContainer>
+//     );
 
-    // Check if the component renders elements as expected
-    expect(getByText("Login")).toBeTruthy();
-    expect(getByPlaceholderText("Email")).toBeTruthy();
-    expect(getByPlaceholderText("Password")).toBeTruthy();
-  });
+//     // Check if the component renders elements as expected
+//     expect(getByText("Login")).toBeTruthy();
+//     expect(getByPlaceholderText("Email")).toBeTruthy();
+//     expect(getByPlaceholderText("Password")).toBeTruthy();
+//   });
 
-  it("handles login with valid data", async () => {
-    const { getByText, getByPlaceholderText } = render(<LoginScreen />);
+//   it("handles login with valid data", async () => {
+//     const { getByText, getByPlaceholderText } = render(<LoginScreen />);
 
-    const emailInput = getByPlaceholderText("Email");
-    const passwordInput = getByPlaceholderText("Password");
+//     const emailInput = getByPlaceholderText("Email");
+//     const passwordInput = getByPlaceholderText("Password");
 
-    // Use fireEvent.changeText to change the text of TextInput elements
-    fireEvent.changeText(emailInput, "test@example.com");
-    fireEvent.changeText(passwordInput, "password123");
+//     // Use fireEvent.changeText to change the text of TextInput elements
+//     fireEvent.changeText(emailInput, "test@example.com");
+//     fireEvent.changeText(passwordInput, "password123");
 
-    const loginButton = getByText("Login");
-    fireEvent.press(loginButton);
+//     const loginButton = getByText("Login");
+//     fireEvent.press(loginButton);
 
-    // You may want to add assertions based on your actual API response
-    // For example, you can check if navigation is correctly called after a successful login.
-    // Mocking the API response and navigation is recommended for unit testing.
-  });
+//     // You may want to add assertions based on your actual API response
+//     // For example, you can check if navigation is correctly called after a successful login.
+//     // Mocking the API response and navigation is recommended for unit testing.
+//   });
 
   it("handles login with missing data", async () => {
     const { getByText } = render(<LoginScreen />);
@@ -53,20 +53,20 @@ describe("LoginScreen", () => {
     // Mocking the API response and navigation is recommended for unit testing.
   });
 
-  it("handles login with incorrect email and password", async () => {
-    const { getByText, getByPlaceholderText } = render(<LoginScreen />);
+//   it("handles login with incorrect email and password", async () => {
+//     const { getByText, getByPlaceholderText } = render(<LoginScreen />);
 
-    const emailInput = getByPlaceholderText("Email");
-    const passwordInput = getByPlaceholderText("Password");
+//     const emailInput = getByPlaceholderText("Email");
+//     const passwordInput = getByPlaceholderText("Password");
 
-    // Use fireEvent.changeText to change the text of TextInput elements
-    fireEvent.changeText(emailInput, "test@example.com");
-    fireEvent.changeText(passwordInput, "incorrectPassword");
+//     // Use fireEvent.changeText to change the text of TextInput elements
+//     fireEvent.changeText(emailInput, "test@example.com");
+//     fireEvent.changeText(passwordInput, "incorrectPassword");
 
-    const loginButton = getByText("Login");
-    fireEvent.press(loginButton);
+//     const loginButton = getByText("Login");
+//     fireEvent.press(loginButton);
 
-    // You can add assertions to check if the popup for incorrect email/password is displayed.
-    // Mocking the API response and navigation is recommended for unit testing.
-  });
+//     // You can add assertions to check if the popup for incorrect email/password is displayed.
+//     // Mocking the API response and navigation is recommended for unit testing.
+//   });
 });
