@@ -16,6 +16,43 @@ import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import InputBox from "../../../components/InputBox";
 import Button from "../../../components/ButtonComponent";
 
+
+function updateScore(
+  username,
+  userGrade,
+  score,
+  setScore,
+  localScore,
+  prevScore
+) {
+  // Update the score
+  let scoreF = score + localScore + prevScore;
+  // Update the score in the state
+  setScore(scoreF);
+
+  const data = {
+    username: username,
+    grade: "grade" + userGrade,
+    vocabChange: scoreF,
+    grammarChange: 0,
+  };
+
+  // Now just post the data to api/post/updateUserScores
+  axios
+    .post(`${APP_ENV_PRAKTYK_API_LINK}/api/post/updateUserScores`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
   const data = {
@@ -99,9 +136,9 @@ export default function VocabCompetitionComp(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEnglish, setShowEnglish] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
-  const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
-  const [imgurl, setImgurl] = useState("");
-
+  const [score, setScore] = useState(0); // Track the score
+  const [localScore, setLocalScore] = useState(0); // Track the score
+  const [prevScore, setPrevScore] = useState(0); // Track the score
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
 
@@ -130,20 +167,35 @@ export default function VocabCompetitionComp(props) {
     }
   };
 
-  //useEffect that calls getwords function
+//useEffect that calls getwords function
   useEffect(() => {
     getwords();
   }, []);
 
-  //useEffect to update Afrikaans and English word first time when wordList changes
-  useEffect(() => {
-    if (wordList.length > 0) {
-      // const currentAfrikaansWord = wordList[currentIndex].afrikaans;
-      setAfrikaansWord(wordList[0].afrikaans);
-      setEnglishWord(wordList[0].english);
-    }
-  }, [wordList]);
+//useEffect that chooses a random word
+useEffect(()=>{
+  // Choose a word only after words have been fetched
+  if(!isLoading){
+    // Generate a random number between 0 and arrayLength - 1
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    setCurrentIndex(randomIndex)
+    setAfrikaansWord(wordList[currentIndex].afrikaans);
+    setEnglishWord(wordList[currentIndex].english);
+  }
+},[isLoading]);
 
+
+  // Use effect to set the score when the component loads
+  useEffect(() => {
+    setIsDisabled(true); // Disable the button
+
+    let prevScoreL = route.params?.prevScore || 0;
+
+    // Print the score
+    console.log("Prev score:", prevScoreL);
+
+    setPrevScore(prevScoreL);
+  }, []);
 
   /*Handles Translate Button
    *shows english text
@@ -153,10 +205,12 @@ export default function VocabCompetitionComp(props) {
     setShowEnglish(true);
     setEnglishWord(wordList[currentIndex].english);
     if(inputText.toLocaleLowerCase() != englishWord.toLocaleLowerCase()){
-      setMessage("The correct answer is : " + englishWord)
+      setMessage("The correct answer is : " + englishWord);
+      setLocalScore(-4);
     }
     else{
-      setMessage("Your answer is correct!")
+      setMessage("Your answer is correct!");
+      setLocalScore(4);
     }
     
   };
@@ -248,7 +302,7 @@ export default function VocabCompetitionComp(props) {
               onPress={() => {
                 const randomPage = getRandomPageVocab();
                 navigation.replace(randomPage, {
-                  // prevScore: score + localScore + prevScore,
+                  prevScore: score + localScore + prevScore,
                   selectedGrade: selectedGrade,
                 });
               }}
@@ -258,20 +312,22 @@ export default function VocabCompetitionComp(props) {
               mode="elevated"
               onPress={() => {
                 // NB STILL HAVE TO DO SCORES 
-                // updateScore(
-                //   "test",
-                //   selectedGrade,
-                //   score,
-                //   setScore,
-                //   localScore,
-                //   prevScore
-                // );
+                updateScore(
+                  "test",
+                  selectedGrade,
+                  score,
+                  setScore,
+                  localScore,
+                  prevScore
+                );
 
-                // Navigate to the leaderboard screen and pass selected grade
+              // Add a delay of 3 seconds before navigating to the leaderboard
+              setTimeout(() => {
                 navigation.replace("Leaderboard Screen", {
                   selectedGrade: selectedGrade,
                 });
-              }}
+              }, 3000); // 3000 milliseconds = 3 seconds
+            }}
             />
 
           </View>

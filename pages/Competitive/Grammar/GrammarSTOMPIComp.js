@@ -371,11 +371,13 @@ export default function GrammarSTOMPIComp(props) {
                   prevScore
                 );
 
-                // Navigate to the leaderboard screen and pass selected grade
+              // Add a delay of 3 seconds before navigating to the leaderboard
+              setTimeout(() => {
                 navigation.replace("Leaderboard Screen", {
                   selectedGrade: selectedGrade,
                 });
-              }}
+              }, 3000); // 3000 milliseconds = 3 seconds
+            }}
             />
           </View>
           {/* <Button
