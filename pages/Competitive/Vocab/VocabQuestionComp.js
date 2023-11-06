@@ -13,7 +13,8 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-
+import InputBox from "../../../components/InputBox";
+import Button from "../../../components/ButtonComponent";
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
   const data = {
@@ -88,40 +89,45 @@ async function fetchImage(englishWord) {
 
 export default function VocabQuestionComp(props) {
   const navigation = useNavigation();
-
+  const [message, setMessage] = useState(""); // State to store the message
+  const [inputText, setInputText] = useState(""); // State to store the input text
+  const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
-  const [englishWord, setEnglishWord] = useState("Loading");
+  const [englishWord, setEnglishWord] = useState("English word");
   const [wordList, setWordList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEnglish, setShowEnglish] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
-  const [imgurl, setImgurl] = useState("https://picsum.photos/700");
+  const [imgurl, setImgurl] = useState("");
 
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
 
   // Retrieve the selectedGrade parameter from the route
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
-  // const question_words = route.params?.question_words|| "Not Selected";
-  const question_words = "question_words";
+  // const catergoryField = route.params?.catergoryField || "Not Selected";
+  const catergoryField = "question_words";
+    //Random page generator
+    const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
+
+    const getRandomPageVocab = () => {
+      const randomIndex = Math.floor(Math.random() * VocabPages.length);
+      return VocabPages[randomIndex];
+    };
+
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
    */
   const getwords = async () => {
     try {
-      const swords = await fetchVocabWords(selectedGrade, question_words);
+      const swords = await fetchVocabWords(selectedGrade, catergoryField);
       setWordList(swords);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching words:", error);
     }
   };
-
-  /* function that calls  async fetch image function
-   *Sets The image url to the one returned
-   *Sets the Loading stage to false
-   */
 
   //useEffect that calls getwords function
   useEffect(() => {
@@ -137,48 +143,34 @@ export default function VocabQuestionComp(props) {
     }
   }, [wordList]);
 
+
   /*Handles Translate Button
    *shows english text
    */
   const handleTranslateClick = () => {
-    if (showEnglish) {
-      setShowEnglish(false);
-    } else {
-      setShowEnglish(true);
-      setEnglishWord(wordList[currentIndex].english);
+
+    setShowEnglish(true);
+    setEnglishWord(wordList[currentIndex].english);
+    if(inputText.toLocaleLowerCase() != englishWord.toLocaleLowerCase()){
+      setMessage("The correct answer is : " + englishWord)
     }
+    else{
+      setMessage("Your answer is correct!")
+    }
+    
   };
 
-  /*Handles Previous Button
-   *Set current Index value
-   *Sets  Afrikaans and  English words according to current index
-   */
-  const handlePrevClick = () => {
-    const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : 0;
-    // setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
-    setCurrentIndex(nextIndex);
-    setShowEnglish(false);
-    setAfrikaansWord(wordList[nextIndex].afrikaans);
-    setEnglishWord(wordList[nextIndex].english);
+/*Handles input change for input box
+*/
+  const handleInputChange = (event) => {
+    const text = event.nativeEvent.text; // Extract the entered text from the event
+    setInputText(text); // Update the inputText state
   };
 
-  /*Handles Previous Button
-   *Set current Index value
-   *We use nextindex variable instead of directly using current index because setstate is async
-   *Sets  Afrikaans and  English words according to current index
-   *Hides the English text
-   */
-  const handleNextClick = () => {
-    const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
-    setCurrentIndex(nextIndex);
-    setShowEnglish(false);
-    setAfrikaansWord(wordList[nextIndex].afrikaans);
-    setEnglishWord(wordList[nextIndex].english);
-  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {isLoading ? ( // Conditionally render loading indicator
+      {isLoading   ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -190,41 +182,97 @@ export default function VocabQuestionComp(props) {
         <View style={styles.container}>
           <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
           <Text style={styles.selectedCategoryText}>
-            Category: {question_words}
+            Category: {catergoryField}
           </Text>
+          {/* {isLoadingImage  ? (
+            <ActivityIndicator
+            animating={true}
+            color={MD2Colors.purple700}
+            size={"large"}
+          />
+          ) : (
+            <Animated.Image
+              source={{
+                uri: imgurl,
+              }}
+              style={[styles.imageStyle]}
+              // style={[rotateYAnimatedStyle, styles.imageStyle]}
+            />
+          )} */}
           <View style={styles.wordContainer}>
+          <View style={styles.englishContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
-            {showEnglish && (
+            {/* {showEnglish && (
               <Text style={styles.space}> : </Text> // Add a space character
+ 
             )}
             {showEnglish && (
               <Text style={styles.englishText}>{englishWord}</Text>
+ 
+            )} */}
+                      
+            {showEnglish && (
+              <View style={styles.englishContainer}>
+              <Text style={styles.englishText}>{message}</Text>
+            </View>
             )}
+           </View>  
           </View>
-
-          <TouchableOpacity
-            style={styles.translateButton}
-            onPress={handleTranslateClick}
-          >
-            <Text style={styles.translateButtonText}>
-              {showEnglish ? "Hide English" : "Translate"}
-            </Text>
-          </TouchableOpacity>
-
+             
+            
+            {/* InputBox */}
+            <InputBox
+            onChange={handleInputChange}
+            placeholder="Type here"
+            isDisabled={!isDisabled}
+            value={inputText} // Bind the input value to the state
+          />
+                
+          {/* SubmitButton : Disbale input box and show english word*/}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.arrowButtonPrev}
-              onPress={handlePrevClick}
-            >
-              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-            </TouchableOpacity>
+            <Button
+                displayText="Submit"
+                mode="elevated"
+                isDisabled={!isDisabled}
+                onPress={() => {
+                setIsDisabled(false);
+                handleTranslateClick(); // Disable the button
+                }}
+              />
+             <Button
+              displayText="Next"
+              isDisabled={isDisabled}
+              mode="elevated"
+              // onPress={handleNextClick}
+              onPress={() => {
+                const randomPage = getRandomPageVocab();
+                navigation.replace(randomPage, {
+                  // prevScore: score + localScore + prevScore,
+                  selectedGrade: selectedGrade,
+                });
+              }}
+            />
+              <Button
+              displayText="Exit"
+              mode="elevated"
+              onPress={() => {
+                // NB STILL HAVE TO DO SCORES 
+                // updateScore(
+                //   "test",
+                //   selectedGrade,
+                //   score,
+                //   setScore,
+                //   localScore,
+                //   prevScore
+                // );
 
-            <TouchableOpacity
-              style={styles.arrowButtonNext}
-              onPress={handleNextClick}
-            >
-              <Text style={styles.arrowTextNext}>{"--->"}</Text>
-            </TouchableOpacity>
+                // Navigate to the leaderboard screen and pass selected grade
+                navigation.replace("Leaderboard Screen", {
+                  selectedGrade: selectedGrade,
+                });
+              }}
+            />
+
           </View>
         </View>
       )}
@@ -241,6 +289,7 @@ const styles = StyleSheet.create({
   wordContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
   },
   loadingContainer: {
@@ -261,10 +310,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  englishContainer: {
+    alignItems: "center",
+    marginTop: 10, // Add some space between the English word and the message
+  },
   imageStyle: {
-    width: 150,
+    width: 250,
 
-    height: 150,
+    height: 250,
 
     borderRadius: 6,
   },
@@ -280,8 +333,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonContainer: {
-    flexDirection: "row",
-    marginTop: 20,
+    margin:10,
+    flexDirection: "column", // To display buttons in a row
+    justifyContent: "space-between", // To distribute the space evenly
+    maxWidth: "80%", // Limit the width of the container
+    alignSelf: "center", // Center the container horizontally'
   },
   arrowButtonPrev: {
     backgroundColor: "lightgray",
