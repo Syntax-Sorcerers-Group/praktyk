@@ -21,11 +21,13 @@ export { default as LiteratureLearning } from "./LiteratureLearning";
 
 //Leaderboard
 export { default as LeaderboardScreen } from "./LeaderboardScreen";
-export { default as VocabCompetition } from "./VocabCompetition";
+
 
 // Competitive
 export { default as GrammarSTOMPIComp } from "./Competitive/Grammar/GrammarSTOMPIComp";
 export { default as GrammarTensesComp } from "./Competitive/Grammar/GrammarTensesComp";
 export { default as GrammarNegativeComp } from "./Competitive/Grammar/GrammarNegativeComp";
-
+export { default as VocabCommonComp } from "./Competitive/Vocab/VocabCommonComp";
+export { default as VocabQuestionComp } from "./Competitive/Vocab/VocabQuestionComp";
+export { default as VocabSynonymsComp } from "./Competitive/Vocab/VocabSynonymsComp";
 // export { default as AnotherScreen } from './AnotherScreen';

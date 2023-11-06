@@ -13,9 +13,8 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import InputBox from "../components/InputBox";
-import Button from "../components/ButtonComponent";
-
+import InputBox from "../../../components/InputBox";
+import Button from "../../../components/ButtonComponent";
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
   const data = {
@@ -35,13 +34,13 @@ async function fetchVocabWords(gradeNo, categoryField) {
       }
     );
 
-    if (response && response.data && response.data.common_words) {
-      const commonWords = response.data.common_words;
+    if (response && response.data && response.data.question_words) {
+      const questionwords = response.data.question_words;
       const wordPairs = [];
 
-      for (const englishWord in commonWords) {
-        if (commonWords.hasOwnProperty(englishWord)) {
-          const afrikaansWord = commonWords[englishWord];
+      for (const englishWord in questionwords) {
+        if (questionwords.hasOwnProperty(englishWord)) {
+          const afrikaansWord = questionwords[englishWord];
           wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
         }
       }
@@ -88,7 +87,7 @@ async function fetchImage(englishWord) {
   }
 }
 
-export default function VocabCompetition(props) {
+export default function VocabQuestionComp(props) {
   const navigation = useNavigation();
   const [message, setMessage] = useState(""); // State to store the message
   const [inputText, setInputText] = useState(""); // State to store the input text
@@ -107,7 +106,15 @@ export default function VocabCompetition(props) {
 
   // Retrieve the selectedGrade parameter from the route
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
-  const catergoryField = route.params?.catergoryField || "Not Selected";
+  // const catergoryField = route.params?.catergoryField || "Not Selected";
+  const catergoryField = "question_words";
+    //Random page generator
+    const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
+
+    const getRandomPageVocab = () => {
+      const randomIndex = Math.floor(Math.random() * VocabPages.length);
+      return VocabPages[randomIndex];
+    };
 
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
@@ -116,25 +123,9 @@ export default function VocabCompetition(props) {
     try {
       const swords = await fetchVocabWords(selectedGrade, catergoryField);
       setWordList(swords);
-    } catch (error) {
-      console.error("Error fetching words:", error);
-    }
-  };
-
-  /* function that calls  async fetch image function
-   *Sets The image url to the one returned
-   *Sets the Loading stage to false
-   */
-  const getimage = async () => {
-    try {
-      setIsLoadingImage(true);
-      const iurl = await fetchImage(englishWord);
-      setImgurl(iurl);
       setIsLoading(false); // Mark loading as complete
-      setIsLoadingImage(false);
     } catch (error) {
       console.error("Error fetching words:", error);
-      setIsLoading(false); // Mark loading as complete even on error
     }
   };
 
@@ -152,62 +143,22 @@ export default function VocabCompetition(props) {
     }
   }, [wordList]);
 
-  //Use effect to call getImage
-  useEffect(() => {
-    if (englishWord != "English word") {
-      getimage();
-    }
-  }, [englishWord]);
 
   /*Handles Translate Button
    *shows english text
    */
   const handleTranslateClick = () => {
-    // if (showEnglish) {
-    //   setShowEnglish(false);
-    // } else {
-    //   setShowEnglish(true);
-    //   setEnglishWord(wordList[currentIndex].english);
-    // }
+
     setShowEnglish(true);
     setEnglishWord(wordList[currentIndex].english);
-    if(inputText != englishWord){
-      setMessage("Your answer is incorrect!")
+    if(inputText.toLocaleLowerCase() != englishWord.toLocaleLowerCase()){
+      setMessage("The correct answer is : " + englishWord)
     }
     else{
       setMessage("Your answer is correct!")
     }
     
   };
-
-  /*Handles Previous Button
-   *Set current Index value
-   *Sets  Afrikaans and  English words according to current index
-   */
-  const handlePrevClick = () => {
-    const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : 0;
-    // setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
-    setCurrentIndex(nextIndex);
-    setShowEnglish(false);
-    setAfrikaansWord(wordList[nextIndex].afrikaans);
-    setEnglishWord(wordList[nextIndex].english);
-  };
-
-  /*Handles Previous Button
-   *Set current Index value
-   *We use nextindex variable instead of directly using current index because setstate is async
-   *Sets  Afrikaans and  English words according to current index
-   *Hides the English text
-   */
-  const handleNextClick = () => {
-    const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
-    setCurrentIndex(nextIndex);
-    setShowEnglish(false);
-    setAfrikaansWord(wordList[nextIndex].afrikaans);
-    setEnglishWord(wordList[nextIndex].english);
-  };
-
-
 
 /*Handles input change for input box
 */
@@ -251,16 +202,14 @@ export default function VocabCompetition(props) {
           <View style={styles.wordContainer}>
           <View style={styles.englishContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
-
-         
-            {showEnglish && (
+            {/* {showEnglish && (
               <Text style={styles.space}> : </Text> // Add a space character
  
             )}
             {showEnglish && (
               <Text style={styles.englishText}>{englishWord}</Text>
  
-            )}
+            )} */}
                       
             {showEnglish && (
               <View style={styles.englishContainer}>
@@ -294,13 +243,14 @@ export default function VocabCompetition(props) {
               displayText="Next"
               isDisabled={isDisabled}
               mode="elevated"
-              onPress={handleNextClick}
-              // onPress={() => {
-              //   // const randomPage = getRandomPage();
-              //   // navigation.replace(randomPage, {
-              //   //   prevScore: score,
-              //   // });
-              // }}
+              // onPress={handleNextClick}
+              onPress={() => {
+                const randomPage = getRandomPageVocab();
+                navigation.replace(randomPage, {
+                  // prevScore: score + localScore + prevScore,
+                  selectedGrade: selectedGrade,
+                });
+              }}
             />
               <Button
               displayText="Exit"
@@ -383,8 +333,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonContainer: {
-    flexDirection: "row",
-    marginTop: 20,
+    margin:10,
+    flexDirection: "column", // To display buttons in a row
+    justifyContent: "space-between", // To distribute the space evenly
+    maxWidth: "80%", // Limit the width of the container
+    alignSelf: "center", // Center the container horizontally'
   },
   arrowButtonPrev: {
     backgroundColor: "lightgray",
@@ -420,4 +373,3 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
-
