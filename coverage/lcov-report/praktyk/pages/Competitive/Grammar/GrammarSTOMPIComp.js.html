@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -492,7 +492,12 @@
 <a name='L427'></a><a href='#L427'>427</a>
 <a name='L428'></a><a href='#L428'>428</a>
 <a name='L429'></a><a href='#L429'>429</a>
-<a name='L430'></a><a href='#L430'>430</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L430'></a><a href='#L430'>430</a>
+<a name='L431'></a><a href='#L431'>431</a>
+<a name='L432'></a><a href='#L432'>432</a>
+<a name='L433'></a><a href='#L433'>433</a>
+<a name='L434'></a><a href='#L434'>434</a>
+<a name='L435'></a><a href='#L435'>435</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -609,11 +614,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -842,6 +849,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -864,6 +872,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -936,9 +946,9 @@ import Button from "../../../components/ButtonComponent";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >getGrammarWords(</span>userGrade) {
+async function <span class="fstat-no" title="function not covered" >getGrammarWords(</span>selectedGrade) {
   const data = <span class="cstat-no" title="statement not covered" >{</span>
-    grade: "grade" + userGrade,
+    grade: "grade" + selectedGrade,
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  try {</span>
@@ -983,7 +993,7 @@ async function <span class="fstat-no" title="function not covered" >getGrammarWo
 &nbsp;
 function <span class="fstat-no" title="function not covered" >updateScore(</span>
   username,
-  userGrade,
+  selectedGrade,
   score,
   setScore,
   localScore,
@@ -997,7 +1007,7 @@ function <span class="fstat-no" title="function not covered" >updateScore(</span
 &nbsp;
   const data = <span class="cstat-no" title="statement not covered" >{</span>
     username: username,
-    grade: "grade" + userGrade,
+    grade: "grade" + selectedGrade,
     vocabChange: 0,
     grammarChange: scoreF,
   };
@@ -1038,9 +1048,11 @@ export default function <span class="fstat-no" title="function not covered" >Gra
 &nbsp;
   // Get the score from the route params
   const route = <span class="cstat-no" title="statement not covered" >useRoute();</span>
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = <span class="cstat-no" title="statement not covered" >route.params?.selectedGrade || "Not Selected";</span>
   const navigation = <span class="cstat-no" title="statement not covered" >useNavigation();</span>
 &nbsp;
-  const userGrade = <span class="cstat-no" title="statement not covered" >8;</span> // TODO: Get the user's grade from the home page instead of hardcoding it.
+  // const selectedGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
 &nbsp;
   //Random page generator
   const grammarPages = <span class="cstat-no" title="statement not covered" >["Tenses Comp", "STOMPI Comp", "Negative Form Comp"];</span>
@@ -1063,7 +1075,7 @@ export default function <span class="fstat-no" title="function not covered" >Gra
   // Get the words from the server
   const fetchWords = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const swords = <span class="cstat-no" title="statement not covered" >await getGrammarWords(userGrade);</span>
+      const swords = <span class="cstat-no" title="statement not covered" >await getGrammarWords(selectedGrade);</span>
 <span class="cstat-no" title="statement not covered" >      setServerWords(swords);</span>
 <span class="cstat-no" title="statement not covered" >      setIsLoading(false); </span>// Mark loading as complete
     } catch (error) {
@@ -1075,7 +1087,7 @@ export default function <span class="fstat-no" title="function not covered" >Gra
   // Use useEffect without any conditionals
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    fetchWords();</span>
-  }, [userGrade]);
+  }, [selectedGrade]);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
     // Orginal words
@@ -1272,6 +1284,7 @@ export default function <span class="fstat-no" title="function not covered" >Gra
                 const randomPage = <span class="cstat-no" title="statement not covered" >getRandomPage();</span>
 <span class="cstat-no" title="statement not covered" >                navigation.replace(randomPage, {</span>
                   prevScore: score + localScore + prevScore,
+                  selectedGrade: selectedGrade,
                 });
               }}
               style={styles.button} // Apply padding style to the button
@@ -1284,15 +1297,17 @@ export default function <span class="fstat-no" title="function not covered" >Gra
                 // Update the score in the database
 <span class="cstat-no" title="statement not covered" >                updateScore(</span>
                   "test",
-                  "8",
+                  selectedGrade,
                   score,
                   setScore,
                   localScore,
                   prevScore
                 );
 &nbsp;
-                // Navigate to the leaderboard screen
-<span class="cstat-no" title="statement not covered" >                navigation.replace("Leaderboard Screen");</span>
+                // Navigate to the leaderboard screen and pass selected grade
+<span class="cstat-no" title="statement not covered" >                navigation.replace("Leaderboard Screen", {</span>
+                  selectedGrade: selectedGrade,
+                });
               }}
             /&gt;
           &lt;/View&gt;
@@ -1357,7 +1372,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-04T19:46:04.677Z
+                at 2023-11-06T21:31:26.884Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

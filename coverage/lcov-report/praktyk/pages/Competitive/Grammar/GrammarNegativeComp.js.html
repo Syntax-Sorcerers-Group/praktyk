@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/100</span>
+                <span class='fraction'>0/101</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/56</span>
+                <span class='fraction'>0/58</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/100</span>
+                <span class='fraction'>0/101</span>
             </div>
         
             
@@ -436,7 +436,13 @@
 <a name='L371'></a><a href='#L371'>371</a>
 <a name='L372'></a><a href='#L372'>372</a>
 <a name='L373'></a><a href='#L373'>373</a>
-<a name='L374'></a><a href='#L374'>374</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L374'></a><a href='#L374'>374</a>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -614,7 +620,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -765,6 +773,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -775,6 +784,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -786,6 +796,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -987,6 +999,8 @@ export default function <span class="fstat-no" title="function not covered" >Gra
 &nbsp;
   // Get the score from the route params
   const route = <span class="cstat-no" title="statement not covered" >useRoute();</span>
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = <span class="cstat-no" title="statement not covered" >route.params?.selectedGrade || "Not Selected";</span>
   const navigation = <span class="cstat-no" title="statement not covered" >useNavigation();</span>
 &nbsp;
   //Random page generator
@@ -1015,7 +1029,7 @@ export default function <span class="fstat-no" title="function not covered" >Gra
   };
 &nbsp;
   const getSentencesFromServer = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-    const { negative, positive } = <span class="cstat-no" title="statement not covered" >await getSentences("8");</span> // Get the sentences from the server
+    const { negative, positive } = <span class="cstat-no" title="statement not covered" >await getSentences(selectedGrade);</span> // Get the sentences from the server
 <span class="cstat-no" title="statement not covered" >    setNegativeSentences(negative); </span>// Set the present sentences
 <span class="cstat-no" title="statement not covered" >    setPositiveSentences(positive); </span>// Set the past sentences
 <span class="cstat-no" title="statement not covered" >    setSentencesFetched(true); </span>// Set the flag to indicate that sentences have been fetched
@@ -1139,6 +1153,8 @@ export default function <span class="fstat-no" title="function not covered" >Gra
                 const randomPage = <span class="cstat-no" title="statement not covered" >getRandomPage();</span>
 <span class="cstat-no" title="statement not covered" >                navigation.replace(randomPage, {</span>
                   prevScore: score + localScore + prevScore,
+                  selectedGrade: selectedGrade,
+                  
                 });
               }}
             /&gt;
@@ -1150,15 +1166,17 @@ export default function <span class="fstat-no" title="function not covered" >Gra
                 // Update the score in the database
 <span class="cstat-no" title="statement not covered" >                updateScore(</span>
                   "test",
-                  "8",
+                  selectedGrade,
                   score,
                   setScore,
                   localScore,
                   prevScore
                 );
 &nbsp;
-                // Navigate to the leaderboard screen
-<span class="cstat-no" title="statement not covered" >                navigation.replace("Leaderboard Screen");</span>
+                // Navigate to the leaderboard screen and pass selected grade
+<span class="cstat-no" title="statement not covered" >                navigation.replace("Leaderboard Screen", {</span>
+                  selectedGrade: selectedGrade,
+                });
               }}
             /&gt;
           &lt;/View&gt;
@@ -1189,7 +1207,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-04T19:46:04.677Z
+                at 2023-11-06T21:31:26.884Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

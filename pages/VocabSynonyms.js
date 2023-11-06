@@ -53,8 +53,6 @@ async function fetchVocabWords(gradeNo, categoryField) {
 }
 
 export default function VocabSynonyms(props) {
-  const navigation = useNavigation();
-
   const [afrikaansWord, setAfrikaansWord] = useState("Afrikaans Word");
   const [englishWord, setEnglishWord] = useState("Loading");
   const [wordList, setWordList] = useState([]);
@@ -158,6 +156,7 @@ export default function VocabSynonyms(props) {
       {isLoading ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
+            testID="loading-indicator"
             animating={true}
             color={MD2Colors.purple700}
             size={"large"}
@@ -167,9 +166,8 @@ export default function VocabSynonyms(props) {
         <View style={styles.container}>
           <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
           <Text style={styles.selectedCategoryText}>
-            Category: {synonyms
-    }
-        </Text>
+            Category: {synonyms}
+          </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
             {showEnglish && (
@@ -181,6 +179,7 @@ export default function VocabSynonyms(props) {
           </View>
 
           <TouchableOpacity
+            testID="button-translate"
             style={styles.translateButton}
             onPress={handleTranslateClick}
           >

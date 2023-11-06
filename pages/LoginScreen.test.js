@@ -1,7 +1,8 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import LoginScreen from "./LoginScreen";
+// LoginScreen.test.js
+import React from 'react';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import '@testing-library/jest-native/extend-expect'; // extends Jest's expect with jest-native's matchers
+import LoginScreen from './LoginScreen';
 
 // Mock @react-navigation/native to provide a basic navigation context
 jest.mock('@react-navigation/native', () => ({
@@ -9,64 +10,69 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     navigate: jest.fn(),
   }),
+  useRoute: () => ({
+    params: {
+      selectedGrade: 'MockedGrade',
+      synonyms: 'MockedSynonyms',
+    },
+  }),
 }));
 
-describe("LoginScreen", () => {
-//   it("renders the component correctly", () => {
-//     const { getByText, getByPlaceholderText } = render(
-//       <NavigationContainer>
-//         <LoginScreen />
-//       </NavigationContainer>
-//     );
+jest.mock('axios'); // Assuming you use axios and want to mock its behavior
 
-//     // Check if the component renders elements as expected
-//     expect(getByText("Login")).toBeTruthy();
-//     expect(getByPlaceholderText("Email")).toBeTruthy();
-//     expect(getByPlaceholderText("Password")).toBeTruthy();
-//   });
-
-//   it("handles login with valid data", async () => {
-//     const { getByText, getByPlaceholderText } = render(<LoginScreen />);
-
-//     const emailInput = getByPlaceholderText("Email");
-//     const passwordInput = getByPlaceholderText("Password");
-
-//     // Use fireEvent.changeText to change the text of TextInput elements
-//     fireEvent.changeText(emailInput, "test@example.com");
-//     fireEvent.changeText(passwordInput, "password123");
-
-//     const loginButton = getByText("Login");
-//     fireEvent.press(loginButton);
-
-//     // You may want to add assertions based on your actual API response
-//     // For example, you can check if navigation is correctly called after a successful login.
-//     // Mocking the API response and navigation is recommended for unit testing.
-//   });
-
-  it("handles login with missing data", async () => {
-    const { getByText } = render(<LoginScreen />);
-    const loginButton = getByText("Login");
-
-    fireEvent.press(loginButton);
-
-    // You can add assertions to check if the popup for missing data is displayed.
-    // Mocking the API response and navigation is recommended for unit testing.
+describe('LoginScreen Component Tests', () => {
+  test('renders without crashing', () => {
+    render(<LoginScreen />);
   });
 
-//   it("handles login with incorrect email and password", async () => {
-//     const { getByText, getByPlaceholderText } = render(<LoginScreen />);
+  test('displays popup when login button is clicked with empty fields', () => {
+    const { getByText } = render(<LoginScreen />);
 
-//     const emailInput = getByPlaceholderText("Email");
-//     const passwordInput = getByPlaceholderText("Password");
+    fireEvent.press(getByText('Login'));
 
-//     // Use fireEvent.changeText to change the text of TextInput elements
-//     fireEvent.changeText(emailInput, "test@example.com");
-//     fireEvent.changeText(passwordInput, "incorrectPassword");
+    expect(getByText('Email and/or password is missing.')).not.toBeVisible();
+  });
 
-//     const loginButton = getByText("Login");
-//     fireEvent.press(loginButton);
+  test('updates email and password state on input change', () => {
+    const { getByTestId } = render(<LoginScreen />);
 
-//     // You can add assertions to check if the popup for incorrect email/password is displayed.
-//     // Mocking the API response and navigation is recommended for unit testing.
-//   });
+    fireEvent.changeText(getByTestId('Email'), 'test@example.com');
+    fireEvent.changeText(getByTestId('Password'), 'password123');
+
+    expect(getByTestId('Email').props.value).toBe('test@example.com');
+    expect(getByTestId('Password').props.value).toBe('password123');
+  });
+
+  test('does not display popup when login button is clicked with empty fields', () => {
+    const { queryByText, getByTestId } = render(<LoginScreen />);
+
+    fireEvent.press(queryByText('Login'));
+
+    expect(queryByText('Email and/or password is missing.')).not.toBeVisible();
+  });
+
+  test('updates email and password state on input change', () => {
+    const { getByTestId } = render(<LoginScreen />);
+
+    fireEvent.changeText(getByTestId('Email'), 'test@example.com');
+    fireEvent.changeText(getByTestId('Password'), 'password123');
+
+    expect(getByTestId('Email').props.value).toBe('test@example.com');
+    expect(getByTestId('Password').props.value).toBe('password123');
+  });
+
+  test('navigates to "General" route on successful login', async () => {
+    const { getByText, getByTestId } = render(<LoginScreen />);
+    
+    // Mock the successful response from the server
+    jest.spyOn(global, 'fetch').mockImplementationOnce(() => Promise.resolve({
+      json: () => Promise.resolve({}),
+    }));
+
+    fireEvent.changeText(getByTestId('Email'), 'test@example.com');
+    fireEvent.changeText(getByTestId('Password'), 'password123');
+    
+    fireEvent.press(getByText('Login'));
+
+  });
 });

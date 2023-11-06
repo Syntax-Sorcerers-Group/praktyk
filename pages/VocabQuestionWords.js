@@ -179,7 +179,7 @@ export default function VocabQuestionWords(props) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {isLoading ? ( // Conditionally render loading indicator
-        <View style={styles.loadingContainer}>
+        <View testID="loading-indicator" style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
             color={MD2Colors.purple700}

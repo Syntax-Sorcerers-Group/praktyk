@@ -3,7 +3,7 @@ import { TextInput } from "react-native-paper";
 import { View, StyleSheet } from "react-native";
 
 const InputBox = (props) => {
-  const { autoComplete, placeHolder, onChange, icon, isDisabled } = props;
+  const { autoComplete, placeHolder, onChange, icon, isDisabled, testID } = props;
   const [text, setText] = React.useState("");
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
@@ -14,7 +14,7 @@ const InputBox = (props) => {
   return (
     <View style={styles.container}>
       <TextInput
-        testID="input-box"
+        testID={testID}
         mode="outlined"
         label={placeHolder}
         value={text}

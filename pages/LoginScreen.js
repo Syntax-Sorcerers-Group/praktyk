@@ -98,11 +98,13 @@ export default function LoginScreen(props) {
       </View>
       <View style={styles.components}>
         <InputBox
+          testID="Email"
           autoComplete="email"
           onChange={(value) => setEmail(value.nativeEvent.text)}
           placeHolder="Email"  
           />
         <InputBox
+          testID="Password"
           autoComplete="password"
           onChange={(value) => setPassword(value.nativeEvent.text)}
           placeHolder="Password"

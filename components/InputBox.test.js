@@ -4,20 +4,20 @@ import InputBox from './InputBox'; // assuming your component file is named Inpu
 
 describe('InputBox component', () => {
   it('renders correctly', () => {
-    const { getByTestId } = render(<InputBox />);
+    const { getByTestId } = render(<InputBox testID="input-box"/>);
     const inputBox = getByTestId('input-box');
     expect(inputBox).toBeTruthy();
   });
 
   it('handles text change', () => {
-    const { getByTestId } = render(<InputBox />);
+    const { getByTestId } = render(<InputBox testID="input-box"/>);
     const inputBox = getByTestId('input-box');
     fireEvent.changeText(inputBox, 'Hello');
     expect(inputBox.props.value).toBe('Hello');
   });
 
   it('disables input when isDisabled prop is true', () => {
-    const { getByTestId } = render(<InputBox isDisabled={true} />);
+    const { getByTestId } = render(<InputBox isDisabled={true} testID="input-box"/>);
     const inputBox = getByTestId('input-box');
     expect(inputBox.props.disabled).toBe();
   });
