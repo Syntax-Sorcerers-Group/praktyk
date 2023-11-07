@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
@@ -35,18 +35,17 @@ async function fetchLeaderboardData(gradeNo) {
 
 const LeaderboardScreen = () => {
   //Use state for leaderboard data , empty at start
-  const [leaderboardData, setLeaderboardData] = useState([
-  ]);
+  const [leaderboardData, setLeaderboardData] = useState([]);
 
   const [sortOrder, setSortOrder] = useState("desc");
   const [sortGrammar, setSortGrammar] = useState("desc");
   const [sortVocab, setSortVocab] = useState("desc");
   const [isLoading, setIsLoading] = useState(true); // Track loading state
-    // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
-    const route = useRoute();
+  // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
+  const route = useRoute();
 
-    // Retrieve the selectedGrade parameter from the route
-    const selectedGrade = route.params?.selectedGrade || "Not Selected";
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = route.params?.selectedGrade || "Not Selected";
 
   const toggleSortOrder = () => {
     const newOrder = sortOrder === "asc" ? "desc" : "asc";
@@ -93,35 +92,61 @@ const LeaderboardScreen = () => {
     setLeaderboardData(sortedData);
   };
 
- /* function that calls async fetch leaderboard data function
+  /* function that calls async fetch leaderboard data function
 *It formats and sets the data to the leaderboard.
 
 */
+  // const fetchData = async () => {
+  //   try {
+
+  //     const data = await fetchLeaderboardData(selectedGrade); // Replace with the desired grade
+  //     const formattedData = data.map((item, index) => ({
+  //       id: index + 1,
+  //       firstName: item.username, // Assuming `username` contains the first name
+  //       score: item.vocabScore + item.grammarScore,
+  //       grammarScore: item.grammarScore,
+  //       vocabScore: item.vocabScore,
+  //     }));
+  //     setLeaderboardData(formattedData);
+  //     setIsLoading(false); // Mark loading as complete
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
   const fetchData = async () => {
     try {
-
       const data = await fetchLeaderboardData(selectedGrade); // Replace with the desired grade
-      const formattedData = data.map((item, index) => ({
+
+      // Sort the data in descending order of total score
+      const sortedData = data.sort(
+        (a, b) =>
+          b.vocabScore + b.grammarScore - (a.vocabScore + a.grammarScore)
+      );
+
+      const formattedData = sortedData.map((item, index) => ({
         id: index + 1,
         firstName: item.username, // Assuming `username` contains the first name
         score: item.vocabScore + item.grammarScore,
         grammarScore: item.grammarScore,
         vocabScore: item.vocabScore,
       }));
+
       setLeaderboardData(formattedData);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-//Use effect that calls fetch data
+
+  //Use effect that calls fetch data
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-       {isLoading   ? ( // Conditionally render loading indicator
+      {isLoading ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -130,50 +155,63 @@ const LeaderboardScreen = () => {
           />
         </View>
       ) : (
-    <View style={styles.container}>
-      <Text style={styles.title}>Leaderboard</Text>
+        <View style={styles.container}>
+          <Text style={styles.title}>Leaderboard</Text>
 
-      <TouchableOpacity style={styles.toggleButton} onPress={toggleSortOrder}>
-        <Text>
-          Toggle Sort ({sortOrder === "asc" ? "Ascending" : "Descending"}) by
-          Total Score
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={toggleSortOrder}
+          >
+            <Text>
+              Toggle Sort ({sortOrder === "asc" ? "Ascending" : "Descending"})
+              by Total Score
+            </Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.toggleButton} onPress={toggleSortGrammar}>
-        <Text>
-          Grammar Score ({sortGrammar === "asc" ? "Ascending" : "Descending"})
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={toggleSortGrammar}
+          >
+            <Text>
+              Grammar Score (
+              {sortGrammar === "asc" ? "Ascending" : "Descending"})
+            </Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.toggleButton} onPress={toggleSortVocab}>
-          <Text>
-            Vocab Score ({sortVocab === "asc" ? "Ascending" : "Descending"})
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={toggleSortVocab}
+          >
+            <Text>
+              Vocab Score ({sortVocab === "asc" ? "Ascending" : "Descending"})
+            </Text>
+          </TouchableOpacity>
 
-      <View style={styles.headerRow}>
-        <Text style={[styles.header, styles.column]}>Position</Text>
-        <Text style={[styles.header, styles.column]}>First Name</Text>
-        <Text style={[styles.header, styles.column]}>Grammer Score</Text>
-        <Text style={[styles.header, styles.column]}>Vocab Score</Text>
-        <Text style={[styles.header, styles.column]}>Score</Text>
-      </View>
+          <View style={styles.headerRow}>
+            <Text style={[styles.header, styles.column]}>Position</Text>
+            <Text style={[styles.header, styles.column]}>First Name</Text>
+            <Text style={[styles.header, styles.column]}>Grammer Score</Text>
+            <Text style={[styles.header, styles.column]}>Vocab Score</Text>
+            <Text style={[styles.header, styles.column]}>Score</Text>
+          </View>
 
-      {leaderboardData.map((entry) => (
-      <View key={entry.id} style={styles.row}>
-        <Text style={[styles.position, styles.column]}>{entry.id}</Text>
-        <Text style={[styles.name, styles.column]}>{entry.firstName}</Text>
-        <Text style={[styles.score, styles.column]}>
-          {entry.grammarScore}
-        </Text>
-        <Text style={[styles.score, styles.column]}>{entry.vocabScore}</Text>
-        <Text style={[styles.score, styles.column]}>{entry.score}</Text>
-      </View>
-    ))}
-
-    </View>
-    )}
+          {leaderboardData.map((entry) => (
+            <View key={entry.id} style={styles.row}>
+              <Text style={[styles.position, styles.column]}>{entry.id}</Text>
+              <Text style={[styles.name, styles.column]}>
+                {entry.firstName}
+              </Text>
+              <Text style={[styles.score, styles.column]}>
+                {entry.grammarScore}
+              </Text>
+              <Text style={[styles.score, styles.column]}>
+                {entry.vocabScore}
+              </Text>
+              <Text style={[styles.score, styles.column]}>{entry.score}</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </GestureHandlerRootView>
   );
 };
