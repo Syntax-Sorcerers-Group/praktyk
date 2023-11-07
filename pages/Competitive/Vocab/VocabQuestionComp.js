@@ -15,7 +15,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import InputBox from "../../../components/InputBox";
 import Button from "../../../components/ButtonComponent";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 function updateScore(
@@ -142,7 +142,7 @@ export default function VocabQuestionComp(props) {
   const [score, setScore] = useState(0); // Track the score
   const [localScore, setLocalScore] = useState(0); // Track the score
   const [prevScore, setPrevScore] = useState(0); // Track the score
-
+  const [username, setUsername] = useState(""); // State to store the username
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
 
@@ -189,13 +189,29 @@ useEffect(()=>{
 },[isLoading]);
 
   // Use effect to set the score when the component loads
-  useEffect(() => {
+  React.useEffect(() => {
+    const getUsernameFromStorage = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem("username");
+        if (storedUsername) {
+          setUsername(storedUsername);
+          console.log("Username:", storedUsername);
+        } else {
+          console.log("Username not found in AsyncStorage.");
+        }
+      } catch (error) {
+        console.error("Error retrieving username:", error);
+      }
+    };
+
+    getUsernameFromStorage();
+
     setIsDisabled(true); // Disable the button
 
     let prevScoreL = route.params?.prevScore || 0;
 
     // Print the score
-    console.log("Prev score:", prevScoreL);
+    console.log("Score Negative:", prevScoreL);
 
     setPrevScore(prevScoreL);
   }, []);
@@ -317,7 +333,7 @@ useEffect(()=>{
               onPress={() => {
                 // NB STILL HAVE TO DO SCORES 
                 updateScore(
-                  "test",
+                  username,
                   selectedGrade,
                   score,
                   setScore,
