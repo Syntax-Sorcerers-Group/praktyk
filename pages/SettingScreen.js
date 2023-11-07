@@ -3,8 +3,6 @@ import { View, Text, StyleSheet } from "react-native";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
 import DisplayBox from "../components/DisplayBox";
@@ -23,6 +21,23 @@ export default function SettingScreen({ navigation }) {
   // States to display pop up
   const [popupState, setPopupState] = useState(false);
   const [popupText, setPopupText] = useState('');
+
+  //function for log out button
+  const logout = async () => {
+    try {
+      // Assuming 'userEmail' is the key used to determine a user's logged-in state
+      await AsyncStorage.removeItem('userEmail');
+      
+      
+      // If you are using React Navigation, navigate to the 'Login' screen or the initial route
+      navigation.reset({
+          index: 0,
+          routes: [{ name: "LoginTabs" }],
+        });
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   //Function to update username in the database
   const updateUsername = async () => {
@@ -48,7 +63,6 @@ export default function SettingScreen({ navigation }) {
       );
 
       if (response && response.data) {
-        console.log("Username updated successfully:", response.data);
         setPopupText("Updated Username successfully"); // Set the success message
         setPopupState(true); // Show the popup
         setTimeout(() => {
@@ -78,14 +92,13 @@ export default function SettingScreen({ navigation }) {
         //gets email when user logs in
         const userEmail = await AsyncStorage.getItem('userEmail');
         if (userEmail !== null) {
-          console.log("User email retrieved from AsyncStorage.", userEmail);
           //stores the users email in state 
           setEmail(userEmail);
           // After setting the email, attempt to get the username
           getEmailFromDataBase(userEmail);
         }
       } catch (error) {
-        console.error("Error retrieving email from AsyncStorage:", error);
+        
       }
     };
     //uses api to get username from database and uses email to get username
@@ -109,7 +122,6 @@ export default function SettingScreen({ navigation }) {
         if (response && response.data) {
           // Assuming the username is a property on the response data object
           setUsername(response.data.username); // Replace with actual property name
-          console.log("Username retrieved from API:", response.data.username);
         } else {
           console.log("Error: No response data from the server.");
         }
@@ -150,6 +162,12 @@ export default function SettingScreen({ navigation }) {
           mode="elevated"
           onPress={updateUsername} // Attach the update function here
           loadingState={loading} // Use the loading state to show a loading indicator
+        />
+        <Button
+          displayText="Log Out"
+          icon="logout" // Replace with the actual icon name if you use icons
+          mode="outlined" // Or any other style you prefer
+          onPress={logout} // Attach the logout function here
         />
         <Popup
           state={popupState}
