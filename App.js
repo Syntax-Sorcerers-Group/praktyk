@@ -143,11 +143,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="General"
           component={GeneralTabs}
