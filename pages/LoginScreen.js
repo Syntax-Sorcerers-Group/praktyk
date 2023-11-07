@@ -43,7 +43,6 @@ export default function LoginScreen(props) {
       if (response && response.data) {
         // Store the email in sessionStorage
         AsyncStorage.setItem('userEmail', email);
-        console.log("User email stored in AsyncStorage.", email);
         navigation.reset({
           index: 0,
           routes: [{ name: "General" }],
