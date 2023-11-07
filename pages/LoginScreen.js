@@ -7,6 +7,7 @@ import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen(props) {
   // General variables
@@ -40,6 +41,9 @@ export default function LoginScreen(props) {
       );
 
       if (response && response.data) {
+        // Store the email in sessionStorage
+        AsyncStorage.setItem('userEmail', email);
+        console.log("User email stored in AsyncStorage.", email);
         navigation.reset({
           index: 0,
           routes: [{ name: "General" }],
