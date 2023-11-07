@@ -126,7 +126,7 @@ const LeaderboardScreen = () => {
 
       const formattedData = sortedData.map((item, index) => ({
         id: index + 1,
-        firstName: item.username, // Assuming `username` contains the first name
+        username: item.username, // Assuming `username` contains the first name
         score: item.vocabScore + item.grammarScore,
         grammarScore: item.grammarScore,
         vocabScore: item.vocabScore,
@@ -189,7 +189,7 @@ const LeaderboardScreen = () => {
 
           <View style={styles.headerRow}>
             <Text style={[styles.header, styles.column]}>Position</Text>
-            <Text style={[styles.header, styles.column]}>First Name</Text>
+            <Text style={[styles.header, styles.column]}>Username</Text>
             <Text style={[styles.header, styles.column]}>Grammer Score</Text>
             <Text style={[styles.header, styles.column]}>Vocab Score</Text>
             <Text style={[styles.header, styles.column]}>Score</Text>
@@ -199,7 +199,7 @@ const LeaderboardScreen = () => {
             <View key={entry.id} style={styles.row}>
               <Text style={[styles.position, styles.column]}>{entry.id}</Text>
               <Text style={[styles.name, styles.column]}>
-                {entry.firstName}
+                {entry.username}
               </Text>
               <Text style={[styles.score, styles.column]}>
                 {entry.grammarScore}
