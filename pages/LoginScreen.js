@@ -7,7 +7,7 @@ import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen(props) {
   // General variables
@@ -16,6 +16,7 @@ export default function LoginScreen(props) {
 
   // Detail variables
   const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState(""); // State to store the username
   const [password, setPassword] = React.useState("");
 
   // Popup visibility variable
@@ -25,6 +26,45 @@ export default function LoginScreen(props) {
   const userData = {
     email: email,
     password: password,
+  };
+
+  const getEmailFromDataBase = async (userEmail) => {
+    const data = {
+      email: userEmail, // actual email variable
+    };
+
+    try {
+      const response = await axios.post(
+        `${APP_ENV_PRAKTYK_API_LINK}/api/get/user`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+          },
+        }
+      );
+
+      if (response && response.data) {
+        // Assuming the username is a property on the response data object
+        setUsername(response.data.username); // Replace with the actual property name
+
+        // Use await to ensure AsyncStorage.setItem completes before moving to the next page
+        await AsyncStorage.setItem("username", response.data.username);
+
+        console.log(
+          "Username retrieved from API:",
+          await AsyncStorage.getItem("username")
+        );
+
+        // Now, you can navigate to the next page after data is saved
+        // Navigate to the next page here
+      } else {
+        console.log("Error: No response data from the server.");
+      }
+    } catch (error) {
+      console.error("Error retrieving username:", error);
+    }
   };
 
   const signIn = async (userData) => {
@@ -42,7 +82,8 @@ export default function LoginScreen(props) {
 
       if (response && response.data) {
         // Store the email in sessionStorage
-        AsyncStorage.setItem('userEmail', email);
+        AsyncStorage.setItem("userEmail", email);
+        await getEmailFromDataBase(email);
         navigation.reset({
           index: 0,
           routes: [{ name: "General" }],
@@ -58,11 +99,11 @@ export default function LoginScreen(props) {
         let errorMessage = error.response.data.errorMessage;
 
         // Remove "Firebase." from the beginning of the errorMessage
-        errorMessage = errorMessage.replace(/^Firebase:\s*/, '');
-    
+        errorMessage = errorMessage.replace(/^Firebase:\s*/, "");
+
         // Remove any text inside brackets and the brackets themselves
-        errorMessage = errorMessage.replace(/\(.*?\)\./g, '');
-    
+        errorMessage = errorMessage.replace(/\(.*?\)\./g, "");
+
         setPopupText(errorMessage);
       } else {
         setPopupState(true);
@@ -104,8 +145,8 @@ export default function LoginScreen(props) {
           testID="Email"
           autoComplete="email"
           onChange={(value) => setEmail(value.nativeEvent.text)}
-          placeHolder="Email"  
-          />
+          placeHolder="Email"
+        />
         <InputBox
           testID="Password"
           autoComplete="password"

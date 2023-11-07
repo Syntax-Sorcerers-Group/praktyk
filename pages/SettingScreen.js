@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState } from "react";
+import { useEffect } from "react";
 import { ScrollView } from "react-native";
 import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
@@ -9,31 +9,31 @@ import DisplayBox from "../components/DisplayBox";
 import Imagebox from "../components/ImageDisplay";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import EditableInputBox from "../components/EditableInputBox";
 
 export default function SettingScreen({ navigation }) {
   // Declare a state to hold the email
-  const [email, setEmail] = React.useState('');
-  const [username, setUsername] = React.useState(''); // State to store the username
+  const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState(""); // State to store the username
   const [loading, setLoading] = React.useState(false);
 
   // States to display pop up
   const [popupState, setPopupState] = useState(false);
-  const [popupText, setPopupText] = useState('');
+  const [popupText, setPopupText] = useState("");
 
   //function for log out button
   const logout = async () => {
     try {
       // Assuming 'userEmail' is the key used to determine a user's logged-in state
-      await AsyncStorage.removeItem('userEmail');
-      
-      
+      await AsyncStorage.removeItem("userEmail");
+      await AsyncStorage.removeItem("username");
+
       // If you are using React Navigation, navigate to the 'Login' screen or the initial route
       navigation.reset({
-          index: 0,
-          routes: [{ name: "LoginTabs" }],
-        });
+        index: 0,
+        routes: [{ name: "LoginTabs" }],
+      });
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -51,7 +51,8 @@ export default function SettingScreen({ navigation }) {
       };
 
       // Make the API call to update the username
-      const response = await axios.post( // Assuming the method to update is PUT, change if needed
+      const response = await axios.post(
+        // Assuming the method to update is PUT, change if needed
         `${APP_ENV_PRAKTYK_API_LINK}/api/update/user`, // The endpoint might be different for updating data
         data,
         {
@@ -64,6 +65,7 @@ export default function SettingScreen({ navigation }) {
 
       if (response && response.data) {
         setPopupText("Updated Username successfully"); // Set the success message
+        await AsyncStorage.setItem("username", username); // Update the username in AsyncStorage
         setPopupState(true); // Show the popup
         setTimeout(() => {
           setPopupState(false); // Hide the popup after 3 seconds
@@ -90,16 +92,14 @@ export default function SettingScreen({ navigation }) {
     const getEmail = async () => {
       try {
         //gets email when user logs in
-        const userEmail = await AsyncStorage.getItem('userEmail');
+        const userEmail = await AsyncStorage.getItem("userEmail");
         if (userEmail !== null) {
-          //stores the users email in state 
+          //stores the users email in state
           setEmail(userEmail);
           // After setting the email, attempt to get the username
           getEmailFromDataBase(userEmail);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
     //uses api to get username from database and uses email to get username
     const getEmailFromDataBase = async (userEmail) => {
@@ -146,10 +146,7 @@ export default function SettingScreen({ navigation }) {
         />
       </View>
       <View style={styles.components}>
-        <DisplayBox
-          label="Email"
-          value={email}
-        />
+        <DisplayBox label="Email" value={email} />
         <EditableInputBox
           label="Username"
           value={username}

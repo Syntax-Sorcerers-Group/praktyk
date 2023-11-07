@@ -12,6 +12,7 @@ import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import Button from "../../../components/ButtonComponent";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function getGrammarWords(selectedGrade) {
   const data = {
@@ -112,6 +113,7 @@ export default function GrammarSTOMPIComp(props) {
   const [localScore, setLocalScore] = useState(0); // Track the score
   const [prevScore, setPrevScore] = useState(0); // Track the score
   const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
+  const [username, setUsername] = useState(""); // State to store the username
 
   // Get the score from the route params
   const route = useRoute();
@@ -167,6 +169,22 @@ export default function GrammarSTOMPIComp(props) {
 
   // Use effect to set the score when the component loads
   React.useEffect(() => {
+    const getUsernameFromStorage = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem("username");
+        if (storedUsername) {
+          setUsername(storedUsername);
+          console.log("Username:", storedUsername);
+        } else {
+          console.log("Username not found in AsyncStorage.");
+        }
+      } catch (error) {
+        console.error("Error retrieving username:", error);
+      }
+    };
+
+    getUsernameFromStorage();
+
     setIsDisabled(true); // Disable the button
 
     let prevScoreL = route.params?.prevScore || 0;
@@ -363,7 +381,7 @@ export default function GrammarSTOMPIComp(props) {
               onPress={() => {
                 // Update the score in the database
                 updateScore(
-                  "test",
+                  username,
                   selectedGrade,
                   score,
                   setScore,
