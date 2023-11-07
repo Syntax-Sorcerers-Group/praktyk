@@ -34,13 +34,13 @@ function calculateSimilarity(
     let result = similarity * 100;
 
     if (result >= 0 && result < 30) {
-      setLocalScore(-4);
+      setLocalScore(0);
     } else if (result >= 30 && result < 60) {
-      setLocalScore(-3);
+      setLocalScore(1);
     } else if (result >= 60 && result < 80) {
-      setLocalScore(-2);
+      setLocalScore(2);
     } else if (result >= 80 && result < 100) {
-      setLocalScore(-1);
+      setLocalScore(3);
     } else if (result === 100) {
       setLocalScore(4);
     }
@@ -170,7 +170,7 @@ export default function GrammarNegativeComp(props) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
   const [score, setScore] = useState(0); // Track the score
-  const [localScore, setLocalScore] = useState(-5); // Track the score
+  const [localScore, setLocalScore] = useState(0); // Track the score
   const [prevScore, setPrevScore] = useState(0); // Track the score
   const [isDisabled, setIsDisabled] = useState(false); // Track the disabled state of the button
 
@@ -331,7 +331,6 @@ export default function GrammarNegativeComp(props) {
                 navigation.replace(randomPage, {
                   prevScore: score + localScore + prevScore,
                   selectedGrade: selectedGrade,
-                  
                 });
               }}
             />
@@ -350,13 +349,13 @@ export default function GrammarNegativeComp(props) {
                   prevScore
                 );
 
-              // Add a delay of 3 seconds before navigating to the leaderboard
-              setTimeout(() => {
-                navigation.replace("Leaderboard Screen", {
-                  selectedGrade: selectedGrade,
-                });
-              }, 3000); // 3000 milliseconds = 3 seconds
-            }}
+                // Add a delay of 3 seconds before navigating to the leaderboard
+                setTimeout(() => {
+                  navigation.replace("Leaderboard Screen", {
+                    selectedGrade: selectedGrade,
+                  });
+                }, 3000); // 3000 milliseconds = 3 seconds
+              }}
             />
           </View>
         </KeyboardAvoidingView>

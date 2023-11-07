@@ -34,13 +34,13 @@ function calculateSimilarity(
     let result = similarity * 100;
 
     if (result >= 0 && result < 30) {
-      setLocalScore(-4);
+      setLocalScore(0);
     } else if (result >= 30 && result < 60) {
-      setLocalScore(-3);
+      setLocalScore(1);
     } else if (result >= 60 && result < 80) {
-      setLocalScore(-2);
+      setLocalScore(2);
     } else if (result >= 80 && result < 100) {
-      setLocalScore(-1);
+      setLocalScore(3);
     } else if (result === 100) {
       setLocalScore(4);
     }
@@ -397,13 +397,13 @@ export default function GrammarTensesComp(props) {
                   prevScore
                 );
 
-              // Add a delay of 3 seconds before navigating to the leaderboard
-              setTimeout(() => {
-                navigation.replace("Leaderboard Screen", {
-                  selectedGrade: selectedGrade,
-                });
-              }, 3000); // 3000 milliseconds = 3 seconds
-            }}
+                // Add a delay of 3 seconds before navigating to the leaderboard
+                setTimeout(() => {
+                  navigation.replace("Leaderboard Screen", {
+                    selectedGrade: selectedGrade,
+                  });
+                }, 3000); // 3000 milliseconds = 3 seconds
+              }}
             />
           </View>
         </KeyboardAvoidingView>

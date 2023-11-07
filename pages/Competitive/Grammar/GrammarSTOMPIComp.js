@@ -109,7 +109,7 @@ export default function GrammarSTOMPIComp(props) {
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0); // Track the score
-  const [localScore, setLocalScore] = useState(-5); // Track the score
+  const [localScore, setLocalScore] = useState(0); // Track the score
   const [prevScore, setPrevScore] = useState(0); // Track the score
   const [isDisabled, setIsDisabled] = useState(true); // Track the button disabled state
 
@@ -371,13 +371,13 @@ export default function GrammarSTOMPIComp(props) {
                   prevScore
                 );
 
-              // Add a delay of 3 seconds before navigating to the leaderboard
-              setTimeout(() => {
-                navigation.replace("Leaderboard Screen", {
-                  selectedGrade: selectedGrade,
-                });
-              }, 3000); // 3000 milliseconds = 3 seconds
-            }}
+                // Add a delay of 3 seconds before navigating to the leaderboard
+                setTimeout(() => {
+                  navigation.replace("Leaderboard Screen", {
+                    selectedGrade: selectedGrade,
+                  });
+                }, 3000); // 3000 milliseconds = 3 seconds
+              }}
             />
           </View>
           {/* <Button
