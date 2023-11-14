@@ -318,63 +318,68 @@ export default function GrammarNegativeComp(props) {
           ) : null}
 
           <View style={styles.buttonContainer}>
-            <Button
-              displayText="Submit"
-              mode="elevated"
-              isDisabled={!isDisabled}
-              onPress={() => {
-                setIsDisabled(false); // Disable the button
-              }}
-            />
+            <View style={styles.buttonContainerSubmit}>
+              <Button
+                displayText="Submit"
+                mode="elevated"
+                isDisabled={!isDisabled}
+                onPress={() => {
+                  setIsDisabled(false); // Disable the button
+                }}
+              />
+            </View>
+            <View style={styles.buttonContainerNext}>
+              <Button
+                displayText="Next"
+                mode="elevated"
+                isDisabled={isDisabled}
+                onPress={() => {
+                  // const { question, answer } = chooseQuestion(
+                  //   negativeSentences,
+                  //   positiveSentences
+                  // );
 
-            <Button
-              displayText="Next"
-              mode="elevated"
-              isDisabled={isDisabled}
-              onPress={() => {
-                // const { question, answer } = chooseQuestion(
-                //   negativeSentences,
-                //   positiveSentences
-                // );
+                  // // Set the current question and answer
+                  // setCurrentQuestion(question);
+                  // setCurrentAnswer(answer);
 
-                // // Set the current question and answer
-                // setCurrentQuestion(question);
-                // setCurrentAnswer(answer);
+                  // setSimilarityResult(0);
+                  // setMessage("");
+                  // handleClearInput();
 
-                // setSimilarityResult(0);
-                // setMessage("");
-                // handleClearInput();
-
-                const randomPage = getRandomPage();
-                navigation.replace(randomPage, {
-                  prevScore: score + localScore + prevScore,
-                  selectedGrade: selectedGrade,
-                });
-              }}
-            />
-
-            <Button
-              displayText="Exit"
-              mode="elevated"
-              onPress={() => {
-                // Update the score in the database
-                updateScore(
-                  username,
-                  selectedGrade,
-                  score,
-                  setScore,
-                  localScore,
-                  prevScore
-                );
-
-                // Add a delay of 3 seconds before navigating to the leaderboard
-                setTimeout(() => {
-                  navigation.replace("Leaderboard Screen", {
+                  const randomPage = getRandomPage();
+                  navigation.replace(randomPage, {
+                    prevScore: score + localScore + prevScore,
                     selectedGrade: selectedGrade,
                   });
-                }, 3000); // 3000 milliseconds = 3 seconds
-              }}
-            />
+                }}
+              />
+            </View>
+
+            <View style={styles.buttonContainerExit}>
+              <Button
+                displayText="Exit"
+                mode="elevated"
+                onPress={() => {
+                  // Update the score in the database
+                  updateScore(
+                    username,
+                    selectedGrade,
+                    score,
+                    setScore,
+                    localScore,
+                    prevScore
+                  );
+
+                  // Add a delay of 3 seconds before navigating to the leaderboard
+                  setTimeout(() => {
+                    navigation.replace("Leaderboard Screen", {
+                      selectedGrade: selectedGrade,
+                    });
+                  }, 3000); // 3000 milliseconds = 3 seconds
+                }}
+              />
+            </View>
           </View>
         </KeyboardAvoidingView>
       )}
@@ -394,5 +399,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  buttonContainerSubmit: {
+    padding: 10,
+  },
+  buttonContainerNext: {
+    padding: 10,
+  },
+  buttonContainerExit: {
+    padding: 10,
   },
 });

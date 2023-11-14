@@ -147,13 +147,13 @@ export default function VocabCompetitionComp(props) {
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
   // const catergoryField = route.params?.catergoryField || "Not Selected";
   const catergoryField = "common_words";
-    //Random page generator
-    const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
+  //Random page generator
+  const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
 
-    const getRandomPageVocab = () => {
-      const randomIndex = Math.floor(Math.random() * VocabPages.length);
-      return VocabPages[randomIndex];
-    };
+  const getRandomPageVocab = () => {
+    const randomIndex = Math.floor(Math.random() * VocabPages.length);
+    return VocabPages[randomIndex];
+  };
 
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
@@ -162,29 +162,28 @@ export default function VocabCompetitionComp(props) {
     try {
       const swords = await fetchVocabWords(selectedGrade, catergoryField);
       setWordList(swords);
-      setIsLoading(false); // Mark loading as complete 
+      setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching words:", error);
     }
   };
 
-//useEffect that calls getwords function
+  //useEffect that calls getwords function
   useEffect(() => {
     getwords();
   }, []);
 
-//useEffect that chooses a random word
-useEffect(()=>{
-  // Choose a word only after words have been fetched
-  if(!isLoading){
-    // Generate a random number between 0 and arrayLength - 1
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    setCurrentIndex(randomIndex)
-    setAfrikaansWord(wordList[currentIndex].afrikaans);
-    setEnglishWord(wordList[currentIndex].english);
-  }
-},[isLoading]);
-
+  //useEffect that chooses a random word
+  useEffect(() => {
+    // Choose a word only after words have been fetched
+    if (!isLoading) {
+      // Generate a random number between 0 and arrayLength - 1
+      const randomIndex = Math.floor(Math.random() * wordList.length);
+      setCurrentIndex(randomIndex);
+      setAfrikaansWord(wordList[currentIndex].afrikaans);
+      setEnglishWord(wordList[currentIndex].english);
+    }
+  }, [isLoading]);
 
   // Use effect to set the score when the component loads
   React.useEffect(() => {
@@ -218,31 +217,27 @@ useEffect(()=>{
    *shows english text
    */
   const handleTranslateClick = () => {
-
     setShowEnglish(true);
     setEnglishWord(wordList[currentIndex].english);
-    if(inputText.toLocaleLowerCase() != englishWord.toLocaleLowerCase()){
+    if (inputText.toLocaleLowerCase() != englishWord.toLocaleLowerCase()) {
       setMessage("The correct answer is : " + englishWord);
       setLocalScore(-4);
-    }
-    else{
+    } else {
       setMessage("Your answer is correct!");
       setLocalScore(4);
     }
-    
   };
 
-/*Handles input change for input box
-*/
+  /*Handles input change for input box
+   */
   const handleInputChange = (event) => {
     const text = event.nativeEvent.text; // Extract the entered text from the event
     setInputText(text); // Update the inputText state
   };
 
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {isLoading   ? ( // Conditionally render loading indicator
+      {isLoading ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -272,9 +267,9 @@ useEffect(()=>{
             />
           )} */}
           <View style={styles.wordContainer}>
-          <View style={styles.englishContainer}>
-            <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
-            {/* {showEnglish && (
+            <View style={styles.englishContainer}>
+              <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
+              {/* {showEnglish && (
               <Text style={styles.space}> : </Text> // Add a space character
  
             )}
@@ -282,71 +277,75 @@ useEffect(()=>{
               <Text style={styles.englishText}>{englishWord}</Text>
  
             )} */}
-                      
-            {showEnglish && (
-              <View style={styles.englishContainer}>
-              <Text style={styles.englishText}>{message}</Text>
+
+              {showEnglish && (
+                <View style={styles.englishContainer}>
+                  <Text style={styles.englishText}>{message}</Text>
+                </View>
+              )}
             </View>
-            )}
-           </View>  
           </View>
-             
-            
-            {/* InputBox */}
-            <InputBox
+
+          {/* InputBox */}
+          <InputBox
             onChange={handleInputChange}
             placeholder="Type here"
             isDisabled={!isDisabled}
             value={inputText} // Bind the input value to the state
           />
-                
+
           {/* SubmitButton : Disbale input box and show english word*/}
           <View style={styles.buttonContainer}>
-            <Button
+            <View style={styles.buttonContainerSubmit}>
+              <Button
                 displayText="Submit"
                 mode="elevated"
                 isDisabled={!isDisabled}
                 onPress={() => {
-                setIsDisabled(false);
-                handleTranslateClick(); // Disable the button
+                  setIsDisabled(false);
+                  handleTranslateClick(); // Disable the button
                 }}
               />
-             <Button
-              displayText="Next"
-              isDisabled={isDisabled}
-              mode="elevated"
-              // onPress={handleNextClick}
-              onPress={() => {
-                const randomPage = getRandomPageVocab();
-                navigation.replace(randomPage, {
-                  prevScore: score + localScore + prevScore,
-                  selectedGrade: selectedGrade,
-                });
-              }}
-            />
+            </View>
+            <View style={styles.buttonContainerNext}>
               <Button
-              displayText="Exit"
-              mode="elevated"
-              onPress={() => {
-                // NB STILL HAVE TO DO SCORES 
-                updateScore(
-                  username,
-                  selectedGrade,
-                  score,
-                  setScore,
-                  localScore,
-                  prevScore
-                );
+                displayText="Next"
+                isDisabled={isDisabled}
+                mode="elevated"
+                // onPress={handleNextClick}
+                onPress={() => {
+                  const randomPage = getRandomPageVocab();
+                  navigation.replace(randomPage, {
+                    prevScore: score + localScore + prevScore,
+                    selectedGrade: selectedGrade,
+                  });
+                }}
+              />
+            </View>
+            <View style={styles.buttonContainerExit}>
+              <Button
+                displayText="Exit"
+                mode="elevated"
+                onPress={() => {
+                  // NB STILL HAVE TO DO SCORES
+                  updateScore(
+                    username,
+                    selectedGrade,
+                    score,
+                    setScore,
+                    localScore,
+                    prevScore
+                  );
 
-              // Add a delay of 3 seconds before navigating to the leaderboard
-              setTimeout(() => {
-                navigation.replace("Leaderboard Screen", {
-                  selectedGrade: selectedGrade,
-                });
-              }, 3000); // 3000 milliseconds = 3 seconds
-            }}
-            />
-
+                  // Add a delay of 3 seconds before navigating to the leaderboard
+                  setTimeout(() => {
+                    navigation.replace("Leaderboard Screen", {
+                      selectedGrade: selectedGrade,
+                    });
+                  }, 3000); // 3000 milliseconds = 3 seconds
+                }}
+              />
+            </View>
           </View>
         </View>
       )}
@@ -359,6 +358,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonContainerSubmit: {
+    padding: 10,
+  },
+  buttonContainerNext: {
+    padding: 10,
+  },
+  buttonContainerExit: {
+    padding: 10,
   },
   wordContainer: {
     flexDirection: "row",
@@ -407,7 +415,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonContainer: {
-    margin:10,
+    margin: 10,
     flexDirection: "column", // To display buttons in a row
     justifyContent: "space-between", // To distribute the space evenly
     maxWidth: "80%", // Limit the width of the container
@@ -447,4 +455,3 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
-
