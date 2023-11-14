@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
+import Button from "../components/ButtonComponent";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
@@ -158,7 +159,7 @@ const LeaderboardScreen = () => {
         <View style={styles.container}>
           <Text style={styles.title}>Leaderboard</Text>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.toggleButton}
             onPress={toggleSortOrder}
           >
@@ -166,9 +167,28 @@ const LeaderboardScreen = () => {
               Toggle Sort ({sortOrder === "asc" ? "Ascending" : "Descending"})
               by Total Score
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={styles.buttonContainerTotalScore}>
+            <Button
+              displayText={`Total Score (${
+                sortOrder === "asc" ? "Ascending" : "Descending"
+              })`}
+              mode="elevated" // You can adjust the mode as needed
+              onPress={toggleSortOrder}
+            />
+          </View>
 
-          <TouchableOpacity
+          <View style={styles.buttonContainerGrammar}>
+            <Button
+              displayText={`Grammar Score (${
+                sortGrammar === "asc" ? "Ascending" : "Descending"
+              })`}
+              mode="elevated" // You can adjust the mode as needed
+              onPress={toggleSortGrammar}
+            />
+          </View>
+
+          {/* <TouchableOpacity
             style={styles.toggleButton}
             onPress={toggleSortGrammar}
           >
@@ -176,16 +196,26 @@ const LeaderboardScreen = () => {
               Grammar Score (
               {sortGrammar === "asc" ? "Ascending" : "Descending"})
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <TouchableOpacity
+          <View style={styles.buttonContainerVocab}>
+            <Button
+              displayText={`Vocab Score (${
+                sortVocab === "asc" ? "Ascending" : "Descending"
+              })`}
+              mode="elevated" // You can adjust the mode as needed
+              onPress={toggleSortVocab}
+            />
+          </View>
+
+          {/* <TouchableOpacity
             style={styles.toggleButton}
             onPress={toggleSortVocab}
           >
             <Text>
               Vocab Score ({sortVocab === "asc" ? "Ascending" : "Descending"})
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.headerRow}>
             <Text style={[styles.header, styles.column]}>Position</Text>
@@ -198,9 +228,7 @@ const LeaderboardScreen = () => {
           {leaderboardData.map((entry) => (
             <View key={entry.id} style={styles.row}>
               <Text style={[styles.position, styles.column]}>{entry.id}</Text>
-              <Text style={[styles.name, styles.column]}>
-                {entry.username}
-              </Text>
+              <Text style={[styles.name, styles.column]}>{entry.username}</Text>
               <Text style={[styles.score, styles.column]}>
                 {entry.grammarScore}
               </Text>
@@ -222,6 +250,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  ButtonStyle: {
+    marginBottom: 10,
+    padding: 10,
+  },
+  buttonContainerTotalScore: {
+    padding: 10,
+  },
+  buttonContainerGrammar: {
+    padding: 10,
+  },
+  buttonContainerVocab: {
+    padding: 10,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -242,7 +283,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "80%",
+    width: "50%",
     marginBottom: 5,
   },
   header: {
@@ -253,7 +294,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "80%",
+    width: "50%",
     marginVertical: 10,
   },
   position: {
@@ -266,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   column: {
-    width: "16.66%", // Each column takes up 1/6 of the width
+    width: "10%", // Each column takes up 1/6 of the width
   },
 });
 
