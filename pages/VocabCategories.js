@@ -46,7 +46,7 @@ export default function VocabCategories() {
       >
         VOCAB Categories
       </Text> */}
-      <Text>Selected Grade: {selectedGrade}</Text>
+      {/* <Text>Selected Grade: {selectedGrade}</Text> */}
       {/* <View style={{ marginVertical: 10 }}>
         <Button
           title="Vocab Learning"
@@ -83,7 +83,7 @@ export default function VocabCategories() {
 
       <CustomCard
         title="Common Words"
-        imageUrl="https://picsum.photos/700"
+        imageUrl="https://static.toiimg.com/thumb/msid-79000827,width-1280,resizemode-4/79000827.jpg"
         onPress={() => {
           navigation.navigate("Vocab Learning", {
             selectedGrade,
@@ -93,7 +93,7 @@ export default function VocabCategories() {
       />
       <CustomCard
         title="Question Words"
-        imageUrl="https://picsum.photos/800"
+        imageUrl="https://www.careeraddict.com/uploads/article/59070/illustration-people-question-marks.png"
         onPress={() => {
           navigation.navigate("Vocab Question Words", {
             selectedGrade,
