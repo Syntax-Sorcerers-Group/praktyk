@@ -193,7 +193,7 @@ export default function VocabQuestionWords(props) {
               Grade: {selectedGrade}
             </Text>
             <Text style={[styles.selectedCategoryText, styles.underline]}>
-              Category: {question_words}
+              Category: Question Words
             </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>

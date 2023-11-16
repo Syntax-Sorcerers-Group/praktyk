@@ -169,7 +169,7 @@ export default function VocabSynonyms(props) {
             Grade: {selectedGrade}
           </Text>
           <Text style={[styles.selectedCategoryText, styles.underline]}>
-            Category: {synonyms}
+            Category: Synonyms
           </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
