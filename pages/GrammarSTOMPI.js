@@ -6,6 +6,7 @@ import DuoDragDrop, {
   Placeholder,
   Lines,
 } from "@jamsch/react-native-duo-drag-drop";
+import AwesomeButton from "../components/AwesomeButton";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
@@ -225,7 +226,7 @@ export default function GrammarSTOMPI(props) {
             />
           </View>
           <View style={styles.buttonContainer}>
-            <Button
+            <AwesomeButton
               displayText="Check Answer"
               mode="elevated"
               onPress={() => {
@@ -242,8 +243,9 @@ export default function GrammarSTOMPI(props) {
               }}
               style={styles.button} // Apply padding style to the button
             />
-
-            <Button
+      </View>
+      <View style={styles.buttonContainer}>
+            <AwesomeButton
               displayText="Next"
               mode="elevated"
               onPress={() => {
@@ -315,6 +317,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // To distribute the space evenly
     maxWidth: "80%", // Limit the width of the container
     alignSelf: "center", // Center the container horizontally'
+    padding : 10,
   },
   loadingContainer: {
     flex: 1,

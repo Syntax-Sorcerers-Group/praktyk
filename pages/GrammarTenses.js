@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native"; // Import KeyboardAvoidingView and Platform
 import dsc from "dice-similarity-coeff";
+import AwesomeButton from "../components/AwesomeButton";
 import * as Progress from "react-native-progress";
 import InputBox from "../components/InputBox";
 import axios from "axios";
@@ -255,7 +256,7 @@ export default function GrammarTenses(props) {
           <Progress.Bar progress={similarityResult} width={200} />
 
           <View style={styles.buttonContainer}>
-            <Button
+            <AwesomeButton
               displayText="Next"
               mode="elevated"
               onPress={() => {

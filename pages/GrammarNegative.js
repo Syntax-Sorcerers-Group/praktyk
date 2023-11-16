@@ -15,6 +15,7 @@ import Button from "../components/ButtonComponent";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import AwesomeButton from "../components/AwesomeButton";
 
 // Function to calculate similarity and update the state
 function calculateSimilarity(text, setSimilarityResult, setMessage, answer) {
@@ -206,7 +207,7 @@ export default function GrammarNegative(props) {
           <Progress.Bar progress={similarityResult} width={200} />
 
           <View style={styles.buttonContainer}>
-            <Button
+            <AwesomeButton
               displayText="Next"
               mode="elevated"
               onPress={() => {
