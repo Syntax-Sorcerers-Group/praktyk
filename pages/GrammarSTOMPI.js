@@ -10,7 +10,7 @@ import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import Button from "../components/ButtonComponent";
-
+import { useNavigation, useRoute } from "@react-navigation/native";
 async function getGrammarWords(userGrade) {
   const data = {
     grade: "grade" + userGrade,

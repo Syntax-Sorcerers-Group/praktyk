@@ -14,6 +14,7 @@ import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import Button from "../components/ButtonComponent";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 // Function to calculate similarity and update the state
 function calculateSimilarity(text, setSimilarityResult, setMessage, answer) {
