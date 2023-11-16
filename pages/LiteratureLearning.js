@@ -265,7 +265,7 @@ export default function LiteratureLearning(props) {
         <View style={styles.container}>
           {/* <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text> */}
           <Text style={[styles.selectedCategoryText, styles.underline]}>
-           Common Words
+          Fiela se Kind
           </Text>
           {/* {isLoadingImage  ? (
             <ActivityIndicator

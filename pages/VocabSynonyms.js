@@ -165,11 +165,11 @@ export default function VocabSynonyms(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={[styles.selectedGradeText, styles.underline]}>
+          {/* <Text style={[styles.selectedGradeText, styles.underline]}>
             Grade: {selectedGrade}
-          </Text>
+          </Text> */}
           <Text style={[styles.selectedCategoryText, styles.underline]}>
-            Category: Synonyms
+            Synonyms
           </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
@@ -184,7 +184,7 @@ export default function VocabSynonyms(props) {
           <AwesomeButton
             style={styles.translateButton}
             onPress={handleTranslateClick}
-            displayText={showEnglish ? "Hide English" : "Translate"}
+            displayText={showEnglish ? "Hide Synonym" : "Show Synonym"}
             width={150}
           />
 

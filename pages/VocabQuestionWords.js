@@ -189,11 +189,11 @@ export default function VocabQuestionWords(props) {
         </View>
       ) : (
         <View style={styles.container}>
-            <Text style={[styles.selectedGradeText, styles.underline]}>
+            {/* <Text style={[styles.selectedGradeText, styles.underline]}>
               Grade: {selectedGrade}
-            </Text>
+            </Text> */}
             <Text style={[styles.selectedCategoryText, styles.underline]}>
-              Category: Question Words
+              Question Words
             </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
