@@ -102,7 +102,7 @@ export default function VocabLearning(props) {
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
   const [imgurl, setImgurl] = useState("");
   const [imgCacheList, setImgCacheList] = useState([]); // To cache images
-
+  const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
 
@@ -232,11 +232,23 @@ export default function VocabLearning(props) {
    *Hides the English text
    */
   const handleNextClick = () => {
-    const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
-    setCurrentIndex(nextIndex);
-    setShowEnglish(false);
-    setAfrikaansWord(wordList[nextIndex].afrikaans);
-    setEnglishWord(wordList[nextIndex].english);
+    if(!isNextButtonDisabled){
+
+      const nextIndex = currentIndex + 1 < wordList.length ? currentIndex + 1 : 0;
+      setCurrentIndex(nextIndex);
+      setShowEnglish(false);
+      setAfrikaansWord(wordList[nextIndex].afrikaans);
+      setEnglishWord(wordList[nextIndex].english);
+
+      // Disable the button
+      setIsNextButtonDisabled(true);
+
+      // Enable the button after 2 seconds
+    setTimeout(() => {
+      setIsNextButtonDisabled(false);
+    }, 2000);
+
+    }
   };
 
   return (
@@ -285,7 +297,7 @@ export default function VocabLearning(props) {
             }}
             style={[styles.imageStyle]}
             resizeMode="cover"
-            duration={1500}
+            duration={1000}
             blurRadius={showEnglish ? 30 : 0}
             // style={[rotateYAnimatedStyle, styles.imageStyle]}
           >
@@ -336,7 +348,8 @@ const styles = StyleSheet.create({
   },
   wordContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems: "center",
     margin: 10,
   },
   loadingContainer: {
@@ -354,7 +367,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   englishText: {
+    marginTop:"auto",
+    marginBottom:"auto",
     fontSize: 20,
+    textAlign:"center",
     fontWeight: "bold",
   },
   imageStyle: {
