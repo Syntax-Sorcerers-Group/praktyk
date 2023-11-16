@@ -7,6 +7,8 @@ import Button from "../components/ButtonComponent";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import AwesomeButton from "../components/AwesomeButton";
+
 //Async Function that fetches leaderboard data based on gradeNo
 async function fetchLeaderboardData(gradeNo) {
   try {
@@ -169,7 +171,8 @@ const LeaderboardScreen = () => {
             </Text>
           </TouchableOpacity> */}
           <View style={styles.buttonContainerTotalScore}>
-            <Button
+            <AwesomeButton
+            width = {300}
               displayText={`Total Score (${
                 sortOrder === "asc" ? "Ascending" : "Descending"
               })`}
@@ -179,7 +182,8 @@ const LeaderboardScreen = () => {
           </View>
 
           <View style={styles.buttonContainerGrammar}>
-            <Button
+            <AwesomeButton
+            width = {300}
               displayText={`Grammar Score (${
                 sortGrammar === "asc" ? "Ascending" : "Descending"
               })`}
@@ -199,7 +203,8 @@ const LeaderboardScreen = () => {
           </TouchableOpacity> */}
 
           <View style={styles.buttonContainerVocab}>
-            <Button
+            <AwesomeButton
+            width = {300}
               displayText={`Vocab Score (${
                 sortVocab === "asc" ? "Ascending" : "Descending"
               })`}
