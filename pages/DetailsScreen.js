@@ -145,6 +145,7 @@ export default function DetailsScreen({ navigation }) {
 const styles = StyleSheet.create({
   //Makes the dropdown over lay + center
   dropdownViewContainer: {
+    paddingTop: 40,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,

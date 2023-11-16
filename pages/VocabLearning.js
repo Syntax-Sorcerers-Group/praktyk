@@ -13,7 +13,7 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import { CrossfadeImage } from 'react-native-crossfade-image';
+import { CrossfadeImage } from "react-native-crossfade-image";
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
   const data = {
@@ -97,7 +97,7 @@ export default function VocabLearning(props) {
   const [isLoading, setIsLoading] = useState(true); // Track loading state
   const [isLoadingImage, setIsLoadingImage] = useState(true); // Track loading state
   const [imgurl, setImgurl] = useState("");
-  const [imgCacheList ,setImgCacheList]= useState([]); // To cache images
+  const [imgCacheList, setImgCacheList] = useState([]); // To cache images
 
   // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
   const route = useRoute();
@@ -146,25 +146,25 @@ export default function VocabLearning(props) {
     if (nextImageCache) {
       // If the image is in the cache, use it directly first and call for next one in mean time
       setImgurl(nextImageCache);
-      setImgCacheList([ nextImageCache]);
+      setImgCacheList([nextImageCache]);
       const nextImageUrl = await fetchImage(wordList[nextIndex].english);
-      setImgCacheList([ nextImageCache, nextImageUrl]); //Set imagecachelist to to the current and next one.
+      setImgCacheList([nextImageCache, nextImageUrl]); //Set imagecachelist to to the current and next one.
       setIsLoading(false); // Mark loading as complete
-    } 
-    else{
-        try{
-          //First call the current one and set it then call for the next one in mean time
-          const currentImageUrl = await fetchImage(wordList[currentIndex].english);
-          setImgurl(currentImageUrl);
-          setImgCacheList([ currentImageUrl]);
-          const nextImageUrl = await fetchImage(wordList[nextIndex].english);
-          setImgCacheList([ currentImageUrl, nextImageUrl]);
-          setIsLoading(false); // Mark loading as complete
-        }
-        catch (error) {
-          console.error("Error fetching words:", error);
-          setIsLoading(false); // Mark loading as complete even on error
-        }
+    } else {
+      try {
+        //First call the current one and set it then call for the next one in mean time
+        const currentImageUrl = await fetchImage(
+          wordList[currentIndex].english
+        );
+        setImgurl(currentImageUrl);
+        setImgCacheList([currentImageUrl]);
+        const nextImageUrl = await fetchImage(wordList[nextIndex].english);
+        setImgCacheList([currentImageUrl, nextImageUrl]);
+        setIsLoading(false); // Mark loading as complete
+      } catch (error) {
+        console.error("Error fetching words:", error);
+        setIsLoading(false); // Mark loading as complete even on error
+      }
     }
   };
 
@@ -184,9 +184,8 @@ export default function VocabLearning(props) {
 
   //Use effect to call update image first time.
   useEffect(() => {
-    if(englishWord != "English word"){
+    if (englishWord != "English word") {
       updateImageCache();
-      
     }
   }, [englishWord]);
 
@@ -238,7 +237,7 @@ export default function VocabLearning(props) {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {isLoading   ? ( // Conditionally render loading indicator
+      {isLoading ? ( // Conditionally render loading indicator
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             animating={true}
@@ -248,9 +247,9 @@ export default function VocabLearning(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
+          {/* <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text> */}
           <Text style={styles.selectedCategoryText}>
-            Category: {catergoryField}
+           Common Words
           </Text>
           {/* {isLoadingImage  ? (
             <ActivityIndicator
@@ -276,22 +275,21 @@ export default function VocabLearning(props) {
             // />
           )} */}
           {/* Removed Loading for image , we now have just image */}
-            <CrossfadeImage
-              source={{
-                uri: imgurl,
-              }}
-              style={[styles.imageStyle]}
-              resizeMode="cover"
-              duration={1500}
-              blurRadius={showEnglish?30:0}
-              // style={[rotateYAnimatedStyle, styles.imageStyle]}
-              >
-                {showEnglish &&(
-                   <Text style={styles.englishText}>{englishWord}</Text>
-                )}
-              </CrossfadeImage>
+          <CrossfadeImage
+            source={{
+              uri: imgurl,
+            }}
+            style={[styles.imageStyle]}
+            resizeMode="cover"
+            duration={1500}
+            blurRadius={showEnglish ? 30 : 0}
+            // style={[rotateYAnimatedStyle, styles.imageStyle]}
+          >
+            {showEnglish && (
+              <Text style={styles.englishText}>{englishWord}</Text>
+            )}
+          </CrossfadeImage>
 
-            
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
             {/* {showEnglish && (
