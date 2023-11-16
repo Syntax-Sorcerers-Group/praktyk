@@ -1,0 +1,22 @@
+{
+  "cli": {
+    "version": ">= 4.1.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "APP_ENV_PRAKTYK_API_LINK": "https://praktyk-api.fly.dev",
+        "APP_ENV_PRAKTYK_API_KEY": "6Ke+mFQSXtEAzVDqqmB5pr/ypjVhdyBOmCUPO9XhP15GFVF1jV/XBl2GbEqUh4jUqDYG3B2yuTRbZxmw1IMHo/pDfxwm5TL7WuhxsHenWTXncnSA9Aqv2+znKdpdN44/xcWEgBV+Gg7C4ECAJ8+sF+Vh0pirzg6MC2+taDyvDYVSAx0JMJyzLli7a7n4TFtQ"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

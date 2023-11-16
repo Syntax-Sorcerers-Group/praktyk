@@ -136,7 +136,7 @@ export default function LoginScreen(props) {
     >
       <View style={styles.image}>
         <Imagebox
-          imgSource={require("../assets/splash-screen.jpg")}
+          imgSource={require("../assets/splash-screen.png")}
           imgSize={200}
         />
       </View>
