@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Button from "../components/ButtonComponent";
 import {
   View,
   Text,
@@ -310,19 +312,11 @@ export default function VocabLearning(props) {
           </TouchableOpacity>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.arrowButtonPrev}
-              onPress={handlePrevClick}
-            >
-              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.arrowButtonNext}
-              onPress={handleNextClick}
-            >
-              <Text style={styles.arrowTextNext}>{"--->"}</Text>
-            </TouchableOpacity>
+          <Button
+              displayText="Next Word"
+              mode="elevated"
+              onPress = {handleNextClick}  
+            />
           </View>
         </View>
       )}
@@ -379,21 +373,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    marginTop: 20,
+    alignSelf: 'center', // Aligns container to the left
+    //width: '100%', // Takes full width to allow space for both buttons
+    //paddingBottom: 100,
   },
-  arrowButtonPrev: {
-    backgroundColor: "lightgray",
-    padding: 10,
-    borderRadius: 5,
-  },
-  arrowButtonNext: {
-    backgroundColor: "lightgray",
-    padding: 10,
-    borderRadius: 5,
-  },
-  arrowTextPrev: {
-    fontSize: 18,
-    fontWeight: "bold",
+  arrowButtonRight: {
+    position: 'aboluste',
+    right: 0, // Aligns the button to the left
+    bottom: 0, // Aligns the button to the bottom
   },
   arrowTextNext: {
     fontSize: 18,
