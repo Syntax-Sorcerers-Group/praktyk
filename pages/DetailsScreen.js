@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
   //Makes the dropdown over lay + center
   dropdownViewContainer: {
     paddingTop: 40,
+    paddingBottom: 10,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,

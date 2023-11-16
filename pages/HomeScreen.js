@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
+    paddingBottom: 10,
   },
   //For cards
   container: {
