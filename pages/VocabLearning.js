@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Button from "../components/ButtonComponent";
+import AwesomeButton from "../components/AwesomeButton";
+
 import {
   View,
   Text,
@@ -302,18 +304,21 @@ export default function VocabLearning(props) {
             )} */}
           </View>
 
-          <TouchableOpacity
-            style={styles.translateButton}
-            onPress={handleTranslateClick}
-          >
-            <Text style={styles.translateButtonText}>
-              {showEnglish ? "Hide English" : "Translate"}
-            </Text>
-          </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <AwesomeButton
+                displayText={showEnglish ? "Hide English" : "Translate"}
+                onPress={handleTranslateClick}
+                mode="primary"
+                width={150}
+                style={styles.translateButton}
+              // Include other props as needed, such as icon, loadingState, isDisabled
+              />
+            </View>
 
           <View style={styles.buttonContainer}>
-          <Button
+          <AwesomeButton
               displayText="Next Word"
+              width={150}
               mode="elevated"
               onPress = {handleNextClick}  
             />
@@ -374,6 +379,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     alignSelf: 'center', // Aligns container to the left
+    padding: 10,
     //width: '100%', // Takes full width to allow space for both buttons
     //paddingBottom: 100,
   },
