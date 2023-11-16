@@ -11,6 +11,7 @@ import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EditableInputBox from "../components/EditableInputBox";
+import AwesomeButton from "../components/AwesomeButton";
 
 export default function SettingScreen({ navigation }) {
   // Declare a state to hold the email
@@ -153,18 +154,20 @@ export default function SettingScreen({ navigation }) {
           onChangeText={(text) => setUsername(text)}
           isDisabled={false} // Set to true if you want to disable editing
         />
-        <Button
+        <AwesomeButton
           displayText="Update Username"
           icon="login"
           mode="elevated"
+          width = {300}
           onPress={updateUsername} // Attach the update function here
           loadingState={loading} // Use the loading state to show a loading indicator
         />
-        <Button
+        <AwesomeButton
           displayText="Log Out"
           icon="logout" // Replace with the actual icon name if you use icons
           mode="outlined" // Or any other style you prefer
           onPress={logout} // Attach the logout function here
+          width = {300}
         />
         <Popup
           state={popupState}
