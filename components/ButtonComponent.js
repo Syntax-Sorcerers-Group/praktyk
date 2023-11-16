@@ -10,6 +10,8 @@ const ButtonComponent = (props) => {
       onPress={onPress}
       loading={loadingState}
       disabled={isDisabled}
+      buttonColor = "white"
+      textColor = "#0191d0"
     >
       {displayText}
     </Button>
