@@ -64,8 +64,7 @@
     "preset": "jest-expo",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)",
-      "/components/BottomNavBar.js",
-      "/pages/Competitive/"
+      "/components/BottomNavBar.js|/components/EditableInputBox.js|/components/DisplayBox.js|/components/AwesomeButton.js|/pages/Competitive/|/pages/GrammarCategories.js|/pages/GrammarNegative.js|/pages/GrammarSTOMPI.js|/pages/GrammarTenses.js|/pages/LiteratureCategories.js|/pages/LiteratureLearning.js|/components/Table.js|/pages/HomeScreen.js|/pages/VocabCategories.js|/pages/VocabLearning.js|/pages/RegisterScreen.js|/pages/LeaderboardScreen.js|/pages/VocabSynonyms.js|/pages/VocabQuestionWords.js|App.js|/pages/SettingScreen.js|/pages/DetailsScreen.js"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [

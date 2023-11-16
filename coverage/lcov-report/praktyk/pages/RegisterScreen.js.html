@@ -281,7 +281,9 @@
 <a name='L216'></a><a href='#L216'>216</a>
 <a name='L217'></a><a href='#L217'>217</a>
 <a name='L218'></a><a href='#L218'>218</a>
-<a name='L219'></a><a href='#L219'>219</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -435,6 +437,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -477,6 +480,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -505,191 +509,192 @@ import InputBox from "../components/InputBox";
 import Button from "../components/ButtonComponent";
 import Popup from "../components/Popup";
 import Imagebox from "../components/ImageDisplay";
-import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from '@env';
+import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios, { all } from "axios";
 &nbsp;
 export default function <span class="fstat-no" title="function not covered" >RegisterScreen(</span>{ navigation }) {
-    // General variables
-    const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >React.useState(false);</span>
+  // General variables
+  const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >React.useState(false);</span>
 &nbsp;
-    // Detail variables
-    const [email, setEmail] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
-    const [username, setUsername] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
-    const [password, setPassword] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
-    const [confirmPassword, setConfirmPassword] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
+  // Detail variables
+  const [email, setEmail] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
+  const [username, setUsername] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
+  const [password, setPassword] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
+  const [confirmPassword, setConfirmPassword] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
 &nbsp;
-    // Popup visibility variable 
-    const [popupState, setPopupState] = <span class="cstat-no" title="statement not covered" >React.useState(false);</span>
-    const [popupText, setPopupText] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
+  // Popup visibility variable
+  const [popupState, setPopupState] = <span class="cstat-no" title="statement not covered" >React.useState(false);</span>
+  const [popupText, setPopupText] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
 &nbsp;
-    // Usage example
-    const userData = <span class="cstat-no" title="statement not covered" >{</span>
-      "email": email,
-      "username": username,
-      "password": password
-    };
+  // Usage example
+  const userData = <span class="cstat-no" title="statement not covered" >{</span>
+    email: email,
+    username: username,
+    password: password,
+  };
 &nbsp;
-    const signUp = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (userData) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const response = <span class="cstat-no" title="statement not covered" >await axios.post(</span>
-          `${APP_ENV_PRAKTYK_API_LINK}/api/post/signup`,
-          userData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
-            },
-          }
-        );
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        if (response &amp;&amp; response.data) {</span>
-<span class="cstat-no" title="statement not covered" >          setLoading(false);</span>
-<span class="cstat-no" title="statement not covered" >          navigation.navigate("Login");</span>
-        } else {
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >          setPopupText("An unknown error occurred. Please try again.");</span>
+  const signUp = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (userData) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await axios.post(</span>
+        `${APP_ENV_PRAKTYK_API_LINK}/api/post/signup`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+          },
         }
-      } catch (error) {
+      );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (response &amp;&amp; response.data) {</span>
 <span class="cstat-no" title="statement not covered" >        setLoading(false);</span>
-<span class="cstat-no" title="statement not covered" >        if (error.response &amp;&amp; error.response.data) {</span>
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-          let errorMessage = <span class="cstat-no" title="statement not covered" >error.response.data.errorMessage;</span>
-&nbsp;
-          // Remove "Firebase." from the beginning of the errorMessage
-<span class="cstat-no" title="statement not covered" >          errorMessage = errorMessage.replace(/^Firebase:\s*/, '');</span>
-      
-          // Remove any text inside brackets and the brackets themselves
-<span class="cstat-no" title="statement not covered" >          errorMessage = errorMessage.replace(/\(.*?\)\./g, '');</span>
-      
-<span class="cstat-no" title="statement not covered" >          setPopupText(errorMessage);</span>
-        } else {
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >          setPopupText("An error occurred while registering.");</span>
-        }
-      }
-    };
-&nbsp;
-    const getAllUsers = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const response = <span class="cstat-no" title="statement not covered" >await axios.get(</span>
-          `${APP_ENV_PRAKTYK_API_LINK}/api/get/allUsers`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": APP_ENV_PRAKTYK_API_KEY,
-            },
-          }
-        );
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        if (response &amp;&amp; response.data) {</span>
-<span class="cstat-no" title="statement not covered" >          return response.data;</span>
-        } else {
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >          setPopupText("An unknown error occurred. Please try again.");</span>
-        }
-      } catch (error) {
-<span class="cstat-no" title="statement not covered" >        setLoading(false);</span>
-<span class="cstat-no" title="statement not covered" >        if (error.response &amp;&amp; error.response.data) {</span>
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-          let errorMessage = <span class="cstat-no" title="statement not covered" >error.response.data.errorMessage;</span>
-&nbsp;
-          // Remove "Firebase." from the beginning of the errorMessage
-<span class="cstat-no" title="statement not covered" >          errorMessage = errorMessage.replace(/^Firebase:\s*/, '');</span>
-      
-          // Remove any text inside brackets and the brackets themselves
-<span class="cstat-no" title="statement not covered" >          errorMessage = errorMessage.replace(/\(.*?\)\./g, '');</span>
-      
-<span class="cstat-no" title="statement not covered" >          setPopupText(errorMessage);</span>
-        } else {
-<span class="cstat-no" title="statement not covered" >          setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >          setPopupText("An error occurred while registering.");</span>
-        }
-      }
-    };
-&nbsp;
-    const checkIfUserExists = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>llUsers, userData) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; allUsers.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >        if (allUsers[i].username.trim() === userData.username.trim()) {</span>
-<span class="cstat-no" title="statement not covered" >          return true;</span>
-        }
-      }
-<span class="cstat-no" title="statement not covered" >      return false;</span>
-    };
-&nbsp;
-    async function <span class="fstat-no" title="function not covered" >handleRegister(</span>) {
-<span class="cstat-no" title="statement not covered" >      setLoading(true);</span>
-      let users = <span class="cstat-no" title="statement not covered" >await getAllUsers();</span>
-<span class="cstat-no" title="statement not covered" >      if ((password !== confirmPassword)) {</span>
-<span class="cstat-no" title="statement not covered" >        setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >        navigation.navigate("Login");</span>
+      } else {
 <span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >        setPopupText("Passwords do not match.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
-      } else <span class="cstat-no" title="statement not covered" >if (!email || !username|| !password || !confirmPassword) {</span>
-<span class="cstat-no" title="statement not covered" >        setLoading(false);</span>
-<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >        setPopupText("Please fill in all fields.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
-      } else <span class="cstat-no" title="statement not covered" >if (checkIfUserExists(users, userData)) {</span>
-<span class="cstat-no" title="statement not covered" >        setLoading(false);</span>
-<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
-<span class="cstat-no" title="statement not covered" >        setPopupText("Username already exists.");</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
+<span class="cstat-no" title="statement not covered" >        setPopupText("An unknown error occurred. Please try again.");</span>
       }
-<span class="cstat-no" title="statement not covered" >        signUp(userData);</span>
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >      if (error.response &amp;&amp; error.response.data) {</span>
+<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
+        let errorMessage = <span class="cstat-no" title="statement not covered" >error.response.data.errorMessage;</span>
+&nbsp;
+        // Remove "Firebase." from the beginning of the errorMessage
+<span class="cstat-no" title="statement not covered" >        errorMessage = errorMessage.replace(/^Firebase:\s*/, "");</span>
+&nbsp;
+        // Remove any text inside brackets and the brackets themselves
+<span class="cstat-no" title="statement not covered" >        errorMessage = errorMessage.replace(/\(.*?\)\./g, "");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        setPopupText(errorMessage);</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >        setPopupText("An error occurred while registering.");</span>
+      }
     }
+  };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
-      &lt;ScrollView contentContainerStyle={styles.page} 
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="interactive"
-      &gt;
-        &lt;View style={styles.image}&gt;
-          &lt;Imagebox 
-            imgSource={require('../assets/splash-screen.jpg')}
-            imgSize={200}
-          /&gt;
-        &lt;/View&gt;
-        &lt;View style={styles.components}&gt;
-          &lt;InputBox 
-            autoComplete="email" 
-            placeHolder="Email"
-            onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setEmail(value.nativeEvent.text)}</span>
-          /&gt;
-          &lt;InputBox
-            placeHolder="Username"
-            onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setUsername(value.nativeEvent.text)}</span>
-          /&gt;
-          &lt;InputBox
-            autoComplete="password"
-            placeHolder="Password"
-            onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setPassword(value.nativeEvent.text)}</span>
-            icon="eye"
-          /&gt;
-          &lt;InputBox
-            autoComplete="password"
-            placeHolder="Confirm Password"
-            onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setConfirmPassword(value.nativeEvent.text)}</span>
-            icon="eye"
-          /&gt;
-          &lt;Button
-            displayText="Register"
-            icon="login"
-            mode="elevated"
-            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleRegister()}</span>
-            loadingState={loading}
-          /&gt;
-          &lt;View style={styles.popupContainer}&gt;
+  const getAllUsers = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await axios.get(</span>
+        `${APP_ENV_PRAKTYK_API_LINK}/api/get/allUsers`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": APP_ENV_PRAKTYK_API_KEY,
+          },
+        }
+      );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (response &amp;&amp; response.data) {</span>
+<span class="cstat-no" title="statement not covered" >        return response.data;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >        setPopupText("An unknown error occurred. Please try again.");</span>
+      }
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >      if (error.response &amp;&amp; error.response.data) {</span>
+<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
+        let errorMessage = <span class="cstat-no" title="statement not covered" >error.response.data.errorMessage;</span>
+&nbsp;
+        // Remove "Firebase." from the beginning of the errorMessage
+<span class="cstat-no" title="statement not covered" >        errorMessage = errorMessage.replace(/^Firebase:\s*/, "");</span>
+&nbsp;
+        // Remove any text inside brackets and the brackets themselves
+<span class="cstat-no" title="statement not covered" >        errorMessage = errorMessage.replace(/\(.*?\)\./g, "");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        setPopupText(errorMessage);</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >        setPopupText("An error occurred while registering.");</span>
+      }
+    }
+  };
+&nbsp;
+  const checkIfUserExists = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>llUsers, userData) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; allUsers.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >      if (allUsers[i].username.trim() === userData.username.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >        return true;</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    return false;</span>
+  };
+&nbsp;
+  async function <span class="fstat-no" title="function not covered" >handleRegister(</span>) {
+<span class="cstat-no" title="statement not covered" >    setLoading(true);</span>
+    let users = <span class="cstat-no" title="statement not covered" >await getAllUsers();</span>
+<span class="cstat-no" title="statement not covered" >    if (password !== confirmPassword) {</span>
+<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupText("Passwords do not match.");</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    } else <span class="cstat-no" title="statement not covered" >if (!email || !username || !password || !confirmPassword) {</span>
+<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupText("Please fill in all fields.");</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    } else <span class="cstat-no" title="statement not covered" >if (checkIfUserExists(users, userData)) {</span>
+<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupState(true);</span>
+<span class="cstat-no" title="statement not covered" >      setPopupText("Username already exists.");</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+<span class="cstat-no" title="statement not covered" >    signUp(userData);</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;ScrollView
+      contentContainerStyle={styles.page}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="interactive"
+    &gt;
+      &lt;View style={styles.image}&gt;
+        &lt;Imagebox
+          imgSource={require("../assets/splash-screen.png")}
+          imgSize={200}
+        /&gt;
+      &lt;/View&gt;
+      &lt;View style={styles.components}&gt;
+        &lt;InputBox
+          autoComplete="email"
+          placeHolder="Email"
+          onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setEmail(value.nativeEvent.text)}</span>
+        /&gt;
+        &lt;InputBox
+          placeHolder="Username"
+          onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setUsername(value.nativeEvent.text)}</span>
+        /&gt;
+        &lt;InputBox
+          autoComplete="password"
+          placeHolder="Password"
+          onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setPassword(value.nativeEvent.text)}</span>
+          icon="eye"
+        /&gt;
+        &lt;InputBox
+          autoComplete="password"
+          placeHolder="Confirm Password"
+          onChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >setConfirmPassword(value.nativeEvent.text)}</span>
+          icon="eye"
+        /&gt;
+        &lt;Button
+          displayText="Register"
+          icon="login"
+          mode="elevated"
+          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleRegister()}</span>
+          loadingState={loading}
+        /&gt;
+        &lt;View style={styles.popupContainer}&gt;
           &lt;Popup
-          state={popupState}
-          displayText={popupText}
-          labelText="Ok"
-          setState={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >            setPopupState(false);</span>
-          }}
-          timeout={3000}
+            state={popupState}
+            displayText={popupText}
+            labelText="Ok"
+            setState={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >              setPopupState(false);</span>
+            }}
+            timeout={3000}
           /&gt;
-          &lt;/View&gt;
         &lt;/View&gt;
+      &lt;/View&gt;
     &lt;/ScrollView&gt;
   );
 }
@@ -717,14 +722,15 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     borderWidth: 1,
     padding: 10,
   },
-});</pre></td></tr></table></pre>
+});
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-06T21:47:16.221Z
+                at 2023-11-16T22:25:18.365Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

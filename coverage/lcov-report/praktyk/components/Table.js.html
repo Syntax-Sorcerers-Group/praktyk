@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for praktyk/pages/GrammarCategories.js</title>
+    <title>Code coverage report for praktyk/components/Table.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">praktyk/pages</a> GrammarCategories.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">praktyk/components</a> Table.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -121,26 +121,21 @@
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,6 +155,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,7 +173,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -179,64 +180,90 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
-import { useNavigation,useRoute } from "@react-navigation/native";
-import CustomCard from "../components/CustomCards";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >GrammarCategories(</span>) {
-  const navigation = <span class="cstat-no" title="statement not covered" >useNavigation();</span>
-  const route = <span class="cstat-no" title="statement not covered" >useRoute();</span>
-&nbsp;
-  // Retrieve the selectedGrade parameter from the route
-  const selectedGrade = <span class="cstat-no" title="statement not covered" >route.params?.selectedGrade || "Not Selected";</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;ScrollView testID="grammar-categories-scrollview"&gt;
-      &lt;CustomCard
-        title="STOMPI"
-        imageUrl="https://picsum.photos/700"
-        onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >          navigation.navigate("STOMPI",{</span>
-            selectedGrade,
-          }
-          );
-        }}
-        testID="stomp-custom-card" // Add testID here
-      /&gt;
-      &lt;CustomCard
-        title="Tenses"
-        imageUrl="https://picsum.photos/800"
-        onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >          navigation.navigate("Tenses",{</span>
-            selectedGrade,
-          }
-          );
-        }}
-        testID="tenses-custom-card" // Add testID here
-      /&gt;
-      &lt;CustomCard
-        title="Negative Form"
-        imageUrl="https://picsum.photos/900"
-        onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >          navigation.navigate("Negative Form",{</span>
-            selectedGrade,
-          }
-          );
-        }}
-        testID="negative-form-custom-card" // Add testID here
-      /&gt;
-    &lt;/ScrollView&gt;
+const Table = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> data }) =&gt; {</span>
+  const renderItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >    &lt;View style={styles.row}&gt;</span>
+      &lt;Text style={styles.cell}&gt;{item.id}&lt;/Text&gt;
+      &lt;Text style={styles.cell}&gt;{item.username}&lt;/Text&gt;
+      &lt;Text style={styles.cell}&gt;{item.grammarScore}&lt;/Text&gt;
+      &lt;Text style={styles.cell}&gt;{item.vocabScore}&lt;/Text&gt;
+      &lt;Text style={styles.cell}&gt;{item.score}&lt;/Text&gt;
+    &lt;/View&gt;
   );
-}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;View style={styles.container}&gt;
+      &lt;View style={styles.header}&gt;
+        &lt;Text style={styles.headerText}&gt;No.&lt;/Text&gt;
+        &lt;Text style={styles.headerText}&gt;Username&lt;/Text&gt;
+        &lt;Text style={styles.headerText}&gt;Grammar&lt;/Text&gt;
+        &lt;Text style={styles.headerText}&gt;Vocab&lt;/Text&gt;
+        &lt;Text style={styles.headerText}&gt;Total&lt;/Text&gt;
+      &lt;/View&gt;
+      &lt;FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id.toString()}</span>
+      /&gt;
+    &lt;/View&gt;
+  );
+};
 &nbsp;
 const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.create({</span>
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 20, // Add some padding to space out the content
+    marginTop: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+    padding: 10,
+    backgroundColor: '#eee',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
+    paddingHorizontal: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingVertical: 10,
+  },
+  cell: {
+    // flex: 1, // Remove this line
+    width: '20%', // Add this line
+    textAlign: 'center',
+    borderRightWidth: 1, // Add this line
+    borderRightColor: '#ccc', // Add this line
   },
 });
+&nbsp;
+export default Table;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -244,7 +271,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-16T22:12:13.082Z
+                at 2023-11-16T22:15:09.830Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

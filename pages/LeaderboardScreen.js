@@ -160,7 +160,7 @@ const LeaderboardScreen = () => {
         </View>
       ) : (
         // <ScrollView horizontal>
-          <ScrollView>
+      <ScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>Leaderboard</Text>
           {/* <TouchableOpacity

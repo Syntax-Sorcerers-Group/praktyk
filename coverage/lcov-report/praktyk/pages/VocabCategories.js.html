@@ -162,43 +162,7 @@
 <a name='L97'></a><a href='#L97'>97</a>
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L100'></a><a href='#L100'>100</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -297,25 +261,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// import React from "react";
-// import { View, Text, StyleSheet, Button } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-&nbsp;
-// export default function VocabCategories({ navigation }) {
-//   return (
-//     &lt;View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}&gt;
-//       &lt;Text style={{ fontSize: 26, fontWeight: "bold" }}&gt;VOCAB Categories&lt;/Text&gt;
-//       &lt;Button
-//         title="Vocab Learning"
-//         onPress={() =&gt; {
-//           navigation.navigate("Vocab Learning");
-//         }}
-//       /&gt;
-//     &lt;/View&gt;
-//   );
-// }
-&nbsp;
-import React from "react";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CustomCard from "../components/CustomCards";
@@ -345,7 +291,7 @@ export default function <span class="fstat-no" title="function not covered" >Voc
       &gt;
         VOCAB Categories
       &lt;/Text&gt; */}
-      &lt;Text&gt;Selected Grade: {selectedGrade}&lt;/Text&gt;
+      {/* &lt;Text&gt;Selected Grade: {selectedGrade}&lt;/Text&gt; */}
       {/* &lt;View style={{ marginVertical: 10 }}&gt;
         &lt;Button
           title="Vocab Learning"
@@ -382,7 +328,7 @@ export default function <span class="fstat-no" title="function not covered" >Voc
 &nbsp;
       &lt;CustomCard
         title="Common Words"
-        imageUrl="https://picsum.photos/700"
+        imageUrl="https://static.toiimg.com/thumb/msid-79000827,width-1280,resizemode-4/79000827.jpg"
         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >          navigation.navigate("Vocab Learning", {</span>
             selectedGrade,
@@ -392,7 +338,7 @@ export default function <span class="fstat-no" title="function not covered" >Voc
       /&gt;
       &lt;CustomCard
         title="Question Words"
-        imageUrl="https://picsum.photos/800"
+        imageUrl="https://www.careeraddict.com/uploads/article/59070/illustration-people-question-marks.png"
         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >          navigation.navigate("Vocab Question Words", {</span>
             selectedGrade,
@@ -421,7 +367,7 @@ export default function <span class="fstat-no" title="function not covered" >Voc
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-06T21:47:16.221Z
+                at 2023-11-16T22:25:18.365Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
