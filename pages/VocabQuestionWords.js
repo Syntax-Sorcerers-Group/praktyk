@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
+import AwesomeButton from "../components/AwesomeButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
@@ -103,7 +104,7 @@ export default function VocabQuestionWords(props) {
 
   // Retrieve the selectedGrade parameter from the route
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
-  const question_words = route.params?.question_words|| "Not Selected";
+  const question_words = route.params?.question_words || "Not Selected";
 
   /* function that calls async fetch words function
    *It sets the wordlist with the words returned
@@ -202,30 +203,21 @@ export default function VocabQuestionWords(props) {
             )}
           </View>
 
-          <TouchableOpacity
+          <AwesomeButton
             style={styles.translateButton}
             onPress={handleTranslateClick}
-          >
-            <Text style={styles.translateButtonText}>
-              {showEnglish ? "Hide English" : "Translate"}
-            </Text>
-          </TouchableOpacity>
-
+            displayText={showEnglish ? "Hide English" : "Translate"}
+            width={150}
+          />
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.arrowButtonPrev}
-              onPress={handlePrevClick}
-            >
-              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.arrowButtonNext}
+            <AwesomeButton
+              displayText="Next Word"
+              width={150}
+              mode="elevated"
               onPress={handleNextClick}
-            >
-              <Text style={styles.arrowTextNext}>{"--->"}</Text>
-            </TouchableOpacity>
+            />
           </View>
+
         </View>
       )}
     </GestureHandlerRootView>

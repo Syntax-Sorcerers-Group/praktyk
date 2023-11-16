@@ -13,6 +13,7 @@ import axios from "axios";
 //For Loading Screen
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import AwesomeButton from "../components/AwesomeButton";
 
 //Async Function that fetches all the words and returns them
 async function fetchVocabWords(gradeNo, categoryField) {
@@ -178,30 +179,20 @@ export default function VocabSynonyms(props) {
             )}
           </View>
 
-          <TouchableOpacity
-            testID="button-translate"
+          <AwesomeButton
             style={styles.translateButton}
             onPress={handleTranslateClick}
-          >
-            <Text style={styles.translateButtonText}>
-              {showEnglish ? "Hide Synonym" : "Translate"}
-            </Text>
-          </TouchableOpacity>
+            displayText={showEnglish ? "Hide English" : "Translate"}
+            width={150}
+          />
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.arrowButtonPrev}
-              onPress={handlePrevClick}
-            >
-              <Text style={styles.arrowTextPrev}>{"<---"}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.arrowButtonNext}
+            <AwesomeButton
+              displayText="Next Word"
+              width={150}
+              mode="elevated"
               onPress={handleNextClick}
-            >
-              <Text style={styles.arrowTextNext}>{"--->"}</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       )}

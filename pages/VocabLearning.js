@@ -311,7 +311,6 @@ export default function VocabLearning(props) {
                 mode="primary"
                 width={150}
                 style={styles.translateButton}
-              // Include other props as needed, such as icon, loadingState, isDisabled
               />
             </View>
 
