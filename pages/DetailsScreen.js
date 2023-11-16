@@ -1,5 +1,3 @@
-// import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -17,7 +15,6 @@ export default function DetailsScreen({ navigation }) {
     { label: "Grade 11", value: "11" },
     { label: "Grade 12", value: "12" },
   ]);
-  //const navigation = useNavigation();
 
   // State to track whether a grade is selected
   const [gradeSelected, setGradeSelected] = useState(false);

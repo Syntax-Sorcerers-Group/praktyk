@@ -18,7 +18,6 @@ import {
   VocabLearning,
   VocabQuestionWords,
   VocabSynonyms,
-  GrammarLearning,
   GrammarSTOMPI,
   GrammarTenses,
   GrammarNegative,
@@ -144,11 +143,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginTabs"
           component={LoginTabs}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="General"
           component={GeneralTabs}
@@ -168,7 +167,6 @@ function App() {
         <Stack.Screen name="Question Comp" component={VocabQuestionComp} />
 
         {/* Grammar Things */}
-        <Stack.Screen name="Grammar Learning" component={GrammarLearning} />
         <Stack.Screen name="STOMPI" component={GrammarSTOMPI} />
         <Stack.Screen name="Tenses" component={GrammarTenses} />
         <Stack.Screen name="Negative Form" component={GrammarNegative} />

@@ -28,8 +28,7 @@ export default function LoginScreen(props) {
     password: password,
   };
 
-  const getEmailFromDataBase = async (userEmail) => {
-    const data = {
+  const getEmailFromDataBase = async (userEmail) => {    const data = {
       email: userEmail, // actual email variable
     };
 

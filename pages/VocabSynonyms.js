@@ -131,7 +131,6 @@ export default function VocabSynonyms(props) {
    */
   const handlePrevClick = () => {
     const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : 0;
-    // setCurrentIndex((prevIndex) => (prevIndex - 1 >= 0 ? prevIndex - 1 : 0));
     setCurrentIndex(nextIndex);
     setShowEnglish(false);
     setAfrikaansWord(wordList[nextIndex].afrikaans);

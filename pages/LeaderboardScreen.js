@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from "react-native";
 import { APP_ENV_PRAKTYK_API_KEY, APP_ENV_PRAKTYK_API_LINK } from "@env";
 import axios from "axios";
 import Button from "../components/ButtonComponent";
@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AwesomeButton from "../components/AwesomeButton";
+import Table from "../components/Table";
 
 //Async Function that fetches leaderboard data based on gradeNo
 async function fetchLeaderboardData(gradeNo) {
@@ -97,7 +98,6 @@ const LeaderboardScreen = () => {
 
   /* function that calls async fetch leaderboard data function
 *It formats and sets the data to the leaderboard.
-
 */
   // const fetchData = async () => {
   //   try {
@@ -136,6 +136,7 @@ const LeaderboardScreen = () => {
       }));
 
       setLeaderboardData(formattedData);
+      console.log(leaderboardData);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -158,9 +159,10 @@ const LeaderboardScreen = () => {
           />
         </View>
       ) : (
+        // <ScrollView horizontal>
+          <ScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>Leaderboard</Text>
-
           {/* <TouchableOpacity
             style={styles.toggleButton}
             onPress={toggleSortOrder}
@@ -170,47 +172,49 @@ const LeaderboardScreen = () => {
               by Total Score
             </Text>
           </TouchableOpacity> */}
-          <View style={styles.buttonContainerTotalScore}>
-            <AwesomeButton
-            width = {300}
-              displayText={`Total Score (${
-                sortOrder === "asc" ? "Ascending" : "Descending"
-              })`}
-              mode="elevated" // You can adjust the mode as needed
-              onPress={toggleSortOrder}
-            />
-          </View>
+          <View style={styles.ButtonStyle}>
+            <View style={styles.buttonContainerTotalScore}>
+              <AwesomeButton
+              width = {110}
+                displayText={`Total Score (${
+                  sortOrder === "asc" ? "ASC" : "DESC"
+                })`}
+                mode="elevated" // You can adjust the mode as needed
+                onPress={toggleSortOrder}
+              />
+            </View>
 
-          <View style={styles.buttonContainerGrammar}>
-            <AwesomeButton
-            width = {300}
-              displayText={`Grammar Score (${
-                sortGrammar === "asc" ? "Ascending" : "Descending"
-              })`}
-              mode="elevated" // You can adjust the mode as needed
+            <View style={styles.buttonContainerGrammar}>
+              <AwesomeButton
+              width = {120}
+                displayText={`Grammar Score (${
+                  sortGrammar === "asc" ? "ASC" : "DESC"
+                })`}
+                mode="elevated" // You can adjust the mode as needed
+                onPress={toggleSortGrammar}
+              />
+            </View>
+
+            {/* <TouchableOpacity
+              style={styles.toggleButton}
               onPress={toggleSortGrammar}
-            />
-          </View>
+            >
+              <Text>
+                Grammar Score (
+                {sortGrammar === "asc" ? "Ascending" : "Descending"})
+              </Text>
+            </TouchableOpacity> */}
 
-          {/* <TouchableOpacity
-            style={styles.toggleButton}
-            onPress={toggleSortGrammar}
-          >
-            <Text>
-              Grammar Score (
-              {sortGrammar === "asc" ? "Ascending" : "Descending"})
-            </Text>
-          </TouchableOpacity> */}
-
-          <View style={styles.buttonContainerVocab}>
-            <AwesomeButton
-            width = {300}
-              displayText={`Vocab Score (${
-                sortVocab === "asc" ? "Ascending" : "Descending"
-              })`}
-              mode="elevated" // You can adjust the mode as needed
-              onPress={toggleSortVocab}
-            />
+            <View style={styles.buttonContainerVocab}>
+              <AwesomeButton
+              width = {120}
+                displayText={`Vocab Score (${
+                  sortVocab === "asc" ? "ASC" : "DESC"
+                })`}
+                mode="elevated" // You can adjust the mode as needed
+                onPress={toggleSortVocab}
+              />
+            </View>
           </View>
 
           {/* <TouchableOpacity
@@ -221,29 +225,10 @@ const LeaderboardScreen = () => {
               Vocab Score ({sortVocab === "asc" ? "Ascending" : "Descending"})
             </Text>
           </TouchableOpacity> */}
-
-          <View style={styles.headerRow}>
-            <Text style={[styles.header, styles.column]}>Position</Text>
-            <Text style={[styles.header, styles.column]}>Username</Text>
-            <Text style={[styles.header, styles.column]}>Grammer Score</Text>
-            <Text style={[styles.header, styles.column]}>Vocab Score</Text>
-            <Text style={[styles.header, styles.column]}>Score</Text>
-          </View>
-
-          {leaderboardData.map((entry) => (
-            <View key={entry.id} style={styles.row}>
-              <Text style={[styles.position, styles.column]}>{entry.id}</Text>
-              <Text style={[styles.name, styles.column]}>{entry.username}</Text>
-              <Text style={[styles.score, styles.column]}>
-                {entry.grammarScore}
-              </Text>
-              <Text style={[styles.score, styles.column]}>
-                {entry.vocabScore}
-              </Text>
-              <Text style={[styles.score, styles.column]}>{entry.score}</Text>
-            </View>
-          ))}
-        </View>
+          <Table data={leaderboardData} />
+        </View> 
+      </ScrollView>
+      // </ScrollView>
       )}
     </GestureHandlerRootView>
   );
@@ -255,18 +240,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  table: {  
+    width: "100%",
+  },
   ButtonStyle: {
-    marginBottom: 10,
-    padding: 10,
+    flexDirection: "row",
+    marginBottom: 5,
+    padding: 5,
   },
   buttonContainerTotalScore: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    paddingLeft: 25,
   },
   buttonContainerGrammar: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
   },
   buttonContainerVocab: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    paddingRight: 25,
   },
   loadingContainer: {
     flex: 1,
@@ -276,7 +270,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginVertical: 20,
   },
   toggleButton: {
     marginBottom: 10,
@@ -288,31 +282,57 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "50%",
-    marginBottom: 5,
+    width: "100%",
   },
   header: {
-    fontSize: 18,
+    flex: 1,
+    fontSize: 16,
+    textAlign: "center",
     fontWeight: "bold",
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "50%",
-    marginVertical: 10,
+    width: "100%",
   },
   position: {
-    fontSize: 18,
+    flex: 0,
+    textAlign: "center",
+    fontSize: 16,
+
+    paddingVertical: 10,
+
   },
   name: {
-    fontSize: 18,
+    flex: 0,
+    textAlign: "center",
+    fontSize: 16,
+    paddingVertical: 10,
   },
-  score: {
-    fontSize: 18,
+  score1: {
+    textAlign: "center",
+    fontSize: 16,
+    paddingVertical: 10,
+  },
+  score2: {
+    textAlign: "center",
+    left: 10,
+    fontSize: 16,
+    paddingVertical: 10,
+  },
+  score3: {
+    textAlign: "center",
+    fontSize: 16,
+    paddingVertical: 10,
   },
   column: {
-    width: "10%", // Each column takes up 1/6 of the width
+    // flex: 1,
+    width: "auto", // Each column takes up 1/6 of the width
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1, // Add a border
+    borderColor: '#ddd', // Border color
   },
 });
 
