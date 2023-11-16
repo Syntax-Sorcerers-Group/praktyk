@@ -189,10 +189,12 @@ export default function VocabQuestionWords(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
-          <Text style={styles.selectedCategoryText}>
-            Category: {question_words}
-          </Text>
+            <Text style={[styles.selectedGradeText, styles.underline]}>
+              Grade: {selectedGrade}
+            </Text>
+            <Text style={[styles.selectedCategoryText, styles.underline]}>
+              Category: {question_words}
+            </Text>
           <View style={styles.wordContainer}>
             <Text style={styles.afrikaansText}>{afrikaansWord}</Text>
             {showEnglish && (
@@ -307,5 +309,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     paddingBottom: 10,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });

@@ -252,7 +252,7 @@ export default function VocabLearning(props) {
       ) : (
         <View style={styles.container}>
           {/* <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text> */}
-          <Text style={styles.selectedCategoryText}>
+          <Text style={[styles.selectedCategoryText, styles.underline]}>
            Common Words
           </Text>
           {/* {isLoadingImage  ? (
@@ -405,5 +405,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     paddingBottom: 10,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });

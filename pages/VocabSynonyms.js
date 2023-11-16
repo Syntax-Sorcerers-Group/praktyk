@@ -165,8 +165,10 @@ export default function VocabSynonyms(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
-          <Text style={styles.selectedCategoryText}>
+          <Text style={[styles.selectedGradeText, styles.underline]}>
+            Grade: {selectedGrade}
+          </Text>
+          <Text style={[styles.selectedCategoryText, styles.underline]}>
             Category: {synonyms}
           </Text>
           <View style={styles.wordContainer}>
@@ -283,5 +285,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     paddingBottom: 10,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });
