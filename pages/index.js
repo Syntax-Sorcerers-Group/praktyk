@@ -30,4 +30,5 @@ export { default as GrammarNegativeComp } from "./Competitive/Grammar/GrammarNeg
 export { default as VocabCommonComp } from "./Competitive/Vocab/VocabCommonComp";
 export { default as VocabQuestionComp } from "./Competitive/Vocab/VocabQuestionComp";
 export { default as VocabSynonymsComp } from "./Competitive/Vocab/VocabSynonymsComp";
+export { default as LiteratureComp} from "./Competitive/Literature/LiteratureComp";
 // export { default as AnotherScreen } from './AnotherScreen';

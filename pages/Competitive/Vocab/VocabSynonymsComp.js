@@ -213,9 +213,16 @@ export default function VocabSynonymsComp(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
-          <Text style={styles.selectedCategoryText}>
-            Category: {catergoryField}
+           <Text
+            style={{
+              margin: 20,
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              textDecorationLine: "underline", // Add this line
+            }}
+          >
+            Provide the synonym for the following 
           </Text>
           {/* {isLoadingImage  ? (
               <ActivityIndicator

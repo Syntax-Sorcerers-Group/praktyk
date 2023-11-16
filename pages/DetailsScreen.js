@@ -112,13 +112,18 @@ export default function DetailsScreen({ navigation }) {
               }}
             />
 
-            {/* <CustomCard
+            <CustomCard
               title="Literature"
               imageUrl="https://img.freepik.com/free-vector/watercolor-literature-illustration_52683-81536.jpg"
               onPress={() => {
-                navigation.navigate("Literature Categories");
+                navigation.navigate("Literature Comp",{
+
+                  // selectedGrade: isvalue,
+                  selectedGrade: 12,
+                }
+                );
               }}
-            /> */}
+            />
 
             <CustomCard
               title="Leaderboard"

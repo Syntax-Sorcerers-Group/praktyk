@@ -27,7 +27,6 @@ function updateScore(
 ) {
   // Update the score
   let scoreF = score + localScore + prevScore;
-  console.log("hello");
   // Update the score in the state
   setScore(scoreF);
 
@@ -73,13 +72,13 @@ async function fetchVocabWords(gradeNo, categoryField) {
       }
     );
 
-    if (response && response.data && response.data.question_words) {
-      const questionwords = response.data.question_words;
+    if (response && response.data &&  response.data.set_literature) {
+      const commonWords = response.data.set_literature;
       const wordPairs = [];
 
-      for (const englishWord in questionwords) {
-        if (questionwords.hasOwnProperty(englishWord)) {
-          const afrikaansWord = questionwords[englishWord];
+      for (const englishWord in commonWords) {
+        if (commonWords.hasOwnProperty(englishWord)) {
+          const afrikaansWord = commonWords[englishWord];
           wordPairs.push({ english: englishWord, afrikaans: afrikaansWord });
         }
       }
@@ -126,7 +125,7 @@ async function fetchImage(englishWord) {
   }
 }
 
-export default function VocabQuestionComp(props) {
+export default function LiteratureCompetitionComp(props) {
   const navigation = useNavigation();
   const [message, setMessage] = useState(""); // State to store the message
   const [inputText, setInputText] = useState(""); // State to store the input text
@@ -147,13 +146,13 @@ export default function VocabQuestionComp(props) {
   // Retrieve the selectedGrade parameter from the route
   const selectedGrade = route.params?.selectedGrade || "Not Selected";
   // const catergoryField = route.params?.catergoryField || "Not Selected";
-  const catergoryField = "question_words";
+  const catergoryField = "set_literature";
   //Random page generator
-  const VocabPages = ["Common Comp", "Synonyms Comp", "Question Comp"];
+  const LiteraturePages = ["Literature Comp"];
 
   const getRandomPageVocab = () => {
-    const randomIndex = Math.floor(Math.random() * VocabPages.length);
-    return VocabPages[randomIndex];
+    const randomIndex = Math.floor(Math.random() * LiteraturePages.length);
+    return LiteraturePages[randomIndex];
   };
 
   /* function that calls async fetch words function
@@ -248,7 +247,7 @@ export default function VocabQuestionComp(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text
+         <Text
             style={{
               margin: 20,
               fontSize: 20,
@@ -259,6 +258,8 @@ export default function VocabQuestionComp(props) {
           >
             Translate the following to English
           </Text>
+
+         
           {/* {isLoadingImage  ? (
             <ActivityIndicator
             animating={true}

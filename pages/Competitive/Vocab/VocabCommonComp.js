@@ -247,9 +247,16 @@ export default function VocabCompetitionComp(props) {
         </View>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.selectedGradeText}>Grade: {selectedGrade}</Text>
-          <Text style={styles.selectedCategoryText}>
-            Category: {catergoryField}
+          <Text
+            style={{
+              margin: 20,
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              textDecorationLine: "underline", // Add this line
+            }}
+          >
+            Translate the following to English
           </Text>
           {/* {isLoadingImage  ? (
             <ActivityIndicator

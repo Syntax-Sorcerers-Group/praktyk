@@ -32,6 +32,7 @@ import {
   GrammarNegativeComp,
   GrammarSTOMPIComp,
   GrammarTensesComp,
+  LiteratureComp
 } from "./pages"; // Import your screens
 
 const Stack = createNativeStackNavigator(); // Create a stack navigator
@@ -180,6 +181,7 @@ function App() {
         />
 
         {/* Literature Things */}
+        <Stack.Screen name="Literature Comp" component={LiteratureComp} />
         <Stack.Screen
           name="Literature Learning"
           component={LiteratureLearning}
