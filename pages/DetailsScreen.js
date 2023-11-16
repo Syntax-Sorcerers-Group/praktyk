@@ -112,7 +112,7 @@ export default function DetailsScreen({ navigation }) {
               }}
             />
 
-            <CustomCard
+            {/* <CustomCard
               title="Literature"
               imageUrl="https://img.freepik.com/free-vector/watercolor-literature-illustration_52683-81536.jpg"
               onPress={() => {
@@ -123,7 +123,7 @@ export default function DetailsScreen({ navigation }) {
                 }
                 );
               }}
-            />
+            /> */}
 
             <CustomCard
               title="Leaderboard"
