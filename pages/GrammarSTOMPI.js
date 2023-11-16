@@ -70,7 +70,11 @@ export default function GrammarSTOMPI(props) {
   const [gradeWords, setGradeWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const userGrade = 8; // TODO: Get the user's grade from the home page instead of hardcoding it.
+    // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
+    const route = useRoute();
+
+    // Retrieve the selectedGrade parameter from the route
+    const selectedGrade = route.params?.selectedGrade || "Not Selected";
 
   // Function to shuffle an array using Fisher-Yates shuffle
   const shuffleArray = (array) => {
@@ -85,7 +89,7 @@ export default function GrammarSTOMPI(props) {
   // Get the words from the server
   const fetchWords = async () => {
     try {
-      const swords = await getGrammarWords(userGrade);
+      const swords = await getGrammarWords(selectedGrade);
       setServerWords(swords);
       setIsLoading(false); // Mark loading as complete
     } catch (error) {
@@ -97,7 +101,7 @@ export default function GrammarSTOMPI(props) {
   // Use useEffect without any conditionals
   useEffect(() => {
     fetchWords();
-  }, [userGrade]);
+  }, [selectedGrade]);
 
   useEffect(() => {
     // Orginal words

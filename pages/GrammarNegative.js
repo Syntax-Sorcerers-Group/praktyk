@@ -110,6 +110,12 @@ export default function GrammarNegative(props) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [sentencesFetched, setSentencesFetched] = useState(false);
 
+  // THIS CODE IS FOR GETTING THE GRADE AND CATEGORY PASSED FROM THE PREVIOUS SCREEN
+  const route = useRoute();
+
+  // Retrieve the selectedGrade parameter from the route
+  const selectedGrade = route.params?.selectedGrade || "Not Selected";
+
   // Function to handle text input changes
   const handleInputChange = (event) => {
     const text = event.nativeEvent.text; // Extract the entered text from the event
@@ -122,7 +128,7 @@ export default function GrammarNegative(props) {
   };
 
   const getSentencesFromServer = async () => {
-    const { negative, positive } = await getSentences("8"); // Get the sentences from the server
+    const { negative, positive } = await getSentences(selectedGrade); // Get the sentences from the server
     setNegativeSentences(negative); // Set the present sentences
     setPositiveSentences(positive); // Set the past sentences
     setSentencesFetched(true); // Set the flag to indicate that sentences have been fetched
