@@ -144,7 +144,7 @@ export default function HomeScreen({ navigation }) {
             containerStyle={styles.pickerContainerStyle}
             dropDownContainerStyle={styles.dropDownContainerStyle}
             selectedItemContainerStyle={{
-              backgroundColor: "#AFE1AF",
+              backgroundColor: "#00b1ff",
             }}
             itemSeparatorStyle={{
               marginLeft: 10,
