@@ -173,7 +173,7 @@ export default function HomeScreen({ navigation }) {
               title="Grammar"
               imageUrl="https://www.21kschool.com/blog/wp-content/uploads/2022/10/The-Importance-of-Grammar-in-Learning-the-English-Language.png"
               onPress={() => {
-                navigation.navigate("Grammar Categories");
+                navigation.navigate("Grammar Categories",{ selectedGrade: isvalue });
               }}
             />
 
