@@ -121,10 +121,10 @@ export default function DetailsScreen({ navigation }) {
                 );
               }}
             /> */}
-
+            <View style={styles.LeaderboardcardContainer}>
             <CustomCard
               title="Leaderboard"
-              imageUrl="https://img.freepik.com/free-vector/watercolor-literature-illustration_52683-81536.jpg"
+              imageUrl="https://www.trapdoorescape.com/wp-content/uploads/2022/05/Leaderboard.png"
               onPress={() => {
                 // navigation.navigate("Leaderboard Screen");
                 navigation.navigate("Leaderboard Screen", {
@@ -132,6 +132,7 @@ export default function DetailsScreen({ navigation }) {
                 });
               }}
             />
+            </View>
           </View>
         ) : (
           <View style={styles.textContainer}>
@@ -204,5 +205,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     marginBottom: 20,
+  },
+  LeaderboardcardContainer: {
+    marginBottom: 100,
   },
 });

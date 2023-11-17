@@ -13,7 +13,7 @@ export default function GrammarCategories() {
     <ScrollView testID="grammar-categories-scrollview">
       <CustomCard
         title="STOMPI"
-        imageUrl="https://picsum.photos/700"
+        imageUrl="https://en-blog.lingualbox.com/wp-content/uploads/2020/10/pexels-pixabay-278890-1024x628.jpg"
         onPress={() => {
           navigation.navigate("STOMPI",{
             selectedGrade,
@@ -24,7 +24,7 @@ export default function GrammarCategories() {
       />
       <CustomCard
         title="Tenses"
-        imageUrl="https://picsum.photos/800"
+        imageUrl="https://www.thoughtco.com/thmb/N07EPW4L-8PyLkxlRyLF2L8JFnw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Getty_tense-155096784-56af9f573df78cf772c6c6dd.jpg"
         onPress={() => {
           navigation.navigate("Tenses",{
             selectedGrade,
@@ -35,7 +35,7 @@ export default function GrammarCategories() {
       />
       <CustomCard
         title="Negative Form"
-        imageUrl="https://picsum.photos/900"
+        imageUrl="https://contenthub-static.grammarly.com/blog/wp-content/uploads/2017/03/Negatives-2.jpg"
         onPress={() => {
           navigation.navigate("Negative Form",{
             selectedGrade,

@@ -456,12 +456,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   buttonContainerSubmit: {
-    padding: 10,
+    padding: 5,
   },
   buttonContainerNext: {
-    padding: 10,
+    // padding: 10,
   },
   buttonContainerExit: {
-    padding: 10,
+    padding: 5,
   },
 });
